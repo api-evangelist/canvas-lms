@@ -1,0 +1,56 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Canvas LMS (Instructure)
+providerId: canvas-lms
+created: '2026-05-25'
+modified: '2026-05-25'
+reconciled: true
+tags:
+  - LMS
+  - Rate Limiting
+  - Throttling
+  - Canvas
+description: |
+  Canvas applies per-user-per-host request throttling using a leaky-bucket
+  algorithm. The algorithm scores each request based on its computed cost
+  (HTTP request and database time used). Each new request adds its cost to
+  the user's bucket; the bucket drains at a constant rate. When the bucket
+  fills the user's requests are rejected with HTTP 403 until the bucket
+  drains below the limit. The exact bucket size and drain rate are
+  configurable per Canvas install and are higher on Canvas Cloud than on
+  the Free-for-Teacher tenant.
+sources:
+  - https://canvas.instructure.com/doc/api/file.throttling.html
+  - https://github.com/instructure/canvas-lms/blob/master/lib/canvas/request_throttle.rb
+headers:
+  cost: X-Request-Cost
+  remaining: X-Rate-Limit-Remaining
+  retryAfter: Retry-After
+responseCodes:
+  throttled: 403
+  quotaExceeded: 403
+algorithm: leaky-bucket
+notes:
+  - When throttled Canvas returns HTTP 403 with the body `403 Forbidden (Rate Limit Exceeded)`.
+  - The X-Request-Cost header is returned on every API response and reflects how much the
+    bucket was incremented for that request (sum of HTTP request time and DB time).
+  - The X-Rate-Limit-Remaining header reports how much room is left in the bucket.
+  - Default Canvas Cloud limits per docs are approximately 700 cost units with an outflow
+    rate of 5 units/second; this is operator-tunable per install.
+  - Pagination via Link headers (RFC 5988) is the canonical way to navigate result sets;
+    `per_page` defaults to 10 and is capped at 100 on most endpoints (50 on a few).
+  - Heavy bulk operations (SIS Import, Content Migrations, Content Exports) are asynchronous
+    and tracked via Progress objects to avoid throttling synchronous request flows.
+  - The Data Access Platform (DAP) imposes separate concurrency and quota limits documented
+    at https://data-access-platform-api.s3.amazonaws.com/index.html.
+limits:
+  - tier: Default (Canvas Cloud)
+    bucket: 700 cost units
+    drain: 5 units/second
+  - tier: Free for Teacher
+    bucket: tuned-lower (operator discretion)
+    drain: tuned-lower (operator discretion)
+  - tier: Self-Hosted
+    bucket: operator-configurable
+    drain: operator-configurable

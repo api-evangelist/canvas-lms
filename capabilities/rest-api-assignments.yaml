@@ -1,0 +1,158 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Canvas REST API — Assignments
+  description: 'Canvas REST API — Assignments business surface. Lead operation: List Assignments in a Course. Self-contained Naftiko capability covering one Canvas business surface.'
+  tags:
+  - Canvas
+  - Assignments
+  - Submissions
+  - LMS
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    CANVAS_HOST: CANVAS_HOST
+    CANVAS_ACCESS_TOKEN: CANVAS_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: rest-api-assignments
+    baseUri: https://{{env.CANVAS_HOST}}
+    description: Canvas REST API — Assignments surface. Self-contained, no shared references.
+    resources:
+    - name: api-v1-courses-id-assignments
+      path: /api/v1/courses/{course_id}/assignments
+      operations:
+      - name: listassignments
+        method: GET
+        description: List Assignments in a Course
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: array
+          value: $.
+      - name: createassignment
+        method: POST
+        description: Create an Assignment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: api-v1-courses-id-assignments-id
+      path: /api/v1/courses/{course_id}/assignments/{assignment_id}
+      operations:
+      - name: getassignment
+        method: GET
+        description: Get a Single Assignment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateassignment
+        method: PUT
+        description: Edit an Assignment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteassignment
+        method: DELETE
+        description: Delete an Assignment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: api-v1-courses-id-assignments-id-submissions
+      path: /api/v1/courses/{course_id}/assignments/{assignment_id}/submissions
+      operations:
+      - name: listsubmissions
+        method: GET
+        description: List Submissions for an Assignment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: array
+          value: $.
+    - name: api-v1-courses-id-assignments-id-submissions-user
+      path: /api/v1/courses/{course_id}/assignments/{assignment_id}/submissions/{user_id}
+      operations:
+      - name: getsubmission
+        method: GET
+        description: Get a Single Submission
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: gradesubmission
+        method: PUT
+        description: Grade or Comment on a Submission
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      value: '{{env.CANVAS_ACCESS_TOKEN}}'
+      placement: header
+  exposes:
+  - type: mcp
+    namespace: rest-api-assignments-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Canvas REST API — Assignments. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: canvas-list-assignments
+      description: List Assignments in a Course
+      hints: {readOnly: true, destructive: false, idempotent: true}
+      call: rest-api-assignments.listassignments
+      outputParameters:
+      - {type: array, mapping: $.}
+    - name: canvas-create-assignment
+      description: Create an Assignment
+      hints: {readOnly: false, destructive: false, idempotent: false}
+      call: rest-api-assignments.createassignment
+      outputParameters:
+      - {type: object, mapping: $.}
+    - name: canvas-get-assignment
+      description: Get a Single Assignment
+      hints: {readOnly: true, destructive: false, idempotent: true}
+      call: rest-api-assignments.getassignment
+      outputParameters:
+      - {type: object, mapping: $.}
+    - name: canvas-update-assignment
+      description: Edit an Assignment
+      hints: {readOnly: false, destructive: false, idempotent: false}
+      call: rest-api-assignments.updateassignment
+      outputParameters:
+      - {type: object, mapping: $.}
+    - name: canvas-delete-assignment
+      description: Delete an Assignment
+      hints: {readOnly: false, destructive: true, idempotent: false}
+      call: rest-api-assignments.deleteassignment
+      outputParameters:
+      - {type: object, mapping: $.}
+    - name: canvas-list-submissions
+      description: List Submissions for an Assignment
+      hints: {readOnly: true, destructive: false, idempotent: true}
+      call: rest-api-assignments.listsubmissions
+      outputParameters:
+      - {type: array, mapping: $.}
+    - name: canvas-get-submission
+      description: Get a Single Submission
+      hints: {readOnly: true, destructive: false, idempotent: true}
+      call: rest-api-assignments.getsubmission
+      outputParameters:
+      - {type: object, mapping: $.}
+    - name: canvas-grade-submission
+      description: Grade or Comment on a Submission
+      hints: {readOnly: false, destructive: false, idempotent: false}
+      call: rest-api-assignments.gradesubmission
+      outputParameters:
+      - {type: object, mapping: $.}

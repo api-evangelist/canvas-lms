@@ -1,0 +1,163 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Canvas REST API — Courses
+  description: 'Canvas REST API — Courses business surface. Lead operation: List Courses for the Current User. Self-contained Naftiko capability covering one Canvas business surface.'
+  tags:
+  - Canvas
+  - Courses
+  - LMS
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    CANVAS_HOST: CANVAS_HOST
+    CANVAS_ACCESS_TOKEN: CANVAS_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: rest-api-courses
+    baseUri: https://{{env.CANVAS_HOST}}
+    description: Canvas REST API — Courses surface. Self-contained, no shared references.
+    resources:
+    - name: api-v1-courses
+      path: /api/v1/courses
+      operations:
+      - name: listcourses
+        method: GET
+        description: List Courses for the Current User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: array
+          value: $.
+    - name: api-v1-courses-id
+      path: /api/v1/courses/{course_id}
+      operations:
+      - name: getcourse
+        method: GET
+        description: Get a Single Course
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatecourse
+        method: PUT
+        description: Update a Course
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletecourse
+        method: DELETE
+        description: Conclude or Delete a Course
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: api-v1-accounts-id-courses
+      path: /api/v1/accounts/{account_id}/courses
+      operations:
+      - name: listcoursesinaccount
+        method: GET
+        description: List Active Courses in an Account
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: array
+          value: $.
+    authentication:
+      type: bearer
+      value: '{{env.CANVAS_ACCESS_TOKEN}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: rest-api-courses-rest
+    port: 8080
+    description: REST adapter for Canvas REST API — Courses. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/api/v1/courses
+      name: api-v1-courses
+      description: REST surface for api-v1-courses.
+      operations:
+      - method: GET
+        name: listcourses
+        description: List Courses for the Current User
+        call: rest-api-courses.listcourses
+        outputParameters:
+        - type: array
+          mapping: $.
+    - path: /v1/api/v1/courses/{course-id}
+      name: api-v1-courses-id
+      description: REST surface for api-v1-courses-id.
+      operations:
+      - method: GET
+        name: getcourse
+        description: Get a Single Course
+        call: rest-api-courses.getcourse
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updatecourse
+        description: Update a Course
+        call: rest-api-courses.updatecourse
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletecourse
+        description: Conclude or Delete a Course
+        call: rest-api-courses.deletecourse
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: rest-api-courses-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Canvas REST API — Courses. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: canvas-list-courses
+      description: List Courses for the Current User
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rest-api-courses.listcourses
+      outputParameters:
+      - type: array
+        mapping: $.
+    - name: canvas-get-course
+      description: Get a Single Course
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: rest-api-courses.getcourse
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: canvas-update-course
+      description: Update a Course
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: rest-api-courses.updatecourse
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: canvas-delete-course
+      description: Conclude or Delete a Course
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: false
+      call: rest-api-courses.deletecourse
+      outputParameters:
+      - type: object
+        mapping: $.

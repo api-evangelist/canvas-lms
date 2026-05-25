@@ -1,0 +1,80 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@vocab": "https://schema.org/",
+    "canvas": "https://canvas.instructure.com/doc/api/",
+    "ims": "https://purl.imsglobal.org/spec/lti/v1p3/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "Account": "schema:EducationalOrganization",
+    "Course": "schema:Course",
+    "Module": "schema:Course/courseSection",
+    "Assignment": "schema:Assignment",
+    "Submission": "schema:CreativeWork",
+    "DiscussionTopic": "schema:DiscussionForumPosting",
+    "User": "schema:Person",
+    "Enrollment": "schema:EducationalOccupationalProgram",
+    "Section": "schema:CourseInstance",
+    "Page": "schema:WebPage",
+    "File": "schema:DigitalDocument",
+    "Outcome": "schema:LearningResource",
+    "Quiz": "schema:Quiz",
+    "QuizQuestion": "schema:Question",
+    "Group": "schema:Organization",
+
+    "id": "@id",
+    "type": "@type",
+    "name": "schema:name",
+    "description": "schema:description",
+    "url": "schema:url",
+    "html_url": "schema:url",
+    "created_at": {"@id": "schema:dateCreated", "@type": "xsd:dateTime"},
+    "updated_at": {"@id": "schema:dateModified", "@type": "xsd:dateTime"},
+    "start_at": {"@id": "schema:startDate", "@type": "xsd:dateTime"},
+    "end_at": {"@id": "schema:endDate", "@type": "xsd:dateTime"},
+    "due_at": {"@id": "canvas:dueAt", "@type": "xsd:dateTime"},
+    "lock_at": {"@id": "canvas:lockAt", "@type": "xsd:dateTime"},
+    "unlock_at": {"@id": "canvas:unlockAt", "@type": "xsd:dateTime"},
+
+    "course_id": {"@id": "canvas:courseId", "@type": "xsd:integer"},
+    "account_id": {"@id": "canvas:accountId", "@type": "xsd:integer"},
+    "user_id": {"@id": "canvas:userId", "@type": "xsd:integer"},
+    "assignment_id": {"@id": "canvas:assignmentId", "@type": "xsd:integer"},
+    "root_account_id": {"@id": "canvas:rootAccountId", "@type": "xsd:integer"},
+
+    "sis_user_id": "canvas:sisUserId",
+    "sis_course_id": "canvas:sisCourseId",
+    "sis_account_id": "canvas:sisAccountId",
+    "sis_section_id": "canvas:sisSectionId",
+    "integration_id": "canvas:integrationId",
+    "lti_user_id": "ims:userId",
+    "lti_guid": "ims:deploymentId",
+
+    "workflow_state": "canvas:workflowState",
+    "course_code": "schema:courseCode",
+    "syllabus_body": "schema:syllabusSections",
+    "submission_types": "canvas:submissionTypes",
+    "grading_type": "canvas:gradingType",
+    "points_possible": {"@id": "canvas:pointsPossible", "@type": "xsd:decimal"},
+    "score": {"@id": "canvas:score", "@type": "xsd:decimal"},
+    "grade": "canvas:grade",
+    "posted_at": {"@id": "canvas:postedAt", "@type": "xsd:dateTime"},
+    "submitted_at": {"@id": "canvas:submittedAt", "@type": "xsd:dateTime"}
+  },
+  "@graph": [
+    {
+      "@id": "https://canvas.instructure.com/doc/api/",
+      "@type": "schema:WebAPI",
+      "name": "Canvas LMS REST API",
+      "description": "Canvas is the open-source learning management system by Instructure, Inc. The REST API exposes Accounts, Courses, Enrollments, Users, Assignments, Submissions, Modules, Discussions, Files, Outcomes, and 180+ additional resources.",
+      "provider": {
+        "@type": "schema:Organization",
+        "name": "Instructure, Inc.",
+        "url": "https://www.instructure.com"
+      },
+      "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+      "documentation": "https://canvas.instructure.com/doc/api/"
+    }
+  ]
+}

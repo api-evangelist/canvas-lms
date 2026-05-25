@@ -1,0 +1,470 @@
+aid: canvas-lms
+url: https://raw.githubusercontent.com/api-evangelist/canvas-lms/refs/heads/main/apis.yml
+name: Canvas LMS
+tags:
+- Learning Management
+- Education
+- EdTech
+- LMS
+- LTI
+- Higher Education
+- K-12
+- Open Source
+- AGPL
+- Canvas
+kind: contract
+image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+access: 3rd-Party
+description: Canvas is the open, AGPLv3-licensed learning management system created and maintained by
+  Instructure, Inc. and used by more than 30 million students, teachers, and administrators across higher
+  education, K-12, business, and government. Canvas exposes a deep REST API (190+ resource groups covering
+  Accounts, Courses, Enrollments, Assignments, Submissions, Grades, Outcomes, Quizzes, Rubrics, Modules,
+  Pages, Discussions, Files, Conversations, Calendar Events, SIS Import, Authentication Providers,
+  Developer Keys, External Tools, AI Conversations, AI Experiences, Analytics, Audit Logs, and more), a
+  GraphQL API at /api/graphql, IMS LTI 1.3 / LTI Advantage services (Names and Role Provisioning, Line
+  Items, Score, Result, Deep Linking), a Platform Notification Service for server-to-server webhook
+  delivery, and the Data Access Platform (DAP / Canvas Data 2) for warehouse-scale event and snapshot
+  data export. Canvas is the same software that powers canvas.instructure.com (Free for Teacher), Canvas
+  Cloud for institutions, and self-hosted deployments.
+apis:
+- aid: canvas-lms:canvas-rest-api
+  name: Canvas REST API
+  tags:
+  - REST
+  - Courses
+  - Users
+  - Assignments
+  - Grades
+  - Enrollments
+  - LMS
+  humanURL: https://canvas.instructure.com/doc/api/
+  baseURL: https://<canvas-install-url>/api/v1
+  properties:
+  - url: https://canvas.instructure.com/doc/api/
+    type: Documentation
+  - url: https://canvas.instructure.com/doc/api/all_resources.html
+    type: Documentation
+    name: All Resources Reference
+  - url: openapi/canvas-lms-rest-api-openapi.yml
+    type: OpenAPI
+  - url: json-schema/canvas-lms-course-schema.json
+    type: JSONSchema
+  - url: json-schema/canvas-lms-assignment-schema.json
+    type: JSONSchema
+  - url: json-ld/canvas-lms-context.jsonld
+    type: JSONLD
+  - url: capabilities/rest-api-courses.yaml
+    type: NaftikoCapability
+  - url: capabilities/rest-api-assignments.yaml
+    type: NaftikoCapability
+  - url: https://canvas.instructure.com/doc/api/file.oauth.html
+    type: Authentication
+    name: OAuth2 Overview
+  - url: https://canvas.instructure.com/doc/api/file.oauth_endpoints.html
+    type: Authentication
+    name: OAuth2 Endpoints
+  - url: https://canvas.instructure.com/doc/api/file.developer_keys.html
+    type: Authentication
+    name: Developer Keys
+  - url: https://canvas.instructure.com/doc/api/file.pagination.html
+    type: Pagination
+  - url: https://canvas.instructure.com/doc/api/file.throttling.html
+    type: RateLimits
+  - url: https://canvas.instructure.com/doc/api/file.file_uploads.html
+    type: Documentation
+    name: File Uploads
+  - url: https://canvas.instructure.com/doc/api/file.masquerading.html
+    type: Documentation
+    name: Masquerading (Act-As)
+  - url: https://canvas.instructure.com/doc/api/file.changelog.html
+    type: ChangeLog
+  description: The canonical Canvas REST API at /api/v1. 190+ controller-driven resource groups covering
+    Accounts, Account Calendars, Account Notifications, Account Reports, Admins, Announcements,
+    Appointment Groups, Assignments, Assignment Groups, Assignment Extensions, Authentication Providers,
+    Audit Logs (Authentications, Course, Grade Change), Blueprint Courses, Bookmarks, Brand Configs,
+    Calendar Events, Collaborations, Communication Channels, Conferences, Content Exports, Content
+    Migrations, Content Shares, Conversations, Courses, Course Pace, Course Reports, Custom Gradebook
+    Columns, Developer Keys, Discussion Topics, Enrollments, Enrollment Terms, ePortfolios, ePub Exports,
+    External Tools, Favorites, Feature Flags, Files, Folders, Gradebook History, Grading Periods,
+    Grading Standards, Group Categories, Groups, JWTs, Late Policy, Live Assessments, Logins, Media
+    Objects, Modules, New Quizzes, Notification Preferences, Outcomes, Outcome Groups, Outcome Imports,
+    Outcome Results, Pages, Peer Reviews, Planner, Polls, Progress, Quizzes, Quiz Submissions, Roles,
+    Rubrics, Sections, SIS Imports, Sub-Accounts, Submissions, Submission Comments, Tabs, User
+    Observees, Users, AI Conversations, AI Experiences, and more. Authentication via OAuth2 (RFC 6749)
+    with developer-key-issued client credentials; supports manual access tokens for testing and
+    masquerading via the as_user_id parameter.
+- aid: canvas-lms:canvas-graphql-api
+  name: Canvas GraphQL API
+  tags:
+  - GraphQL
+  - Query
+  - LMS
+  humanURL: https://canvas.instructure.com/doc/api/file.graphql.html
+  baseURL: https://<canvas-install-url>/api/graphql
+  properties:
+  - url: https://canvas.instructure.com/doc/api/file.graphql.html
+    type: Documentation
+  - url: https://<canvas-install-url>/graphiql
+    type: Sandbox
+    name: GraphiQL Explorer
+  - url: https://canvas.instructure.com/doc/api/file.oauth.html
+    type: Authentication
+  description: GraphQL endpoint exposing the Canvas object graph (courses, users, enrollments,
+    assignments, submissions, modules, discussion topics, outcomes, account hierarchies, etc.).
+    Permissions mirror the REST API. Includes a hosted GraphiQL explorer at /graphiql for query
+    development. Authentication uses the same OAuth2 bearer tokens as the REST API.
+- aid: canvas-lms:canvas-lti-advantage
+  name: Canvas LTI Advantage Services
+  tags:
+  - LTI
+  - LTI Advantage
+  - IMS Global
+  - 1EdTech
+  - Interoperability
+  - Standards
+  humanURL: https://canvas.instructure.com/doc/api/file.tools_intro.html
+  properties:
+  - url: https://canvas.instructure.com/doc/api/file.tools_intro.html
+    type: Documentation
+    name: Introduction to LTI in Canvas
+  - url: https://canvas.instructure.com/doc/api/file.lti_launch_overview.html
+    type: Documentation
+    name: LTI Launch Overview
+  - url: https://canvas.instructure.com/doc/api/file.lti_dev_key_config.html
+    type: Documentation
+    name: Configuring LTI 1.3 Developer Keys
+  - url: https://canvas.instructure.com/doc/api/file.content_item.html
+    type: Documentation
+    name: Deep Linking (Content Item)
+  - url: https://canvas.instructure.com/doc/api/file.assignment_tools.html
+    type: Documentation
+    name: Assignment and Grade Services
+  - url: https://canvas.instructure.com/doc/api/names_and_role.html
+    type: Documentation
+    name: Names and Role Provisioning
+  - url: https://canvas.instructure.com/doc/api/line_items.html
+    type: Documentation
+    name: Line Items
+  - url: https://canvas.instructure.com/doc/api/score.html
+    type: Documentation
+    name: Score
+  - url: https://canvas.instructure.com/doc/api/result.html
+    type: Documentation
+    name: Result
+  - url: https://canvas.instructure.com/doc/api/public_jwk.html
+    type: Documentation
+    name: Public JWK
+  - url: https://canvas.instructure.com/doc/api/lti_registrations.html
+    type: Documentation
+    name: LTI Registrations
+  description: 1EdTech (IMS Global) LTI 1.3 / LTI Advantage implementation. Includes Deep Linking 2.0,
+    Names and Role Provisioning Services (NRPS), Assignment and Grade Services (Line Items, Score,
+    Result), Dynamic Registration, Platform Notification Service, and JWK-based key exchange.
+    Authentication uses JWT client assertions per the IMS Security Framework.
+- aid: canvas-lms:canvas-platform-notification-service
+  name: Canvas Platform Notification Service
+  tags:
+  - Webhooks
+  - Notifications
+  - Events
+  - LTI
+  - Server to Server
+  humanURL: https://canvas.instructure.com/doc/api/file.pns.html
+  properties:
+  - url: https://canvas.instructure.com/doc/api/file.pns.html
+    type: Documentation
+  - url: https://canvas.instructure.com/doc/api/notice_handlers.html
+    type: Documentation
+    name: Notice Handlers
+  - url: https://canvas.instructure.com/doc/api/webhooks_subscriptions_for_plagiarism_platform.html
+    type: Documentation
+    name: Plagiarism Platform Webhook Subscriptions
+  description: Platform Notification Service (PNS) enables server-to-server communication by allowing
+    Canvas to send Notices (webhook deliveries) to LTI tools outside the scope of an active user
+    session. Tools register notice handlers for specific event types and receive signed deliveries
+    that integrate with the IMS LTI 1.3 security model.
+- aid: canvas-lms:canvas-data-access-platform
+  name: Canvas Data Access Platform
+  tags:
+  - Canvas Data
+  - DAP
+  - Data Warehouse
+  - Analytics
+  - Snapshots
+  - Events
+  humanURL: https://data-access-platform-api.s3.amazonaws.com/index.html
+  baseURL: https://api-gateway.instructure.com/dap
+  properties:
+  - url: https://data-access-platform-api.s3.amazonaws.com/index.html
+    type: Documentation
+    name: DAP Query API Reference
+  - url: https://github.com/instructure/dap-client-py
+    type: SDK
+    name: DAP Client (Python)
+  - url: https://github.com/instructure/canvas-data-loader
+    type: Tool
+    name: Canvas Data Loader (Rust)
+  - url: https://github.com/instructure/canvas-hosted-data-examples
+    type: CodeExamples
+  description: Data Access Platform (DAP) is the warehouse-scale data export API for Canvas Data 2 — the
+    successor to Canvas Data 1 / Canvas Data CLI. DAP exposes Canvas tables and Caliper-derived event
+    streams as snapshot and incremental queries against the canvas and catalog namespaces, intended for
+    bulk download into a customer's data lake or warehouse.
+- aid: canvas-lms:canvas-sis-import-api
+  name: Canvas SIS Import API
+  tags:
+  - SIS
+  - Student Information System
+  - Provisioning
+  - Bulk Import
+  - CSV
+  humanURL: https://canvas.instructure.com/doc/api/sis_imports.html
+  properties:
+  - url: https://canvas.instructure.com/doc/api/sis_imports.html
+    type: Documentation
+    name: SIS Imports
+  - url: https://canvas.instructure.com/doc/api/sis_import_errors.html
+    type: Documentation
+    name: SIS Import Errors
+  - url: https://canvas.instructure.com/doc/api/file.sis_csv.html
+    type: Documentation
+    name: SIS CSV Format
+  - url: https://canvas.instructure.com/doc/api/file.object_ids.html
+    type: Documentation
+    name: SIS IDs
+  - url: https://canvas.instructure.com/doc/api/sis_integration.html
+    type: Documentation
+    name: SIS Integration
+  description: The SIS Import API ingests Canvas's canonical SIS CSV format (and ZIP archives of those
+    CSVs) to provision accounts, terms, courses, sections, users, enrollments, groups, group
+    memberships, cross-listings, user observers, logins, admins, change-sis-id mappings, and admin
+    differentiation tags. Supports diffing imports against the previous import, batch mode, and
+    asynchronous progress polling.
+common:
+- url: https://www.instructure.com
+  name: Instructure
+  type: Portal
+- url: https://www.instructure.com/canvas
+  name: Canvas LMS Product Page
+  type: Portal
+- url: https://canvas.instructure.com/
+  name: Free for Teacher
+  type: SignUp
+- url: https://canvas.instructure.com/doc/api/
+  name: Canvas REST API Documentation
+  type: Documentation
+- url: https://canvas.instructure.com/doc/api/all_resources.html
+  name: All Resources Reference
+  type: Documentation
+- url: https://canvas.instructure.com/doc/api/file.changelog.html
+  name: Canvas API Change Log
+  type: ChangeLog
+- url: https://canvas.instructure.com/doc/api/file.graphql.html
+  name: Canvas GraphQL
+  type: Documentation
+- url: https://canvas.instructure.com/doc/api/file.oauth.html
+  name: OAuth2 Overview
+  type: Authentication
+- url: https://canvas.instructure.com/doc/api/file.throttling.html
+  name: API Throttling
+  type: RateLimits
+- url: https://canvas.instructure.com/doc/api/file.pagination.html
+  name: Pagination
+  type: Pagination
+- url: https://canvas.instructure.com/doc/api/file.tools_intro.html
+  name: LTI Tools Introduction
+  type: Documentation
+- url: https://www.instructure.com/policies/api-policy
+  name: Canvas API Policy
+  type: TermsOfService
+- url: https://www.instructure.com/policies
+  name: Instructure Legal & Privacy
+  type: PrivacyPolicy
+- url: https://www.instructure.com/policies/product-privacy-notice
+  name: Product Privacy Notice
+  type: PrivacyPolicy
+- url: https://status.instructure.com/
+  name: Instructure Status
+  type: StatusPage
+- url: https://community.canvaslms.com/
+  name: Canvas Community
+  type: Forum
+- url: https://community.canvaslms.com/t5/Canvas-Developers-Group/gh-p/canvas-developers
+  name: Canvas Developers Group
+  type: Forum
+- url: https://www.instructure.com/blog
+  name: Instructure Blog
+  type: Blog
+- url: https://www.instructure.com/canvas/canvas-credentials
+  name: Canvas Credentials
+  type: Portal
+- url: https://www.instructure.com/canvas/canvas-studio
+  name: Canvas Studio
+  type: Portal
+- url: https://www.instructure.com/canvas/canvas-catalog
+  name: Canvas Catalog
+  type: Portal
+- url: https://github.com/instructure
+  name: Instructure on GitHub
+  type: GitHubOrganization
+- url: https://github.com/instructure/canvas-lms
+  name: Canvas LMS Source
+  type: SourceCode
+- url: https://github.com/instructure/canvas-lms/wiki
+  name: Canvas LMS Wiki
+  type: Documentation
+- url: https://github.com/instructure/canvas-lms/wiki/Quick-Start
+  name: Quick Start
+  type: GettingStarted
+- url: https://github.com/instructure/canvas-lms/wiki/Production-Start
+  name: Production Start
+  type: GettingStarted
+- url: https://github.com/instructure/canvas-self-hosted
+  name: Canvas Self-Hosted Docker Configuration
+  type: Tool
+- url: https://github.com/instructure/canvas-ios
+  name: Canvas iOS Apps
+  type: SourceCode
+- url: https://github.com/instructure/canvas-android
+  name: Canvas Android Apps
+  type: SourceCode
+- url: https://github.com/instructure/CanvasAPI
+  name: Canvas API for Android
+  type: SDK
+- url: https://github.com/instructure/pandarus
+  name: Pandarus (Ruby Canvas Client)
+  type: SDK
+- url: https://github.com/instructure/canvas_oauth_engine
+  name: Canvas OAuth Engine (Rails)
+  type: SDK
+- url: https://github.com/instructure/dap-client-py
+  name: DAP Client (Python)
+  type: SDK
+- url: https://github.com/instructure/canvas-data-loader
+  name: Canvas Data Loader (Rust)
+  type: Tool
+- url: https://github.com/instructure/canvas-data-cli
+  name: Canvas Data CLI (legacy Canvas Data 1)
+  type: Tool
+- url: https://github.com/instructure/canvas-studio-api-examples
+  name: Canvas Studio API Examples
+  type: CodeExamples
+- url: https://github.com/instructure/canvas-rce-api
+  name: Canvas Rich Content Editor API
+  type: SourceCode
+- url: https://github.com/instructure/canvas-hosted-data-examples
+  name: Canvas Hosted Data Examples
+  type: CodeExamples
+- url: https://github.com/instructure/lti_example
+  name: LTI Example
+  type: CodeExamples
+- url: https://github.com/instructure/lti1_tool_provider_example
+  name: LTI 1.0 Tool Provider Example
+  type: CodeExamples
+- url: https://github.com/instructure/lti_tool_provider_example
+  name: LTI Tool Provider Example
+  type: CodeExamples
+- url: https://github.com/instructure/ims-lti
+  name: IMS-LTI Ruby Library
+  type: SDK
+- url: https://github.com/instructure/basiclti-util-java
+  name: Basic LTI Util (Java)
+  type: SDK
+- url: https://github.com/instructure/qti
+  name: QTI Library
+  type: Tool
+- url: https://github.com/instructure/QTIMigrationTool
+  name: QTI Migration Tool
+  type: Tool
+- url: https://github.com/instructure/moodle2cc
+  name: Moodle to Common Cartridge Converter
+  type: Tool
+- url: https://github.com/instructure/common-cartridge-viewer
+  name: Common Cartridge Viewer
+  type: Tool
+- url: https://github.com/instructure/analytics
+  name: Canvas Analytics Plugin
+  type: Tool
+- url: https://github.com/instructure/instructure-ui
+  name: Instructure UI Component Library
+  type: Tool
+- url: https://github.com/instructure/canvas-alexa-lambda
+  name: Canvas Alexa Lambda
+  type: CodeExamples
+- url: https://github.com/instructure/canvas_connect
+  name: Adobe Connect Plugin for Canvas
+  type: Tool
+- url: https://www.instructure.com/canvas/partners
+  name: Canvas Partners & Integrations
+  type: Marketplace
+- url: https://www.eduappcenter.com/
+  name: Edu App Center (LTI Tool Catalog)
+  type: Marketplace
+- url: https://www.instructure.com/canvas/higher-education
+  name: Canvas for Higher Education
+  type: Portal
+- url: https://www.instructure.com/canvas/k-12
+  name: Canvas for K-12
+  type: Portal
+- url: https://www.instructure.com/canvas/business
+  name: Canvas for Business
+  type: Portal
+- url: https://www.instructure.com/canvas/government
+  name: Canvas for Government
+  type: Portal
+- url: plans/canvas-lms-plans-pricing.yml
+  type: Plans
+- url: rate-limits/canvas-lms-rate-limits.yml
+  type: RateLimits
+- type: Features
+  data:
+  - Open-source AGPLv3 LMS by Instructure with 6,600+ GitHub stars and 30M+ users worldwide
+  - REST API with 190+ resource groups covering the full LMS surface — courses, users, enrollments,
+    assignments, submissions, grades, outcomes, quizzes, modules, pages, discussions, files,
+    conversations, calendar events, audit logs, AI conversations, AI experiences, and more
+  - GraphQL API at /api/graphql with hosted GraphiQL explorer at /graphiql
+  - OAuth2 (RFC 6749) authentication with developer-key-issued client credentials, manual personal
+    access tokens for testing, and the as_user_id masquerading parameter for admin act-as flows
+  - Full IMS LTI 1.3 / LTI Advantage implementation — Deep Linking 2.0, Names and Role Provisioning,
+    Assignment & Grade Services (Line Items, Score, Result), Dynamic Registration, JWK key exchange
+  - Platform Notification Service (PNS) for server-to-server webhook delivery to LTI tools
+  - Plagiarism Detection Platform with webhook subscriptions, originality reports, and
+    plagiarism-platform users/assignments
+  - SIS Import API with the canonical Canvas SIS CSV format covering accounts, terms, courses,
+    sections, users, enrollments, groups, group memberships, cross-listings, logins, admins
+  - Data Access Platform (DAP / Canvas Data 2) for warehouse-scale snapshot + incremental table and
+    event exports via the api-gateway.instructure.com/dap endpoint
+  - Built-in OpenAPI 3.0 generator via the `rake doc:openapi` task using swagger_yard
+  - Pagination using RFC 5988 Link headers; per_page query parameter; supports `last`, `next`,
+    `prev`, and `first` link rels
+  - Per-user-per-host throttling with X-Request-Cost and X-Rate-Limit-Remaining response headers
+  - Compound documents and includes[] query parameter for relationship hydration
+  - File Upload API with multipart POST-then-PUT flow for direct-to-S3 uploads
+  - Audit log APIs for Authentications, Course changes, and Grade Changes
+  - Canvas Studio (video), Canvas Catalog (course discovery + commerce), Canvas Credentials
+    (digital credentials via Parchment), and Canvas Career Experiences
+  - Cross-platform mobile apps for Students, Teachers, Parents (canvas-ios + canvas-android repos)
+  - Common Cartridge import/export, QTI 1.x/2.x quiz interchange, Moodle migration
+  - Self-hosted via Docker (canvas-self-hosted) or hosted as Canvas Cloud (Canvas Free for
+    Teacher, Canvas LMS for institutions)
+  - Owned by Instructure, Inc. (KKR portfolio company since 2024); Steve Daly, CEO
+  sources:
+  - https://github.com/instructure/canvas-lms
+  - https://canvas.instructure.com/doc/api/
+  - https://canvas.instructure.com/doc/api/all_resources.html
+  - https://canvas.instructure.com/doc/api/file.oauth.html
+  - https://canvas.instructure.com/doc/api/file.graphql.html
+  - https://canvas.instructure.com/doc/api/file.tools_intro.html
+  - https://canvas.instructure.com/doc/api/file.pns.html
+  - https://www.instructure.com/canvas
+  - https://www.instructure.com/about-us
+  updated: '2026-05-25'
+created: '2026-05-25T00:00:00.000Z'
+modified: '2026-05-25'
+position: Consuming
+maintainers:
+- FN: Kin Lane
+  email: info@apievangelist.com
+  X: apievangelist
+  url: https://apievangelist.com
+specificationVersion: '0.16'

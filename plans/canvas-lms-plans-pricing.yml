@@ -1,0 +1,171 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Canvas LMS (Instructure)
+providerId: canvas-lms
+created: '2026-05-25'
+modified: '2026-05-25'
+reconciled: false
+tags:
+  - LMS
+  - Education
+  - EdTech
+  - Canvas
+  - Instructure
+description: |
+  Canvas LMS deployment options and pricing posture. Instructure does not publish
+  per-seat list pricing on its website; institutional contracts are quoted by the
+  Instructure sales team. The information below captures the three distinct
+  delivery modes and the publicly stated entitlement differences.
+sources:
+  - https://www.instructure.com/canvas
+  - https://canvas.instructure.com/
+  - https://github.com/instructure/canvas-lms
+  - https://github.com/instructure/canvas-self-hosted
+plans:
+  - id: canvas-free-for-teacher
+    name: Canvas Free for Teacher
+    type: free
+    description: |
+      Free hosted Canvas tenant at canvas.instructure.com intended for individual
+      teachers and learners. Includes the full LMS feature set with limits on
+      storage, course enrollments, and certain integrations. No SLA, no SIS
+      integration, no admin tier.
+    url: https://canvas.instructure.com/register
+    entries:
+      - label: Per teacher
+        name: teacher
+        type: free
+        metric: user
+        limit: 1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '0'
+        userMultiplied: false
+    elements:
+      - name: Full Canvas LMS feature set (Courses, Modules, Assignments, Quizzes, Discussions, Pages)
+      - name: SpeedGrader and Gradebook
+      - name: New Quizzes engine
+      - name: Mobile apps (Student, Teacher, Parent)
+      - name: REST API and GraphQL API access (developer key required)
+      - name: LTI 1.1 / 1.3 tool installation at the course level
+      - name: Storage quotas (default 500 MB per course / 50 MB per user)
+      - name: No SIS Import API; no Data Access Platform; no production SLA
+  - id: canvas-cloud
+    name: Canvas Cloud (Institutional)
+    type: contract
+    description: |
+      Instructure-hosted Canvas tenancy for K-12 districts, higher education
+      institutions, and business/government customers. Includes the full
+      Canvas LMS feature set, root-account administration, SIS Import, the
+      Data Access Platform (DAP / Canvas Data 2), the Platform Notification
+      Service, and 99.9% uptime SLA. Pricing is per-FTE / per-enrolled-learner
+      and quoted by Instructure sales.
+    url: https://www.instructure.com/canvas
+    entries:
+      - label: Per learner / FTE per year
+        name: learner
+        type: quoted
+        metric: user
+        limit: -1
+        timeFrame: year
+        geo: global
+        unit: 1
+        price: contact-sales
+        userMultiplied: true
+    elements:
+      - name: Everything in Free for Teacher
+      - name: Root-account administration and Sub-Accounts
+      - name: SIS Import API (CSV provisioning)
+      - name: Data Access Platform (DAP / Canvas Data 2)
+      - name: Platform Notification Service (server-to-server webhooks)
+      - name: SSO via SAML, CAS, LDAP, OpenID Connect
+      - name: 99.9% uptime SLA and 24/7 support tiers
+      - name: Custom domain and account-level branding (Brand Configs)
+      - name: Blueprint Courses for curriculum scaling
+      - name: Canvas Studio, Canvas Catalog, Canvas Credentials add-ons available
+      - name: AI features (AI Conversations, AI Experiences, Smart Search) on supported tiers
+  - id: canvas-self-hosted
+    name: Canvas Self-Hosted (Open Source)
+    type: open-source
+    description: |
+      AGPLv3-licensed Canvas LMS source code from github.com/instructure/canvas-lms,
+      runnable on customer infrastructure. Free of license cost; customer is
+      responsible for hosting, scaling, upgrades, support, and operational
+      compliance. Instructure does not provide commercial support for self-hosted
+      installs.
+    url: https://github.com/instructure/canvas-lms
+    entries:
+      - label: License
+        name: license
+        type: free
+        metric: install
+        limit: -1
+        timeFrame: lifetime
+        geo: global
+        unit: 1
+        price: '0'
+        userMultiplied: false
+    elements:
+      - name: Full Canvas LMS source code under AGPL-3.0-or-later
+      - name: Dockerized starting configuration via instructure/canvas-self-hosted
+      - name: Bring-your-own Postgres, Redis, Elasticsearch/OpenSearch, S3-compatible storage
+      - name: No commercial support; community-supported via github.com/instructure/canvas-lms issues
+      - name: No DAP / Canvas Data 2 (Instructure-hosted service)
+      - name: No Canvas Studio / Catalog / Credentials add-ons
+  - id: canvas-add-on-studio
+    name: Canvas Studio
+    type: add-on
+    description: |
+      Canvas Studio is Instructure's integrated video creation, hosting, and
+      analytics platform. Sold as an add-on to Canvas Cloud subscriptions.
+    url: https://www.instructure.com/canvas/canvas-studio
+    entries:
+      - label: Add-on subscription
+        name: studio
+        type: quoted
+        metric: user
+        limit: -1
+        timeFrame: year
+        geo: global
+        unit: 1
+        price: contact-sales
+        userMultiplied: true
+  - id: canvas-add-on-catalog
+    name: Canvas Catalog
+    type: add-on
+    description: |
+      Canvas Catalog is the public-facing course discovery, enrollment, and
+      payments storefront. Sold as an add-on to Canvas Cloud subscriptions.
+    url: https://www.instructure.com/canvas/canvas-catalog
+    entries:
+      - label: Add-on subscription
+        name: catalog
+        type: quoted
+        metric: tenant
+        limit: -1
+        timeFrame: year
+        geo: global
+        unit: 1
+        price: contact-sales
+        userMultiplied: false
+  - id: canvas-add-on-credentials
+    name: Canvas Credentials
+    type: add-on
+    description: |
+      Canvas Credentials (formerly Badgr, now part of Parchment after the 2024
+      Parchment acquisition) issues and manages Open Badges 3.0 and W3C
+      Verifiable Credentials.
+    url: https://www.instructure.com/canvas/canvas-credentials
+    entries:
+      - label: Add-on subscription
+        name: credentials
+        type: quoted
+        metric: user
+        limit: -1
+        timeFrame: year
+        geo: global
+        unit: 1
+        price: contact-sales
+        userMultiplied: true
