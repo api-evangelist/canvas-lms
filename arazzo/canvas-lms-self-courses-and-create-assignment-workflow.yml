@@ -1,0 +1,86 @@
+arazzo: 1.0.1
+info:
+  title: Canvas LMS Author in the Current User's First Course
+  summary: Identify the authenticated teacher, pick their first taught course, and author an assignment.
+  description: >-
+    A self-service authoring flow for Canvas. The workflow reads the
+    authenticated user, lists the courses they teach, and creates an assignment
+    in the first such course — letting a signed-in instructor add an assignment
+    without knowing a course id up front. Every step spells out its request
+    inline so the flow can be read and executed without opening the underlying
+    OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: canvasApi
+  url: ../openapi/canvas-lms-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: self-courses-and-create-assignment
+  summary: Create an assignment in the authenticated teacher's first course.
+  description: >-
+    Reads the current user, lists the courses they teach, and creates an
+    assignment in the first one returned.
+  inputs:
+    type: object
+    required:
+    - name
+    - pointsPossible
+    properties:
+      name:
+        type: string
+        description: The name of the assignment to create.
+      pointsPossible:
+        type: number
+        description: The maximum points for the assignment.
+  steps:
+  - stepId: getSelf
+    description: >-
+      Read the authenticated user to confirm the session and capture the user
+      id.
+    operationId: getSelf
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      selfId: $response.body#/id
+      name: $response.body#/name
+  - stepId: listTaughtCourses
+    description: >-
+      List the courses the authenticated user teaches and take the first one as
+      the authoring target.
+    operationId: listCourses
+    parameters:
+    - name: enrollment_type
+      in: query
+      value: teacher
+    - name: enrollment_state
+      in: query
+      value: active
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      firstCourseId: $response.body#/0/id
+      firstCourseName: $response.body#/0/name
+  - stepId: createAssignment
+    description: >-
+      Create the assignment in the teacher's first course.
+    operationId: createAssignment
+    parameters:
+    - name: course_id
+      in: path
+      value: $steps.listTaughtCourses.outputs.firstCourseId
+    requestBody:
+      contentType: application/json
+      payload:
+        assignment:
+          name: $inputs.name
+          points_possible: $inputs.pointsPossible
+          submission_types:
+          - online_text_entry
+          published: false
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      assignmentId: $response.body#/id
+  outputs:
+    courseId: $steps.listTaughtCourses.outputs.firstCourseId
+    assignmentId: $steps.createAssignment.outputs.assignmentId

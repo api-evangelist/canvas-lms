@@ -1,0 +1,107 @@
+arazzo: 1.0.1
+info:
+  title: Canvas LMS Grade a Discussion-backed Assignment
+  summary: Locate a discussion topic's graded assignment, then grade a student's discussion submission.
+  description: >-
+    A discussions grading flow for Canvas. Graded discussions in Canvas are
+    backed by an assignment, so this workflow lists a course's discussion topics
+    to recover the assignment id behind a graded discussion, reads the student's
+    submission for that assignment, and posts a grade. This adapts the
+    announcements/discussions theme to the operations the covered REST surface
+    actually supports. Every step spells out its request inline so the flow can
+    be read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: canvasApi
+  url: ../openapi/canvas-lms-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: grade-discussion-submission
+  summary: Resolve a graded discussion's assignment and grade a student submission.
+  description: >-
+    Lists discussion topics to find the graded discussion's backing assignment
+    id, reads the student's submission for it, and posts a grade and comment.
+  inputs:
+    type: object
+    required:
+    - courseId
+    - userId
+    - postedGrade
+    properties:
+      courseId:
+        type: string
+        description: The Canvas course id.
+      userId:
+        type: string
+        description: The Canvas user id of the student whose discussion submission is graded.
+      postedGrade:
+        type: string
+        description: The grade to post.
+      textComment:
+        type: string
+        description: Optional feedback comment to attach.
+  steps:
+  - stepId: listDiscussions
+    description: >-
+      List the course discussion topics to recover the assignment id that backs
+      the first graded discussion.
+    operationId: listDiscussionTopics
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: order_by
+      in: query
+      value: recent_activity
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      discussionAssignmentId: $response.body#/0/assignment_id
+  - stepId: getSubmission
+    description: >-
+      Read the student's submission for the discussion's backing assignment.
+    operationId: getSubmission
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: assignment_id
+      in: path
+      value: $steps.listDiscussions.outputs.discussionAssignmentId
+    - name: user_id
+      in: path
+      value: $inputs.userId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      submissionUserId: $response.body#/user_id
+  - stepId: gradeSubmission
+    description: >-
+      Post the grade and optional comment to the student's discussion
+      submission.
+    operationId: gradeSubmission
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: assignment_id
+      in: path
+      value: $steps.listDiscussions.outputs.discussionAssignmentId
+    - name: user_id
+      in: path
+      value: $inputs.userId
+    requestBody:
+      contentType: application/json
+      payload:
+        submission:
+          posted_grade: $inputs.postedGrade
+        comment:
+          text_comment: $inputs.textComment
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      grade: $response.body#/grade
+      score: $response.body#/score
+  outputs:
+    assignmentId: $steps.listDiscussions.outputs.discussionAssignmentId
+    grade: $steps.gradeSubmission.outputs.grade

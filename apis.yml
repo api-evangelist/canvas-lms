@@ -293,6 +293,63 @@ apis:
     differentiation tags. Supports diffing imports against the previous import, batch mode, and
     asynchronous progress polling.
 common:
+- type: ArazzoWorkflows
+  url: arazzo/
+  workflows:
+  - url: arazzo/canvas-lms-account-course-audit-and-conclude-workflow.yml
+    name: Canvas LMS Audit Account Course and Conclude It
+    summary: List courses in an account, read one course's detail, then conclude it.
+  - url: arazzo/canvas-lms-assign-and-grade-discussion-workflow.yml
+    name: Canvas LMS Grade a Discussion-backed Assignment
+    summary: Locate a discussion topic's graded assignment, then grade a student's discussion submission.
+  - url: arazzo/canvas-lms-conclude-course-with-grade-check-workflow.yml
+    name: Canvas LMS Conclude Course After Grade Check
+    summary: List a course's enrollments with grades, then conclude the course.
+  - url: arazzo/canvas-lms-copy-assignment-to-course-workflow.yml
+    name: Canvas LMS Copy Assignment to Another Course
+    summary: Read an assignment from a source course and recreate it in a target course.
+  - url: arazzo/canvas-lms-create-assignment-and-confirm-workflow.yml
+    name: Canvas LMS Create Assignment and Confirm
+    summary: Verify a course exists, create an assignment in it, then fetch the assignment back.
+  - url: arazzo/canvas-lms-create-assignment-and-grade-submission-workflow.yml
+    name: Canvas LMS Create Assignment and Grade Submission
+    summary: Create an assignment, find a student's submission, and post a grade plus comment.
+  - url: arazzo/canvas-lms-create-course-shell-then-author-assignment-workflow.yml
+    name: Canvas LMS Configure Course Then Author Assignment
+    summary: Update a course's settings, then create its first assignment, and read it back.
+  - url: arazzo/canvas-lms-enroll-teacher-then-author-assignment-workflow.yml
+    name: Canvas LMS Enroll Teacher Then Author Assignment
+    summary: Enroll a teacher in a course, then create the course's first assignment.
+  - url: arazzo/canvas-lms-enroll-user-and-confirm-workflow.yml
+    name: Canvas LMS Enroll User and Confirm
+    summary: Enroll a user in a course and confirm the enrollment appears in the course roster.
+  - url: arazzo/canvas-lms-excuse-or-grade-submission-workflow.yml
+    name: Canvas LMS Excuse or Grade a Submission
+    summary: "Read a submission and branch \u2014 excuse it when not submitted, otherwise post a grade."
+  - url: arazzo/canvas-lms-find-or-create-assignment-workflow.yml
+    name: Canvas LMS Find or Create Assignment
+    summary: Search a course for an assignment by name and create it only when it is missing.
+  - url: arazzo/canvas-lms-grade-all-submissions-workflow.yml
+    name: Canvas LMS Grade One of Many Submissions
+    summary: List an assignment's submissions, then post a grade to the first one returned.
+  - url: arazzo/canvas-lms-list-modules-and-grade-module-assignment-workflow.yml
+    name: Canvas LMS Grade an Assignment From a Module
+    summary: List a course's modules with items, then grade a student on a module assignment.
+  - url: arazzo/canvas-lms-onboard-student-to-course-workflow.yml
+    name: Canvas LMS Onboard Student to Course
+    summary: Validate a user, enroll them as a student, and confirm course membership.
+  - url: arazzo/canvas-lms-publish-assignment-and-list-submissions-workflow.yml
+    name: Canvas LMS Publish Assignment and List Submissions
+    summary: Publish a draft assignment, then list every submission for it.
+  - url: arazzo/canvas-lms-section-roster-and-grade-workflow.yml
+    name: Canvas LMS Grade a Student by Section Enrollment
+    summary: Find a student via course section enrollments, then grade their assignment.
+  - url: arazzo/canvas-lms-self-courses-and-create-assignment-workflow.yml
+    name: Canvas LMS Author in the Current User's First Course
+    summary: Identify the authenticated teacher, pick their first taught course, and author an assignment.
+  - url: arazzo/canvas-lms-update-assignment-due-date-and-grade-workflow.yml
+    name: Canvas LMS Extend Due Date Then Grade Late Submission
+    summary: Push an assignment's due date out, then grade a student's late submission.
 - url: https://www.instructure.com
   name: Instructure
   type: Portal

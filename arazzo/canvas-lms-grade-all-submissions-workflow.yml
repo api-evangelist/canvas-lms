@@ -1,0 +1,92 @@
+arazzo: 1.0.1
+info:
+  title: Canvas LMS Grade One of Many Submissions
+  summary: List an assignment's submissions, then post a grade to the first one returned.
+  description: >-
+    A grading flow for Canvas. The workflow lists the submissions for an
+    assignment, takes the first submission's user id, and posts a grade and
+    comment to that submission. It models the inner loop of bulk grading, where a
+    grader walks the submission list and marks each one in turn. Every step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: canvasApi
+  url: ../openapi/canvas-lms-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: grade-first-submission
+  summary: Retrieve an assignment's submissions and grade the first one.
+  description: >-
+    Lists the submissions for an assignment, reads the first submission's user
+    id, and posts a grade plus optional comment to that user's submission.
+  inputs:
+    type: object
+    required:
+    - courseId
+    - assignmentId
+    - postedGrade
+    properties:
+      courseId:
+        type: string
+        description: The Canvas course id.
+      assignmentId:
+        type: string
+        description: The Canvas assignment id whose submissions are graded.
+      postedGrade:
+        type: string
+        description: The grade to post to the first submission.
+      textComment:
+        type: string
+        description: Optional feedback comment to attach.
+  steps:
+  - stepId: listSubmissions
+    description: >-
+      List the submissions for the assignment, including submission comments.
+    operationId: listSubmissions
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: assignment_id
+      in: path
+      value: $inputs.assignmentId
+    - name: include[]
+      in: query
+      value:
+      - submission_comments
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      firstUserId: $response.body#/0/user_id
+  - stepId: gradeFirstSubmission
+    description: >-
+      Post the supplied grade and optional comment to the first submission's
+      user.
+    operationId: gradeSubmission
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: assignment_id
+      in: path
+      value: $inputs.assignmentId
+    - name: user_id
+      in: path
+      value: $steps.listSubmissions.outputs.firstUserId
+    requestBody:
+      contentType: application/json
+      payload:
+        submission:
+          posted_grade: $inputs.postedGrade
+        comment:
+          text_comment: $inputs.textComment
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      grade: $response.body#/grade
+      score: $response.body#/score
+      userId: $response.body#/user_id
+  outputs:
+    userId: $steps.gradeFirstSubmission.outputs.userId
+    grade: $steps.gradeFirstSubmission.outputs.grade

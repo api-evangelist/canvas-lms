@@ -1,0 +1,126 @@
+arazzo: 1.0.1
+info:
+  title: Canvas LMS Create Assignment and Grade Submission
+  summary: Create an assignment, find a student's submission, and post a grade plus comment.
+  description: >-
+    A teacher grading flow for Canvas. The workflow creates an assignment in a
+    course, fetches the supplied student's submission for that assignment, and
+    posts a grade and feedback comment to that submission. Because Canvas
+    auto-creates a placeholder submission record per student per assignment, the
+    submission can be read and graded immediately after the assignment is
+    created. Every step spells out its request inline so the flow can be read and
+    executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: canvasApi
+  url: ../openapi/canvas-lms-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: create-assignment-and-grade-submission
+  summary: Create an assignment then grade a specific student's submission for it.
+  description: >-
+    Creates an assignment in the course, reads the target student's submission
+    record for the new assignment, and posts a grade plus an optional comment to
+    that submission.
+  inputs:
+    type: object
+    required:
+    - courseId
+    - name
+    - pointsPossible
+    - userId
+    - postedGrade
+    properties:
+      courseId:
+        type: string
+        description: The Canvas course id.
+      name:
+        type: string
+        description: The name of the assignment to create.
+      pointsPossible:
+        type: number
+        description: The maximum number of points the assignment is worth.
+      userId:
+        type: string
+        description: The Canvas user id of the student whose submission will be graded.
+      postedGrade:
+        type: string
+        description: The grade to post (points, percent, or letter depending on grading_type).
+      textComment:
+        type: string
+        description: Optional feedback comment to attach to the submission.
+  steps:
+  - stepId: createAssignment
+    description: >-
+      Create the assignment in the course with the supplied name and point
+      value.
+    operationId: createAssignment
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    requestBody:
+      contentType: application/json
+      payload:
+        assignment:
+          name: $inputs.name
+          points_possible: $inputs.pointsPossible
+          submission_types:
+          - online_text_entry
+          published: true
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      assignmentId: $response.body#/id
+  - stepId: getSubmission
+    description: >-
+      Read the target student's submission record for the newly created
+      assignment.
+    operationId: getSubmission
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: assignment_id
+      in: path
+      value: $steps.createAssignment.outputs.assignmentId
+    - name: user_id
+      in: path
+      value: $inputs.userId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      submissionUserId: $response.body#/user_id
+      workflowState: $response.body#/workflow_state
+  - stepId: gradeSubmission
+    description: >-
+      Post the supplied grade and optional feedback comment to the student's
+      submission.
+    operationId: gradeSubmission
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: assignment_id
+      in: path
+      value: $steps.createAssignment.outputs.assignmentId
+    - name: user_id
+      in: path
+      value: $inputs.userId
+    requestBody:
+      contentType: application/json
+      payload:
+        submission:
+          posted_grade: $inputs.postedGrade
+        comment:
+          text_comment: $inputs.textComment
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      grade: $response.body#/grade
+      score: $response.body#/score
+      gradedState: $response.body#/workflow_state
+  outputs:
+    assignmentId: $steps.createAssignment.outputs.assignmentId
+    grade: $steps.gradeSubmission.outputs.grade
+    score: $steps.gradeSubmission.outputs.score

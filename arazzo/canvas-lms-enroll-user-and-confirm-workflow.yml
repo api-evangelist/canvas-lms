@@ -1,0 +1,96 @@
+arazzo: 1.0.1
+info:
+  title: Canvas LMS Enroll User and Confirm
+  summary: Enroll a user in a course and confirm the enrollment appears in the course roster.
+  description: >-
+    A core roster-management flow for Canvas. The workflow confirms the target
+    course exists, enrolls the supplied user with the requested enrollment type
+    and state, and then lists the course enrollments to confirm the new
+    enrollment is present. Every step spells out its request inline so the flow
+    can be read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: canvasApi
+  url: ../openapi/canvas-lms-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: enroll-user-and-confirm
+  summary: Enroll a user in a course and verify the enrollment exists.
+  description: >-
+    Resolves the course, creates an enrollment for the supplied user with the
+    chosen type and state, and reads the created enrollment back to confirm it
+    was stored.
+  inputs:
+    type: object
+    required:
+    - courseId
+    - userId
+    - enrollmentType
+    properties:
+      courseId:
+        type: string
+        description: The Canvas course id to enroll the user into.
+      userId:
+        type: string
+        description: The Canvas user id to enroll.
+      enrollmentType:
+        type: string
+        description: The enrollment type (StudentEnrollment, TeacherEnrollment, TaEnrollment, DesignerEnrollment, ObserverEnrollment).
+      enrollmentState:
+        type: string
+        description: The desired enrollment state (e.g. active or invited).
+      courseSectionId:
+        type: integer
+        description: Optional section id to enroll the user into a specific section.
+  steps:
+  - stepId: resolveCourse
+    description: >-
+      Read the target course to confirm it exists before enrolling a user.
+    operationId: getCourse
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      courseId: $response.body#/id
+  - stepId: enrollUser
+    description: >-
+      Enroll the supplied user in the course with the requested enrollment type
+      and state.
+    operationId: enrollUser
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    requestBody:
+      contentType: application/json
+      payload:
+        enrollment:
+          user_id: $inputs.userId
+          type: $inputs.enrollmentType
+          enrollment_state: $inputs.enrollmentState
+          course_section_id: $inputs.courseSectionId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      enrollmentId: $response.body#/id
+      enrollmentState: $response.body#/enrollment_state
+      userId: $response.body#/user_id
+  - stepId: confirmEnrollment
+    description: >-
+      List the course enrollments to confirm the newly created enrollment is
+      present in the roster.
+    operationId: listCourseEnrollments
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      firstEnrollmentId: $response.body#/0/id
+  outputs:
+    enrollmentId: $steps.enrollUser.outputs.enrollmentId
+    enrollmentState: $steps.enrollUser.outputs.enrollmentState

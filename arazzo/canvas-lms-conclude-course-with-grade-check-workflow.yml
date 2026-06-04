@@ -1,0 +1,81 @@
+arazzo: 1.0.1
+info:
+  title: Canvas LMS Conclude Course After Grade Check
+  summary: List a course's enrollments with grades, then conclude the course.
+  description: >-
+    An end-of-term flow for Canvas. The workflow lists the course enrollments to
+    review final grades, confirms the course exists, and then concludes the
+    course (a reversible close that preserves data, as opposed to a destructive
+    delete). Every step spells out its request inline so the flow can be read and
+    executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: canvasApi
+  url: ../openapi/canvas-lms-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: conclude-course-with-grade-check
+  summary: Review enrollment grades then conclude the course.
+  description: >-
+    Reads the course, lists its active enrollments to capture final grades, and
+    concludes the course.
+  inputs:
+    type: object
+    required:
+    - courseId
+    properties:
+      courseId:
+        type: string
+        description: The Canvas course id to conclude.
+  steps:
+  - stepId: getCourse
+    description: >-
+      Read the course to confirm it exists before concluding it.
+    operationId: getCourse
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      courseId: $response.body#/id
+      workflowState: $response.body#/workflow_state
+  - stepId: listEnrollments
+    description: >-
+      List the course's active enrollments to review final grades before
+      concluding.
+    operationId: listCourseEnrollments
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: state[]
+      in: query
+      value:
+      - active
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      firstEnrollmentId: $response.body#/0/id
+      firstFinalGrade: $response.body#/0/grades/final_grade
+  - stepId: concludeCourse
+    description: >-
+      Conclude the course using the delete endpoint with event=conclude, a
+      reversible close that preserves course data.
+    operationId: deleteCourse
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: event
+      in: query
+      value: conclude
+    successCriteria:
+    - condition: $statusCode == 200
+    - condition: $response.body#/conclude == true
+    outputs:
+      concluded: $response.body#/conclude
+  outputs:
+    courseId: $steps.getCourse.outputs.courseId
+    concluded: $steps.concludeCourse.outputs.concluded

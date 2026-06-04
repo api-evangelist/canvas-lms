@@ -1,0 +1,131 @@
+arazzo: 1.0.1
+info:
+  title: Canvas LMS Excuse or Grade a Submission
+  summary: Read a submission and branch — excuse it when not submitted, otherwise post a grade.
+  description: >-
+    A grading-decision flow for Canvas. The workflow reads a student's
+    submission for an assignment and then branches on its workflow state: when
+    the student has not submitted, it excuses the submission so it is omitted from
+    grade calculation; when the student has submitted, it posts a grade. Every
+    step spells out its request inline so the flow can be read and executed
+    without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: canvasApi
+  url: ../openapi/canvas-lms-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: excuse-or-grade-submission
+  summary: Grade a submitted student or excuse a non-submitter.
+  description: >-
+    Reads the submission, and branches to excuse it when its workflow_state is
+    unsubmitted or to post a grade when the student has submitted.
+  inputs:
+    type: object
+    required:
+    - courseId
+    - assignmentId
+    - userId
+    - postedGrade
+    properties:
+      courseId:
+        type: string
+        description: The Canvas course id.
+      assignmentId:
+        type: string
+        description: The Canvas assignment id.
+      userId:
+        type: string
+        description: The Canvas user id of the student.
+      postedGrade:
+        type: string
+        description: The grade to post when the student has submitted.
+  steps:
+  - stepId: readSubmission
+    description: >-
+      Read the student's submission to determine whether they have submitted.
+    operationId: getSubmission
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: assignment_id
+      in: path
+      value: $inputs.assignmentId
+    - name: user_id
+      in: path
+      value: $inputs.userId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      workflowState: $response.body#/workflow_state
+    onSuccess:
+    - name: notSubmitted
+      type: goto
+      stepId: excuseSubmission
+      criteria:
+      - context: $response.body
+        condition: $.workflow_state == "unsubmitted"
+        type: jsonpath
+    - name: submitted
+      type: goto
+      stepId: gradeSubmission
+      criteria:
+      - context: $response.body
+        condition: $.workflow_state != "unsubmitted"
+        type: jsonpath
+  - stepId: excuseSubmission
+    description: >-
+      Excuse the submission so it is omitted from grade calculations when the
+      student has not submitted.
+    operationId: gradeSubmission
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: assignment_id
+      in: path
+      value: $inputs.assignmentId
+    - name: user_id
+      in: path
+      value: $inputs.userId
+    requestBody:
+      contentType: application/json
+      payload:
+        submission:
+          excuse: true
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      excused: $response.body#/excused
+    onSuccess:
+    - name: done
+      type: end
+  - stepId: gradeSubmission
+    description: >-
+      Post the supplied grade to the student's submission when they have
+      submitted work.
+    operationId: gradeSubmission
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: assignment_id
+      in: path
+      value: $inputs.assignmentId
+    - name: user_id
+      in: path
+      value: $inputs.userId
+    requestBody:
+      contentType: application/json
+      payload:
+        submission:
+          posted_grade: $inputs.postedGrade
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      grade: $response.body#/grade
+      score: $response.body#/score
+  outputs:
+    excused: $steps.excuseSubmission.outputs.excused
+    grade: $steps.gradeSubmission.outputs.grade

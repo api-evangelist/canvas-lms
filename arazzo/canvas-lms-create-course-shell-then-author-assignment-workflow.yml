@@ -1,0 +1,114 @@
+arazzo: 1.0.1
+info:
+  title: Canvas LMS Configure Course Then Author Assignment
+  summary: Update a course's settings, then create its first assignment, and read it back.
+  description: >-
+    A course-setup flow for Canvas. Because the covered REST surface does not
+    expose a create-course operation, this workflow adapts the "stand up a new
+    course shell" theme to the supported update-then-author pattern: it updates
+    an existing (often freshly created, unpublished) course with name and
+    syllabus settings, creates the course's first assignment, and re-reads that
+    assignment to confirm it persisted. Every step spells out its request inline
+    so the flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: canvasApi
+  url: ../openapi/canvas-lms-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: configure-course-then-author-assignment
+  summary: Configure a course's settings and author its first assignment.
+  description: >-
+    Updates an existing course's name and default view, creates an assignment in
+    it, and reads the assignment back to confirm it was stored.
+  inputs:
+    type: object
+    required:
+    - courseId
+    - courseName
+    - assignmentName
+    properties:
+      courseId:
+        type: string
+        description: The Canvas course id to configure.
+      courseName:
+        type: string
+        description: The display name to set on the course.
+      defaultView:
+        type: string
+        description: The course default view (feed, wiki, modules, assignments, or syllabus).
+      syllabusBody:
+        type: string
+        description: Optional HTML syllabus body for the course.
+      assignmentName:
+        type: string
+        description: The name of the first assignment to create.
+      pointsPossible:
+        type: number
+        description: The maximum points for the first assignment.
+  steps:
+  - stepId: configureCourse
+    description: >-
+      Update the course name, default view, and syllabus to prepare the course
+      shell.
+    operationId: updateCourse
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    requestBody:
+      contentType: application/json
+      payload:
+        course:
+          name: $inputs.courseName
+          default_view: $inputs.defaultView
+          syllabus_body: $inputs.syllabusBody
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      courseId: $response.body#/id
+      courseName: $response.body#/name
+      workflowState: $response.body#/workflow_state
+  - stepId: createFirstAssignment
+    description: >-
+      Create the course's first assignment with the supplied name and point
+      value.
+    operationId: createAssignment
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    requestBody:
+      contentType: application/json
+      payload:
+        assignment:
+          name: $inputs.assignmentName
+          points_possible: $inputs.pointsPossible
+          submission_types:
+          - online_text_entry
+          published: true
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      assignmentId: $response.body#/id
+  - stepId: confirmAssignment
+    description: >-
+      Re-fetch the new assignment to confirm it persisted inside the configured
+      course.
+    operationId: getAssignment
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: assignment_id
+      in: path
+      value: $steps.createFirstAssignment.outputs.assignmentId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      assignmentId: $response.body#/id
+      assignmentName: $response.body#/name
+  outputs:
+    courseId: $steps.configureCourse.outputs.courseId
+    assignmentId: $steps.confirmAssignment.outputs.assignmentId

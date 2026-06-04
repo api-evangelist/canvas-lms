@@ -1,0 +1,102 @@
+arazzo: 1.0.1
+info:
+  title: Canvas LMS Enroll Teacher Then Author Assignment
+  summary: Enroll a teacher in a course, then create the course's first assignment.
+  description: >-
+    A course-staffing flow for Canvas. The workflow enrolls a user as a teacher
+    in a course, confirms the enrollment is active, and then authors a first
+    assignment in that course so the new teacher has content to work with. Every
+    step spells out its request inline so the flow can be read and executed
+    without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: canvasApi
+  url: ../openapi/canvas-lms-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: enroll-teacher-then-author-assignment
+  summary: Add a teacher to a course and create its first assignment.
+  description: >-
+    Creates a TeacherEnrollment for the supplied user, confirms it, and creates
+    an assignment in the course.
+  inputs:
+    type: object
+    required:
+    - courseId
+    - teacherUserId
+    - assignmentName
+    - pointsPossible
+    properties:
+      courseId:
+        type: string
+        description: The Canvas course id.
+      teacherUserId:
+        type: string
+        description: The Canvas user id to enroll as a teacher.
+      assignmentName:
+        type: string
+        description: The name of the assignment to create.
+      pointsPossible:
+        type: number
+        description: The maximum points for the assignment.
+  steps:
+  - stepId: enrollTeacher
+    description: >-
+      Enroll the supplied user as a teacher in the course with an active state.
+    operationId: enrollUser
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    requestBody:
+      contentType: application/json
+      payload:
+        enrollment:
+          user_id: $inputs.teacherUserId
+          type: TeacherEnrollment
+          enrollment_state: active
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      enrollmentId: $response.body#/id
+      enrollmentType: $response.body#/type
+  - stepId: confirmTeacher
+    description: >-
+      List the course teachers to confirm the new teacher enrollment is present.
+    operationId: listCourseUsers
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: enrollment_type[]
+      in: query
+      value:
+      - teacher
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      firstTeacherId: $response.body#/0/id
+  - stepId: authorAssignment
+    description: >-
+      Create the course's first assignment so the teacher has content to manage.
+    operationId: createAssignment
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    requestBody:
+      contentType: application/json
+      payload:
+        assignment:
+          name: $inputs.assignmentName
+          points_possible: $inputs.pointsPossible
+          submission_types:
+          - online_text_entry
+          published: false
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      assignmentId: $response.body#/id
+  outputs:
+    enrollmentId: $steps.enrollTeacher.outputs.enrollmentId
+    assignmentId: $steps.authorAssignment.outputs.assignmentId

@@ -1,0 +1,94 @@
+arazzo: 1.0.1
+info:
+  title: Canvas LMS Publish Assignment and List Submissions
+  summary: Publish a draft assignment, then list every submission for it.
+  description: >-
+    A grading-prep flow for Canvas. The workflow publishes (or re-saves) an
+    existing assignment so it becomes visible to students, confirms the published
+    state by reading the assignment back, and then lists every submission for the
+    assignment so a grader can begin marking work. Every step spells out its
+    request inline so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: canvasApi
+  url: ../openapi/canvas-lms-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: publish-assignment-and-list-submissions
+  summary: Publish an assignment and retrieve its submissions for grading.
+  description: >-
+    Updates an assignment to set its published flag and due date, re-reads it to
+    confirm publication, and lists the submissions for the assignment.
+  inputs:
+    type: object
+    required:
+    - courseId
+    - assignmentId
+    properties:
+      courseId:
+        type: string
+        description: The Canvas course id.
+      assignmentId:
+        type: string
+        description: The Canvas assignment id to publish.
+      dueAt:
+        type: string
+        description: Optional ISO8601 due date to set when publishing.
+  steps:
+  - stepId: publishAssignment
+    description: >-
+      Update the assignment to set published true and optionally set a due date.
+    operationId: updateAssignment
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: assignment_id
+      in: path
+      value: $inputs.assignmentId
+    requestBody:
+      contentType: application/json
+      payload:
+        assignment:
+          published: true
+          due_at: $inputs.dueAt
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      assignmentId: $response.body#/id
+      published: $response.body#/published
+  - stepId: confirmPublished
+    description: >-
+      Re-read the assignment to confirm it is now published.
+    operationId: getAssignment
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: assignment_id
+      in: path
+      value: $inputs.assignmentId
+    successCriteria:
+    - condition: $statusCode == 200
+    - condition: $response.body#/published == true
+    outputs:
+      published: $response.body#/published
+  - stepId: listSubmissions
+    description: >-
+      List every submission for the published assignment so it can be graded.
+    operationId: listSubmissions
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: assignment_id
+      in: path
+      value: $inputs.assignmentId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      firstSubmissionUserId: $response.body#/0/user_id
+  outputs:
+    assignmentId: $steps.publishAssignment.outputs.assignmentId
+    published: $steps.confirmPublished.outputs.published

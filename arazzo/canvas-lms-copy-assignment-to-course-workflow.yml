@@ -1,0 +1,102 @@
+arazzo: 1.0.1
+info:
+  title: Canvas LMS Copy Assignment to Another Course
+  summary: Read an assignment from a source course and recreate it in a target course.
+  description: >-
+    A cross-course reuse flow for Canvas. The workflow reads an existing
+    assignment from a source course, then recreates it in a target course using
+    the source assignment's name, description, point value, and submission types,
+    and finally reads the new assignment back to confirm the copy. Every step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: canvasApi
+  url: ../openapi/canvas-lms-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: copy-assignment-to-course
+  summary: Duplicate an assignment from one course into another.
+  description: >-
+    Reads the source assignment, creates a copy in the target course from its
+    fields, and reads the copy back to confirm it persisted.
+  inputs:
+    type: object
+    required:
+    - sourceCourseId
+    - sourceAssignmentId
+    - targetCourseId
+    properties:
+      sourceCourseId:
+        type: string
+        description: The Canvas course id to copy the assignment from.
+      sourceAssignmentId:
+        type: string
+        description: The Canvas assignment id to copy.
+      targetCourseId:
+        type: string
+        description: The Canvas course id to copy the assignment into.
+  steps:
+  - stepId: readSource
+    description: >-
+      Read the source assignment to capture its name, description, points, and
+      submission types.
+    operationId: getAssignment
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.sourceCourseId
+    - name: assignment_id
+      in: path
+      value: $inputs.sourceAssignmentId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      name: $response.body#/name
+      description: $response.body#/description
+      pointsPossible: $response.body#/points_possible
+      submissionTypes: $response.body#/submission_types
+      gradingType: $response.body#/grading_type
+  - stepId: createCopy
+    description: >-
+      Create the copied assignment in the target course using the source
+      assignment's fields.
+    operationId: createAssignment
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.targetCourseId
+    requestBody:
+      contentType: application/json
+      payload:
+        assignment:
+          name: $steps.readSource.outputs.name
+          description: $steps.readSource.outputs.description
+          points_possible: $steps.readSource.outputs.pointsPossible
+          submission_types: $steps.readSource.outputs.submissionTypes
+          grading_type: $steps.readSource.outputs.gradingType
+          published: false
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      newAssignmentId: $response.body#/id
+  - stepId: confirmCopy
+    description: >-
+      Read the copied assignment back from the target course to confirm it was
+      created.
+    operationId: getAssignment
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.targetCourseId
+    - name: assignment_id
+      in: path
+      value: $steps.createCopy.outputs.newAssignmentId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      newAssignmentId: $response.body#/id
+      name: $response.body#/name
+  outputs:
+    newAssignmentId: $steps.confirmCopy.outputs.newAssignmentId
+    name: $steps.confirmCopy.outputs.name

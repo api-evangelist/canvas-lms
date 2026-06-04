@@ -1,0 +1,116 @@
+arazzo: 1.0.1
+info:
+  title: Canvas LMS Extend Due Date Then Grade Late Submission
+  summary: Push an assignment's due date out, then grade a student's late submission.
+  description: >-
+    A late-work accommodation flow for Canvas. The workflow updates an
+    assignment's due date to extend the deadline, confirms the new date by
+    reading the assignment back, and then posts a grade to the student's
+    submission with the late policy status set so the gradebook reflects the
+    accommodation. Every step spells out its request inline so the flow can be
+    read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: canvasApi
+  url: ../openapi/canvas-lms-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: extend-due-date-and-grade
+  summary: Extend an assignment due date and grade a late submission.
+  description: >-
+    Updates the assignment due date, reads it back to confirm, and posts a grade
+    with a late policy status to the student's submission.
+  inputs:
+    type: object
+    required:
+    - courseId
+    - assignmentId
+    - userId
+    - newDueAt
+    - postedGrade
+    properties:
+      courseId:
+        type: string
+        description: The Canvas course id.
+      assignmentId:
+        type: string
+        description: The Canvas assignment id to update.
+      userId:
+        type: string
+        description: The Canvas user id of the student to grade.
+      newDueAt:
+        type: string
+        description: The new ISO8601 due date to set on the assignment.
+      postedGrade:
+        type: string
+        description: The grade to post to the student's late submission.
+      latePolicyStatus:
+        type: string
+        description: The late policy status to record (late, missing, none, or extended).
+  steps:
+  - stepId: extendDueDate
+    description: >-
+      Update the assignment to push its due date out to the supplied date.
+    operationId: updateAssignment
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: assignment_id
+      in: path
+      value: $inputs.assignmentId
+    requestBody:
+      contentType: application/json
+      payload:
+        assignment:
+          due_at: $inputs.newDueAt
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      assignmentId: $response.body#/id
+      dueAt: $response.body#/due_at
+  - stepId: confirmDueDate
+    description: >-
+      Re-read the assignment to confirm the new due date was applied.
+    operationId: getAssignment
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: assignment_id
+      in: path
+      value: $inputs.assignmentId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      dueAt: $response.body#/due_at
+  - stepId: gradeLateSubmission
+    description: >-
+      Post the grade to the student's submission and record the late policy
+      status so the gradebook reflects the accommodation.
+    operationId: gradeSubmission
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: assignment_id
+      in: path
+      value: $inputs.assignmentId
+    - name: user_id
+      in: path
+      value: $inputs.userId
+    requestBody:
+      contentType: application/json
+      payload:
+        submission:
+          posted_grade: $inputs.postedGrade
+          late_policy_status: $inputs.latePolicyStatus
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      grade: $response.body#/grade
+      latePolicyStatus: $response.body#/late_policy_status
+  outputs:
+    assignmentId: $steps.extendDueDate.outputs.assignmentId
+    dueAt: $steps.confirmDueDate.outputs.dueAt
+    grade: $steps.gradeLateSubmission.outputs.grade

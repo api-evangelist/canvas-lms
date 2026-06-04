@@ -1,0 +1,90 @@
+arazzo: 1.0.1
+info:
+  title: Canvas LMS Onboard Student to Course
+  summary: Validate a user, enroll them as a student, and confirm course membership.
+  description: >-
+    A student-onboarding flow for Canvas. The workflow reads the user record to
+    confirm the account exists, enrolls that user as a student in the target
+    course, and then lists the course users to confirm the student now appears on
+    the roster. Every step spells out its request inline so the flow can be read
+    and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: canvasApi
+  url: ../openapi/canvas-lms-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: onboard-student-to-course
+  summary: Verify a user then enroll them as a student and confirm membership.
+  description: >-
+    Reads the user, creates a StudentEnrollment in the course, and lists course
+    users to confirm the enrollment landed.
+  inputs:
+    type: object
+    required:
+    - courseId
+    - userId
+    properties:
+      courseId:
+        type: string
+        description: The Canvas course id to enroll the student into.
+      userId:
+        type: string
+        description: The Canvas user id of the student.
+      enrollmentState:
+        type: string
+        description: The enrollment state to apply, e.g. active or invited.
+  steps:
+  - stepId: getUser
+    description: >-
+      Read the user record to confirm the account exists before enrolling.
+    operationId: getUser
+    parameters:
+    - name: user_id
+      in: path
+      value: $inputs.userId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      userId: $response.body#/id
+      name: $response.body#/name
+  - stepId: enrollStudent
+    description: >-
+      Enroll the validated user as a student in the course.
+    operationId: enrollUser
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    requestBody:
+      contentType: application/json
+      payload:
+        enrollment:
+          user_id: $inputs.userId
+          type: StudentEnrollment
+          enrollment_state: $inputs.enrollmentState
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      enrollmentId: $response.body#/id
+      enrollmentState: $response.body#/enrollment_state
+  - stepId: confirmRoster
+    description: >-
+      List the course users filtered to students to confirm the newly enrolled
+      student appears on the roster.
+    operationId: listCourseUsers
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: enrollment_type[]
+      in: query
+      value:
+      - student
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      firstUserId: $response.body#/0/id
+  outputs:
+    enrollmentId: $steps.enrollStudent.outputs.enrollmentId
+    studentName: $steps.getUser.outputs.name

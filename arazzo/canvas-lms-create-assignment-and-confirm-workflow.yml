@@ -1,0 +1,115 @@
+arazzo: 1.0.1
+info:
+  title: Canvas LMS Create Assignment and Confirm
+  summary: Verify a course exists, create an assignment in it, then fetch the assignment back.
+  description: >-
+    A foundational authoring flow for Canvas. The workflow first reads the target
+    course to confirm it exists and is writable, then creates a new assignment
+    inside that course, and finally re-fetches the created assignment by id to
+    confirm it was persisted with the expected name and point value. Every step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: canvasApi
+  url: ../openapi/canvas-lms-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: create-assignment-and-confirm
+  summary: Create an assignment in an existing course and confirm it was stored.
+  description: >-
+    Resolves the course, creates an assignment with the supplied name, point
+    value, due date, and submission types, and reads the new assignment back to
+    verify it persisted.
+  inputs:
+    type: object
+    required:
+    - courseId
+    - name
+    - pointsPossible
+    properties:
+      courseId:
+        type: string
+        description: The Canvas course id (or sis_course_id prefixed id) to create the assignment in.
+      name:
+        type: string
+        description: The name of the assignment.
+      description:
+        type: string
+        description: Optional HTML description / instructions for the assignment.
+      pointsPossible:
+        type: number
+        description: The maximum number of points the assignment is worth.
+      dueAt:
+        type: string
+        description: Optional ISO8601 due date for the assignment.
+      submissionTypes:
+        type: array
+        items:
+          type: string
+        description: The accepted submission types (e.g. online_text_entry, online_upload).
+      published:
+        type: boolean
+        description: Whether to publish the assignment immediately.
+  steps:
+  - stepId: resolveCourse
+    description: >-
+      Read the target course to confirm it exists and is available before
+      writing an assignment into it.
+    operationId: getCourse
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      courseId: $response.body#/id
+      workflowState: $response.body#/workflow_state
+  - stepId: createAssignment
+    description: >-
+      Create the assignment in the course using the supplied name, points, due
+      date, and submission types.
+    operationId: createAssignment
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    requestBody:
+      contentType: application/json
+      payload:
+        assignment:
+          name: $inputs.name
+          description: $inputs.description
+          points_possible: $inputs.pointsPossible
+          due_at: $inputs.dueAt
+          submission_types: $inputs.submissionTypes
+          published: $inputs.published
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      assignmentId: $response.body#/id
+      assignmentName: $response.body#/name
+  - stepId: confirmAssignment
+    description: >-
+      Re-fetch the created assignment by id to confirm it persisted with the
+      expected name and point value.
+    operationId: getAssignment
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: assignment_id
+      in: path
+      value: $steps.createAssignment.outputs.assignmentId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      assignmentId: $response.body#/id
+      name: $response.body#/name
+      pointsPossible: $response.body#/points_possible
+      published: $response.body#/published
+  outputs:
+    assignmentId: $steps.confirmAssignment.outputs.assignmentId
+    assignmentName: $steps.confirmAssignment.outputs.name
+    pointsPossible: $steps.confirmAssignment.outputs.pointsPossible

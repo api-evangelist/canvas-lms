@@ -1,0 +1,108 @@
+arazzo: 1.0.1
+info:
+  title: Canvas LMS Grade a Student by Section Enrollment
+  summary: Find a student via course section enrollments, then grade their assignment.
+  description: >-
+    A section-scoped grading flow for Canvas. Because the covered REST surface
+    does not expose a create-section operation, this workflow adapts the
+    "create section then enroll" theme to a supported pattern: it lists the
+    course's student enrollments (which carry the course_section_id), recovers a
+    student in the desired section, reads that student's submission for an
+    assignment, and posts a grade. Every step spells out its request inline so
+    the flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: canvasApi
+  url: ../openapi/canvas-lms-rest-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: section-roster-and-grade
+  summary: Resolve a section student from enrollments and grade their submission.
+  description: >-
+    Lists active student enrollments to recover a user and their section, reads
+    that user's submission for the assignment, and posts a grade.
+  inputs:
+    type: object
+    required:
+    - courseId
+    - assignmentId
+    - postedGrade
+    properties:
+      courseId:
+        type: string
+        description: The Canvas course id.
+      assignmentId:
+        type: string
+        description: The Canvas assignment id to grade.
+      postedGrade:
+        type: string
+        description: The grade to post.
+  steps:
+  - stepId: listSectionEnrollments
+    description: >-
+      List the course's active student enrollments, which include the
+      course_section_id, to recover a student to grade.
+    operationId: listCourseEnrollments
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: type[]
+      in: query
+      value:
+      - StudentEnrollment
+    - name: state[]
+      in: query
+      value:
+      - active
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      studentUserId: $response.body#/0/user_id
+      sectionId: $response.body#/0/course_section_id
+  - stepId: getSubmission
+    description: >-
+      Read the resolved student's submission for the assignment.
+    operationId: getSubmission
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: assignment_id
+      in: path
+      value: $inputs.assignmentId
+    - name: user_id
+      in: path
+      value: $steps.listSectionEnrollments.outputs.studentUserId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      submissionUserId: $response.body#/user_id
+  - stepId: gradeSubmission
+    description: >-
+      Post the grade to the section student's submission.
+    operationId: gradeSubmission
+    parameters:
+    - name: course_id
+      in: path
+      value: $inputs.courseId
+    - name: assignment_id
+      in: path
+      value: $inputs.assignmentId
+    - name: user_id
+      in: path
+      value: $steps.listSectionEnrollments.outputs.studentUserId
+    requestBody:
+      contentType: application/json
+      payload:
+        submission:
+          posted_grade: $inputs.postedGrade
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      grade: $response.body#/grade
+      score: $response.body#/score
+  outputs:
+    sectionId: $steps.listSectionEnrollments.outputs.sectionId
+    grade: $steps.gradeSubmission.outputs.grade
