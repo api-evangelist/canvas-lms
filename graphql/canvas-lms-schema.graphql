@@ -1,0 +1,1878 @@
+"""
+Canvas LMS GraphQL Schema
+Endpoint: https://<canvas-install-url>/api/graphql
+Explorer:  https://<canvas-install-url>/graphiql
+Docs:      https://canvas.instructure.com/doc/api/file.graphql.html
+
+Authentication: OAuth2 Bearer token (same developer keys as REST API).
+Permissions mirror the Canvas REST API permission model.
+
+This schema is derived from the Canvas LMS open-source data model
+(https://github.com/instructure/canvas-lms) and the published GraphQL
+documentation. Canvas also ships a live introspection endpoint on any
+self-hosted or Free-for-Teacher instance at /api/graphql.
+"""
+
+# ---------------------------------------------------------------------------
+# Scalars
+# ---------------------------------------------------------------------------
+
+"""ISO 8601 date-time string."""
+scalar DateTime
+
+"""An opaque global node ID (base64-encoded type:id)."""
+scalar ID
+
+"""A URL string."""
+scalar URL
+
+"""Arbitrary JSON blob."""
+scalar JSON
+
+# ---------------------------------------------------------------------------
+# Interfaces
+# ---------------------------------------------------------------------------
+
+"""Every top-level Canvas object implements Node for Relay-style ID lookup."""
+interface Node {
+  id: ID!
+}
+
+"""Objects that carry a creation and modification timestamp."""
+interface Timestamped {
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+# ---------------------------------------------------------------------------
+# Enums
+# ---------------------------------------------------------------------------
+
+enum WorkflowState {
+  active
+  deleted
+  unpublished
+  published
+  completed
+  concluded
+  pending
+  invited
+  creation_pending
+}
+
+enum EnrollmentType {
+  StudentEnrollment
+  TeacherEnrollment
+  TaEnrollment
+  DesignerEnrollment
+  ObserverEnrollment
+}
+
+enum SubmissionType {
+  online_text_entry
+  online_url
+  online_upload
+  media_recording
+  student_annotation
+  none
+  not_graded
+  on_paper
+  discussion_topic
+  external_tool
+}
+
+enum GradingType {
+  points
+  percent
+  letter_grade
+  gpa_scale
+  pass_fail
+  not_graded
+}
+
+enum DiscussionType {
+  side_comment
+  threaded
+}
+
+enum ModuleItemType {
+  Assignment
+  Quiz
+  File
+  Page
+  Discussion
+  ExternalUrl
+  ExternalTool
+  SubHeader
+}
+
+enum SubmissionStatus {
+  submitted
+  unsubmitted
+  graded
+  pending_review
+  excused
+  missing
+  late
+}
+
+enum OutcomeCalculationMethod {
+  decaying_average
+  n_mastery
+  latest
+  highest
+  average
+}
+
+enum AssignmentGroupWeightScheme {
+  percent
+  points
+}
+
+enum FileCategory {
+  image
+  video
+  audio
+  document
+  other
+}
+
+# ---------------------------------------------------------------------------
+# Core Types
+# ---------------------------------------------------------------------------
+
+"""
+A Canvas root account or sub-account.
+REST equivalent: GET /api/v1/accounts/:id
+"""
+type Account implements Node & Timestamped {
+  id: ID!
+  name: String!
+  sisId: String
+  integrationId: String
+  parentAccountId: ID
+  rootAccountId: ID!
+  workflowState: WorkflowState!
+  defaultTimeZone: String
+  subAccountCount: Int
+  courseCount: Int
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  parentAccount: Account
+  rootAccount: Account
+  subAccounts(first: Int, after: String): SubAccountConnection
+  courses(first: Int, after: String, state: [WorkflowState]): CourseConnection
+  users(first: Int, after: String): UserConnection
+  roles(first: Int, after: String): RoleConnection
+  terms(first: Int, after: String): TermConnection
+  externalTools(first: Int, after: String): ExternalToolConnection
+  groups(first: Int, after: String): GroupConnection
+  outcomes(first: Int, after: String): OutcomeConnection
+  outcomeGroups(first: Int, after: String): OutcomeGroupConnection
+  features: [FeatureFlag]
+}
+
+"""A sub-account within an account hierarchy."""
+type SubAccount implements Node & Timestamped {
+  id: ID!
+  name: String!
+  parentAccountId: ID!
+  rootAccountId: ID!
+  workflowState: WorkflowState!
+  sisId: String
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  parentAccount: Account
+  courses(first: Int, after: String): CourseConnection
+}
+
+"""
+A Canvas enrollment term (semester, quarter, academic year, etc.).
+REST equivalent: GET /api/v1/accounts/:account_id/terms/:id
+"""
+type Term implements Node & Timestamped {
+  id: ID!
+  name: String!
+  sisTermId: String
+  startAt: DateTime
+  endAt: DateTime
+  workflowState: WorkflowState!
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  courses(first: Int, after: String): CourseConnection
+}
+
+"""
+A Canvas course (the primary learning container).
+REST equivalent: GET /api/v1/courses/:id
+"""
+type Course implements Node & Timestamped {
+  id: ID!
+  name: String!
+  courseCode: String
+  sisCourseId: String
+  integrationId: String
+  accountId: ID!
+  rootAccountId: ID!
+  enrollmentTermId: ID
+  workflowState: WorkflowState!
+  defaultView: String
+  syllabuBody: String
+  startAt: DateTime
+  endAt: DateTime
+  locale: String
+  timeZone: String
+  isPublic: Boolean
+  isPublicSyllabus: Boolean
+  restrictEnrollmentsToCourseDates: Boolean
+  hideDistributionGraphs: Boolean
+  allowStudentDiscussionTopics: Boolean
+  allowStudentForumAttachments: Boolean
+  allowStudentDiscussionEditing: Boolean
+  allowStudentOrganizedGroups: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  account: Account
+  term: Term
+  sections(first: Int, after: String): SectionConnection
+  enrollments(first: Int, after: String, type: [EnrollmentType]): EnrollmentConnection
+  assignments(first: Int, after: String, orderBy: [AssignmentOrderField]): AssignmentConnection
+  assignmentGroups(first: Int, after: String): AssignmentGroupConnection
+  submissions(first: Int, after: String, studentIds: [ID]): SubmissionConnection
+  discussionTopics(first: Int, after: String): DiscussionConnection
+  announcements(first: Int, after: String): AnnouncementConnection
+  modules(first: Int, after: String): ModuleConnection
+  files(first: Int, after: String): FileConnection
+  folders(first: Int, after: String): FolderConnection
+  pages(first: Int, after: String): ContentPageConnection
+  groups(first: Int, after: String): GroupConnection
+  groupCategories(first: Int, after: String): GroupCategoryConnection
+  quizzes(first: Int, after: String): QuizConnection
+  rubrics(first: Int, after: String): RubricConnection
+  outcomes(first: Int, after: String): OutcomeConnection
+  outcomeGroups(first: Int, after: String): OutcomeGroupConnection
+  gradingPeriods(first: Int, after: String): GradingPeriodConnection
+  gradingStandards(first: Int, after: String): GradingStandardConnection
+  calendarEvents(first: Int, after: String): CalendarEventConnection
+  externalTools(first: Int, after: String): ExternalToolConnection
+  collaborations(first: Int, after: String): CollaborationConnection
+  contentMigrations(first: Int, after: String): ContentMigrationConnection
+  sisImports(first: Int, after: String): SISImportConnection
+  permissions: CoursePermissions
+}
+
+"""Resolved permissions for the current user in a course context."""
+type CoursePermissions {
+  readAsSiteAdmin: Boolean
+  manageGrades: Boolean
+  manageAssignments: Boolean
+  manageWiki: Boolean
+  manageFiles: Boolean
+  manageGroups: Boolean
+  manageCalendar: Boolean
+  manageCourseContent: Boolean
+  sendMessages: Boolean
+  viewAnalytics: Boolean
+}
+
+"""
+A course section (roster sub-group within a course).
+REST equivalent: GET /api/v1/courses/:course_id/sections/:id
+"""
+type Section implements Node & Timestamped {
+  id: ID!
+  name: String!
+  sisSectionId: String
+  integrationId: String
+  courseId: ID!
+  nonXlistCourseId: ID
+  startAt: DateTime
+  endAt: DateTime
+  restrictEnrollmentsToSectionDates: Boolean
+  workflowState: WorkflowState!
+  defaultSection: Boolean
+  enrollmentCount: Int
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  course: Course
+  enrollments(first: Int, after: String): EnrollmentConnection
+}
+
+"""
+A Canvas user account.
+REST equivalent: GET /api/v1/users/:id
+"""
+type User implements Node & Timestamped {
+  id: ID!
+  name: String!
+  sortableName: String
+  shortName: String
+  sisUserId: String
+  integrationId: String
+  loginId: String
+  email: String
+  locale: String
+  timeZone: String
+  bio: String
+  avatarUrl: URL
+  workflowState: WorkflowState!
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  profile: UserProfile
+  enrollments(first: Int, after: String, courseId: ID): EnrollmentConnection
+  groupMemberships(first: Int, after: String): GroupMembershipConnection
+  submissions(first: Int, after: String): SubmissionConnection
+  todos(first: Int, after: String): TodoConnection
+  calendarEvents(first: Int, after: String): CalendarEventConnection
+  roles(first: Int, after: String): RoleConnection
+}
+
+"""Extended profile data for a user."""
+type UserProfile implements Node {
+  id: ID!
+  userId: ID!
+  bio: String
+  title: String
+  pronouns: String
+  avatarUrl: URL
+  primaryEmail: String
+  loginId: String
+  sisId: String
+  timeZone: String
+  locale: String
+
+  user: User
+}
+
+"""
+An enrollment linking a user to a course in a given role.
+REST equivalent: GET /api/v1/courses/:course_id/enrollments/:id
+"""
+type Enrollment implements Node & Timestamped {
+  id: ID!
+  courseId: ID!
+  userId: ID!
+  sectionId: ID
+  type: EnrollmentType!
+  workflowState: WorkflowState!
+  role: String
+  roleId: ID
+  associatedUserId: ID
+  limitPrivilegesToCourseSection: Boolean
+  selfEnrolled: Boolean
+  lastActivityAt: DateTime
+  totalActivityTime: Int
+  grades: Grade
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  course: Course
+  user: User
+  section: Section
+}
+
+"""Grade summary for an enrollment."""
+type Grade {
+  htmlUrl: URL
+  currentScore: Float
+  currentGrade: String
+  finalScore: Float
+  finalGrade: String
+  overrideScore: Float
+  overrideGrade: String
+  unpostedCurrentScore: Float
+  unpostedCurrentGrade: String
+  unpostedFinalScore: Float
+  unpostedFinalGrade: String
+}
+
+# ---------------------------------------------------------------------------
+# Assignments & Submissions
+# ---------------------------------------------------------------------------
+
+"""Field to order assignments by."""
+enum AssignmentOrderField {
+  due_at
+  position
+  name
+  created_at
+  updated_at
+}
+
+"""
+A Canvas assignment.
+REST equivalent: GET /api/v1/courses/:course_id/assignments/:id
+"""
+type Assignment implements Node & Timestamped {
+  id: ID!
+  courseId: ID!
+  assignmentGroupId: ID
+  name: String!
+  description: String
+  dueAt: DateTime
+  lockAt: DateTime
+  unlockAt: DateTime
+  pointsPossible: Float
+  gradingType: GradingType!
+  submissionTypes: [SubmissionType]
+  position: Int
+  published: Boolean!
+  workflowState: WorkflowState!
+  allowedExtensions: [String]
+  allowedAttempts: Int
+  maxNameLength: Int
+  gradeGroupStudentsIndividually: Boolean
+  anonymousGrading: Boolean
+  anonymousInstructorAnnotations: Boolean
+  omitFromFinalGrade: Boolean
+  moderatedGrading: Boolean
+  peerReviews: Boolean
+  automaticPeerReviews: Boolean
+  peerReviewCount: Int
+  groupCategoryId: ID
+  externalToolTagAttributes: ExternalToolTagAttributes
+  rubricId: ID
+  rubricSettings: RubricSettings
+  htmlUrl: URL
+  submissionsDownloadUrl: URL
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  course: Course
+  assignmentGroup: AssignmentGroup
+  rubric: Rubric
+  submissions(first: Int, after: String, studentIds: [ID]): SubmissionConnection
+  overrides(first: Int, after: String): AssignmentOverrideConnection
+  outcomes(first: Int, after: String): OutcomeConnection
+}
+
+"""Settings reference linking an assignment to an external tool."""
+type ExternalToolTagAttributes {
+  url: URL
+  resourceLinkId: String
+  newTab: Boolean
+}
+
+"""Inline rubric configuration on an assignment."""
+type RubricSettings {
+  pointsPossible: Float
+  freeFormCriterionComments: Boolean
+  hideScoreTotal: Boolean
+  useRubricForGrading: Boolean
+}
+
+"""
+Differentiates assignment availability for specific users, sections, or groups.
+REST equivalent: GET /api/v1/courses/:course_id/assignments/:assignment_id/overrides/:id
+"""
+type AssignmentOverride implements Node {
+  id: ID!
+  assignmentId: ID!
+  title: String
+  studentIds: [ID]
+  groupId: ID
+  courseSectionId: ID
+  dueAt: DateTime
+  unlockAt: DateTime
+  lockAt: DateTime
+  allDay: Boolean
+  allDayDate: DateTime
+
+  assignment: Assignment
+  students: [User]
+  group: Group
+  section: Section
+}
+
+"""
+A grouping of assignments within a course for weighting purposes.
+REST equivalent: GET /api/v1/courses/:course_id/assignment_groups/:id
+"""
+type AssignmentGroup implements Node & Timestamped {
+  id: ID!
+  courseId: ID!
+  name: String!
+  position: Int
+  groupWeight: Float
+  rules: AssignmentGroupRules
+  sisSourceId: String
+  integrationData: JSON
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  course: Course
+  assignments(first: Int, after: String): AssignmentConnection
+}
+
+"""Drop rules applied when computing weighted group scores."""
+type AssignmentGroupRules {
+  dropLowest: Int
+  dropHighest: Int
+  neverDrop: [ID]
+}
+
+"""
+A student submission for an assignment.
+REST equivalent: GET /api/v1/courses/:course_id/assignments/:assignment_id/submissions/:user_id
+"""
+type Submission implements Node & Timestamped {
+  id: ID!
+  assignmentId: ID!
+  userId: ID!
+  courseId: ID!
+  attempt: Int
+  body: String
+  url: URL
+  submissionType: SubmissionType
+  workflowState: WorkflowState!
+  submittedAt: DateTime
+  gradedAt: DateTime
+  graderId: ID
+  score: Float
+  grade: String
+  late: Boolean
+  missing: Boolean
+  excused: Boolean
+  gradeMatchesCurrentSubmission: Boolean
+  previewUrl: URL
+  attachments: [File]
+  mediaComment: Media
+  rubricAssessment: RubricAssessment
+  latePolicyStatus: String
+  pointsDeducted: Float
+  postedAt: DateTime
+  cachedDueDate: DateTime
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  assignment: Assignment
+  user: User
+  course: Course
+  submissionHistory(first: Int, after: String): SubmissionHistoryConnection
+  comments(first: Int, after: String): SubmissionCommentConnection
+}
+
+"""A historical version of a submission (re-submission)."""
+type SubmissionHistory implements Node {
+  id: ID!
+  submissionId: ID!
+  attempt: Int!
+  body: String
+  url: URL
+  submissionType: SubmissionType
+  submittedAt: DateTime
+  score: Float
+  grade: String
+  gradedAt: DateTime
+  attachments: [File]
+}
+
+"""A comment thread entry on a submission."""
+type SubmissionComment implements Node & Timestamped {
+  id: ID!
+  submissionId: ID!
+  authorId: ID!
+  comment: String!
+  mediaCommentId: String
+  mediaCommentType: String
+  groupCommentId: String
+  hidden: Boolean
+  draft: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  author: User
+  submission: Submission
+  attachments: [File]
+  mediaObject: Media
+}
+
+# ---------------------------------------------------------------------------
+# Rubrics
+# ---------------------------------------------------------------------------
+
+"""
+A rubric template used to assess assignments.
+REST equivalent: GET /api/v1/courses/:course_id/rubrics/:id
+"""
+type Rubric implements Node & Timestamped {
+  id: ID!
+  courseId: ID
+  accountId: ID
+  title: String!
+  description: String
+  pointsPossible: Float
+  reusable: Boolean
+  readOnly: Boolean
+  freeFormCriterionComments: Boolean
+  hideScoreTotal: Boolean
+  workflowState: WorkflowState!
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  criteria: [RubricCriterion]
+  associations(first: Int, after: String): RubricAssociationConnection
+}
+
+"""A single criterion row within a rubric."""
+type RubricCriterion {
+  id: ID!
+  description: String!
+  longDescription: String
+  pointsPossible: Float
+  ignoreForScoring: Boolean
+  masteryPoints: Float
+  criterionUseRange: Boolean
+  learningOutcomeId: ID
+  ratings: [RubricRating]
+}
+
+"""A rating level within a rubric criterion."""
+type RubricRating {
+  id: ID!
+  description: String!
+  longDescription: String
+  points: Float!
+}
+
+"""
+Links a rubric to a specific assignment or other assessable object.
+REST equivalent: GET /api/v1/courses/:course_id/rubrics/:rubric_id/associations/:id
+"""
+type RubricAssociation implements Node & Timestamped {
+  id: ID!
+  rubricId: ID!
+  associationId: ID!
+  associationType: String!
+  useForGrading: Boolean
+  summaryData: String
+  purpose: String
+  hideScoreTotal: Boolean
+  hidePoints: Boolean
+  hideOutcomeResults: Boolean
+  bookmarked: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  rubric: Rubric
+}
+
+"""
+A completed rubric scoring event on a submission.
+REST equivalent: GET /api/v1/courses/:course_id/rubrics/:rubric_id/assessments/:id
+"""
+type RubricAssessment implements Node & Timestamped {
+  id: ID!
+  rubricId: ID!
+  rubricAssociationId: ID
+  userId: ID!
+  assessorId: ID!
+  artifactId: ID
+  artifactType: String
+  score: Float
+  assessmentType: String
+  data: [RubricCriterionAssessment]
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  rubric: Rubric
+  user: User
+  assessor: User
+}
+
+"""Score and comment for one criterion within a rubric assessment."""
+type RubricCriterionAssessment {
+  criterionId: ID!
+  points: Float
+  comments: String
+  commentsEnabled: Boolean
+  descriptionOfExcellence: String
+  description: String
+}
+
+# ---------------------------------------------------------------------------
+# Grading
+# ---------------------------------------------------------------------------
+
+"""
+A grading period (e.g., Quarter 1) within a grading period set.
+REST equivalent: GET /api/v1/courses/:course_id/grading_periods/:id
+"""
+type GradingPeriod implements Node & Timestamped {
+  id: ID!
+  title: String!
+  startDate: DateTime!
+  endDate: DateTime!
+  closeDate: DateTime
+  weight: Float
+  isClosed: Boolean
+  isLast: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+"""
+A grading standard (letter-grade scale).
+REST equivalent: GET /api/v1/courses/:course_id/grading_standards/:id
+"""
+type GradingStandard implements Node & Timestamped {
+  id: ID!
+  title: String!
+  contextType: String
+  contextId: ID
+  workflowState: WorkflowState!
+  data: [GradingSchemeEntry]
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+"""One row in a grading scheme (letter → minimum percentage)."""
+type GradingSchemeEntry {
+  name: String!
+  value: Float!
+}
+
+# ---------------------------------------------------------------------------
+# Quizzes
+# ---------------------------------------------------------------------------
+
+"""
+A Classic Quizzes quiz (engine: quizzes.next for New Quizzes).
+REST equivalent: GET /api/v1/courses/:course_id/quizzes/:id
+"""
+type Quiz implements Node & Timestamped {
+  id: ID!
+  courseId: ID!
+  assignmentId: ID
+  title: String!
+  description: String
+  quizType: String
+  timeLimit: Int
+  shuffleAnswers: Boolean
+  showCorrectAnswers: Boolean
+  showCorrectAnswersLastAttempt: Boolean
+  showCorrectAnswersAt: DateTime
+  hideCorrectAnswersAt: DateTime
+  allowedAttempts: Int
+  scoringPolicy: String
+  oneQuestionAtATime: Boolean
+  cantGoBack: Boolean
+  accessCode: String
+  ipFilter: String
+  pointsPossible: Float
+  questionCount: Int
+  lockAt: DateTime
+  unlockAt: DateTime
+  dueAt: DateTime
+  published: Boolean!
+  workflowState: WorkflowState!
+  htmlUrl: URL
+  mobileUrl: URL
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  course: Course
+  questions(first: Int, after: String): QuizQuestionConnection
+  submissions(first: Int, after: String): QuizSubmissionConnection
+}
+
+"""
+A question within a quiz.
+REST equivalent: GET /api/v1/courses/:course_id/quizzes/:quiz_id/questions/:id
+"""
+type QuizQuestion implements Node {
+  id: ID!
+  quizId: ID!
+  quizGroupId: ID
+  assessmentQuestionId: ID
+  position: Int
+  questionName: String
+  questionType: String!
+  questionText: String
+  pointsPossible: Float
+  answers: [QuizAnswer]
+  variables: JSON
+  formulas: JSON
+  answerTolerance: Float
+  formulaDecimalPlaces: Int
+  matchingAnswerIncorrectMatches: String
+  textAfterAnswers: String
+  correctComments: String
+  incorrectComments: String
+  neutralComments: String
+}
+
+"""A possible answer for a quiz question."""
+type QuizAnswer {
+  id: ID!
+  text: String
+  html: String
+  comments: String
+  commentsHtml: String
+  weight: Float
+  blank: String
+  blankId: String
+  matchId: ID
+  left: String
+  right: String
+}
+
+"""
+A student's quiz submission attempt.
+REST equivalent: GET /api/v1/courses/:course_id/quizzes/:quiz_id/submissions/:id
+"""
+type QuizSubmission implements Node & Timestamped {
+  id: ID!
+  quizId: ID!
+  userId: ID!
+  submissionId: ID
+  startedAt: DateTime
+  finishedAt: DateTime
+  endAt: DateTime
+  attempt: Int
+  score: Float
+  scoreBeforeRegrade: Float
+  keptScore: Float
+  fudgePoints: Float
+  extraAttempts: Int
+  extraTime: Int
+  manuallyUnlocked: Boolean
+  workflowState: WorkflowState!
+  timeSpent: Int
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  quiz: Quiz
+  user: User
+}
+
+# ---------------------------------------------------------------------------
+# Discussions & Announcements
+# ---------------------------------------------------------------------------
+
+"""
+A discussion topic in a course or group.
+REST equivalent: GET /api/v1/courses/:course_id/discussion_topics/:id
+"""
+type Discussion implements Node & Timestamped {
+  id: ID!
+  courseId: ID
+  groupId: ID
+  title: String!
+  message: String
+  discussionType: DiscussionType
+  requireInitialPost: Boolean
+  allowRating: Boolean
+  onlyGradersCanRate: Boolean
+  sortByRating: Boolean
+  published: Boolean!
+  locked: Boolean!
+  pinned: Boolean!
+  podcastEnabled: Boolean
+  podcastHasStudentPosts: Boolean
+  subscribed: Boolean
+  assignmentId: ID
+  delayedPostAt: DateTime
+  lockAt: DateTime
+  workflowState: WorkflowState!
+  htmlUrl: URL
+  postedAt: DateTime
+  lastReplyAt: DateTime
+  participantCount: Int
+  unreadCount: Int
+  discussionSubentryCount: Int
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  course: Course
+  assignment: Assignment
+  participants(first: Int, after: String): UserConnection
+  entries(first: Int, after: String): DiscussionEntryConnection
+  attachments: [File]
+}
+
+"""
+A reply entry within a discussion topic.
+REST equivalent: GET /api/v1/courses/:course_id/discussion_topics/:topic_id/entries/:id
+"""
+type DiscussionEntry implements Node & Timestamped {
+  id: ID!
+  discussionTopicId: ID!
+  userId: ID!
+  parentId: ID
+  message: String!
+  rating: Int
+  ratingCount: Int
+  unreadCount: Int
+  read: Boolean
+  forcedReadState: Boolean
+  deleted: Boolean
+  depth: Int
+  workflowState: WorkflowState!
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  discussionTopic: Discussion
+  user: User
+  parent: DiscussionEntry
+  replies(first: Int, after: String): DiscussionEntryConnection
+  attachments: [File]
+}
+
+"""
+An announcement (a locked discussion topic used for broadcasts).
+REST equivalent: GET /api/v1/courses/:course_id/discussion_topics/:id (is_announcement=true)
+"""
+type Announcement implements Node & Timestamped {
+  id: ID!
+  courseId: ID!
+  title: String!
+  message: String
+  published: Boolean!
+  locked: Boolean!
+  delayedPostAt: DateTime
+  postedAt: DateTime
+  workflowState: WorkflowState!
+  htmlUrl: URL
+  attachments: [File]
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  course: Course
+}
+
+# ---------------------------------------------------------------------------
+# Modules & Pages
+# ---------------------------------------------------------------------------
+
+"""
+A content module (sequential container of items).
+REST equivalent: GET /api/v1/courses/:course_id/modules/:id
+"""
+type Module implements Node & Timestamped {
+  id: ID!
+  courseId: ID!
+  name: String!
+  position: Int
+  prerequisiteModuleIds: [ID]
+  requireSequentialProgress: Boolean
+  publishFinalGrade: Boolean
+  published: Boolean!
+  workflowState: WorkflowState!
+  completionRequirements: [ModuleCompletionRequirement]
+  itemsCount: Int
+  itemsUrl: URL
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  course: Course
+  items(first: Int, after: String): ModuleItemConnection
+}
+
+"""Completion requirement rule for a module item."""
+type ModuleCompletionRequirement {
+  id: ID!
+  type: String!
+  minScore: Float
+  completedAt: DateTime
+}
+
+"""
+An item within a module (points to an Assignment, Quiz, Page, etc.).
+REST equivalent: GET /api/v1/courses/:course_id/modules/:module_id/items/:id
+"""
+type ModuleItem implements Node {
+  id: ID!
+  moduleId: ID!
+  title: String
+  position: Int
+  indent: Int
+  type: ModuleItemType!
+  contentId: ID
+  htmlUrl: URL
+  url: URL
+  pageUrl: String
+  externalUrl: URL
+  newTab: Boolean
+  published: Boolean
+  workflowState: WorkflowState!
+  completionRequirement: ModuleCompletionRequirement
+
+  module: Module
+  content: ModuleItemContent
+}
+
+"""Union of content types that can appear as a module item."""
+union ModuleItemContent = Assignment | Quiz | Discussion | ContentPage | File | ExternalTool
+
+"""
+A wiki page (Canvas Page).
+REST equivalent: GET /api/v1/courses/:course_id/pages/:url_or_id
+"""
+type ContentPage implements Node & Timestamped {
+  id: ID!
+  courseId: ID!
+  url: String!
+  title: String!
+  body: String
+  editingRoles: String
+  revisionsCount: Int
+  published: Boolean!
+  hideFromStudents: Boolean
+  frontPage: Boolean
+  workflowState: WorkflowState!
+  htmlUrl: URL
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  course: Course
+  editor: User
+}
+
+# ---------------------------------------------------------------------------
+# Files & Media
+# ---------------------------------------------------------------------------
+
+"""
+A Canvas file (attachment).
+REST equivalent: GET /api/v1/files/:id
+"""
+type File implements Node & Timestamped {
+  id: ID!
+  courseId: ID
+  folderId: ID
+  displayName: String!
+  filename: String!
+  contentType: String
+  size: Int
+  url: URL
+  thumbnailUrl: URL
+  previewUrl: URL
+  lockInfo: LockInfo
+  locked: Boolean
+  hidden: Boolean
+  lockedForUser: Boolean
+  hiddenForUser: Boolean
+  workflowState: WorkflowState!
+  category: FileCategory
+  createdAt: DateTime
+  updatedAt: DateTime
+  modifiedAt: DateTime
+
+  folder: Folder
+}
+
+"""
+A folder that contains Canvas files.
+REST equivalent: GET /api/v1/folders/:id
+"""
+type Folder implements Node & Timestamped {
+  id: ID!
+  courseId: ID
+  name: String!
+  fullName: String
+  parentFolderId: ID
+  position: Int
+  locked: Boolean
+  hidden: Boolean
+  lockedForUser: Boolean
+  hiddenForUser: Boolean
+  contextType: String
+  contextId: ID
+  filesCount: Int
+  foldersCount: Int
+  filesUrl: URL
+  foldersUrl: URL
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  parentFolder: Folder
+  subFolders(first: Int, after: String): FolderConnection
+  files(first: Int, after: String): FileConnection
+}
+
+"""Lock state information for a file or item."""
+type LockInfo {
+  isLocked: Boolean!
+  canView: Boolean
+  lockAt: DateTime
+  unlockAt: DateTime
+  modulePrerequisites: [Module]
+}
+
+"""
+A Canvas media object (video or audio recording).
+REST equivalent: GET /api/v1/media_objects/:media_object_id
+"""
+type Media implements Node {
+  id: ID!
+  mediaId: String!
+  mediaType: String
+  title: String
+  duration: Int
+  thumbnailUrl: URL
+  mediaTrackIds: [ID]
+  userId: ID
+  contextId: ID
+  contextType: String
+  createdAt: DateTime
+
+  user: User
+}
+
+# ---------------------------------------------------------------------------
+# Groups
+# ---------------------------------------------------------------------------
+
+"""
+A Canvas group (collaborative sub-team within a course or account).
+REST equivalent: GET /api/v1/groups/:id
+"""
+type Group implements Node & Timestamped {
+  id: ID!
+  name: String!
+  description: String
+  courseId: ID
+  accountId: ID
+  groupCategoryId: ID!
+  joinLevel: String
+  membersCount: Int
+  maxMembership: Int
+  isPublic: Boolean
+  sisSourceId: String
+  storageQuotaMb: Float
+  workflowState: WorkflowState!
+  avatarUrl: URL
+  htmlUrl: URL
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  course: Course
+  groupCategory: GroupCategory
+  members(first: Int, after: String): GroupMembershipConnection
+  discussionTopics(first: Int, after: String): DiscussionConnection
+  files(first: Int, after: String): FileConnection
+}
+
+"""
+A category that groups sets of groups (e.g., "Project Teams").
+REST equivalent: GET /api/v1/group_categories/:id
+"""
+type GroupCategory implements Node {
+  id: ID!
+  name: String!
+  role: String
+  selfSignup: String
+  contextType: String
+  contextId: ID
+  groupLimit: Int
+  autoLeader: String
+  randomlyAssignMembers: Boolean
+  groupCount: Int
+  unassignedUsersCount: Int
+  createdAt: DateTime
+
+  groups(first: Int, after: String): GroupConnection
+}
+
+"""
+A user's membership in a group.
+REST equivalent: GET /api/v1/groups/:group_id/memberships/:id
+"""
+type GroupMembership implements Node & Timestamped {
+  id: ID!
+  groupId: ID!
+  userId: ID!
+  workflowState: WorkflowState!
+  moderator: Boolean
+  justCreated: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  group: Group
+  user: User
+}
+
+# ---------------------------------------------------------------------------
+# Calendar
+# ---------------------------------------------------------------------------
+
+"""
+A calendar event.
+REST equivalent: GET /api/v1/calendar_events/:id
+"""
+type CalendarEvent implements Node & Timestamped {
+  id: ID!
+  title: String!
+  description: String
+  startAt: DateTime
+  endAt: DateTime
+  allDay: Boolean
+  allDayDate: DateTime
+  locationName: String
+  locationAddress: String
+  contextCode: String
+  contextType: String
+  contextId: ID
+  effectiveContextCode: String
+  url: URL
+  htmlUrl: URL
+  workflowState: WorkflowState!
+  parentEventId: ID
+  childEventsCount: Int
+  hidden: Boolean
+  reservationUrl: URL
+  reservedCount: Int
+  availableSlots: Int
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  parentEvent: CalendarEvent
+  childEvents(first: Int, after: String): CalendarEventConnection
+}
+
+"""
+A to-do item for the current user.
+REST equivalent: GET /api/v1/users/self/todo
+"""
+type Todo implements Node {
+  id: ID!
+  type: String!
+  contextType: String
+  contextName: String
+  htmlUrl: URL
+  needsGradingCount: Int
+  assignmentId: ID
+  courseId: ID
+  ignoreUrl: URL
+  ignorePermanentlyUrl: URL
+
+  assignment: Assignment
+  course: Course
+}
+
+# ---------------------------------------------------------------------------
+# Outcomes
+# ---------------------------------------------------------------------------
+
+"""
+A learning outcome (standard or custom).
+REST equivalent: GET /api/v1/outcomes/:id
+"""
+type Outcome implements Node & Timestamped {
+  id: ID!
+  title: String!
+  displayName: String
+  description: String
+  vendorGuid: String
+  contextType: String
+  contextId: ID
+  pointsPossible: Float
+  masteryPoints: Float
+  calculationMethod: OutcomeCalculationMethod
+  calculationInt: Int
+  rubricCriterion: RubricCriterion
+  workflowState: WorkflowState!
+  canEdit: Boolean
+  hasUpdateableRubrics: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+"""
+A hierarchical grouping of outcomes.
+REST equivalent: GET /api/v1/accounts/:account_id/outcome_groups/:id
+"""
+type OutcomeGroup implements Node & Timestamped {
+  id: ID!
+  title: String!
+  description: String
+  vendorGuid: String
+  contextType: String
+  contextId: ID
+  parentOutcomeGroupId: ID
+  sourceOutcomeGroupId: ID
+  url: URL
+  canEdit: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  parentOutcomeGroup: OutcomeGroup
+  outcomes(first: Int, after: String): OutcomeConnection
+  subGroups(first: Int, after: String): OutcomeGroupConnection
+}
+
+"""
+Links an outcome to an assignment or course (alignment).
+REST equivalent: outcome_alignments in the Outcomes API
+"""
+type OutcomeAlignment implements Node {
+  id: ID!
+  outcomeId: ID!
+  contentId: ID!
+  contentType: String!
+  title: String
+  url: URL
+  assignmentId: ID
+  moduleId: ID
+  moduleUrl: URL
+  moduleWorkflowState: WorkflowState
+
+  outcome: Outcome
+  assignment: Assignment
+}
+
+"""
+A recorded outcome result for a student.
+REST equivalent: GET /api/v1/courses/:course_id/outcome_results
+"""
+type OutcomeResult implements Node & Timestamped {
+  id: ID!
+  outcomeId: ID!
+  userId: ID!
+  assignmentId: ID
+  score: Float
+  possible: Float
+  mastery: Boolean
+  hide: Boolean
+  percent: Float
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  outcome: Outcome
+  user: User
+  assignment: Assignment
+  rubricAssessment: RubricAssessment
+  alignment: OutcomeAlignment
+}
+
+# ---------------------------------------------------------------------------
+# Roles & Permissions
+# ---------------------------------------------------------------------------
+
+"""
+A role (built-in or custom) within Canvas.
+REST equivalent: GET /api/v1/accounts/:account_id/roles/:id
+"""
+type Role implements Node {
+  id: ID!
+  role: String!
+  label: String
+  baseRoleType: String!
+  contextType: String
+  contextId: ID
+  workflowState: WorkflowState!
+  builtinRoleType: Boolean
+  permissions: [Permission]
+}
+
+"""
+A granular permission attached to a role.
+REST equivalent: permissions hash within the role response
+"""
+type Permission {
+  permission: String!
+  enabled: Boolean!
+  locked: Boolean!
+  readonly: Boolean!
+  explicit: Boolean!
+  priorDefault: Boolean
+  appliesToSelf: Boolean
+  appliesToDescendants: Boolean
+}
+
+# ---------------------------------------------------------------------------
+# External Tools & Features
+# ---------------------------------------------------------------------------
+
+"""
+An LTI external tool configured in Canvas.
+REST equivalent: GET /api/v1/courses/:course_id/external_tools/:id
+"""
+type ExternalTool implements Node & Timestamped {
+  id: ID!
+  name: String!
+  description: String
+  url: URL
+  domain: String
+  consumerKey: String
+  privacyLevel: String
+  contextType: String
+  contextId: ID
+  workflowState: WorkflowState!
+  toolId: String
+  oauthCompliant: Boolean
+  version: String
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  course: Course
+  account: Account
+}
+
+"""
+A feature flag controlling Canvas feature availability.
+REST equivalent: GET /api/v1/accounts/:account_id/features/flags/:feature
+"""
+type FeatureFlag implements Node {
+  id: ID!
+  feature: String!
+  state: String!
+  contextType: String
+  contextId: ID
+  locked: Boolean
+  hidden: Boolean
+  transitions: JSON
+}
+
+# ---------------------------------------------------------------------------
+# Content Migration & Export
+# ---------------------------------------------------------------------------
+
+"""
+A content migration job (copying, importing Common Cartridge, etc.).
+REST equivalent: GET /api/v1/courses/:course_id/content_migrations/:id
+"""
+type ContentMigration implements Node & Timestamped {
+  id: ID!
+  courseId: ID!
+  userId: ID
+  workflowState: WorkflowState!
+  migrationTypeTitle: String
+  migrationType: String
+  statusUrl: URL
+  progressUrl: URL
+  preAttachmentUrl: URL
+  errorCount: Int
+  warningCount: Int
+  finishedAt: DateTime
+  startedAt: DateTime
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  course: Course
+  user: User
+}
+
+"""
+A content export job (Common Cartridge or QTI export).
+REST equivalent: GET /api/v1/courses/:course_id/content_exports/:id
+"""
+type ContentExport implements Node & Timestamped {
+  id: ID!
+  courseId: ID!
+  userId: ID
+  workflowState: WorkflowState!
+  exportType: String
+  progressUrl: URL
+  attachment: File
+  errorCount: Int
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  course: Course
+  user: User
+}
+
+# ---------------------------------------------------------------------------
+# SIS
+# ---------------------------------------------------------------------------
+
+"""
+A SIS import job.
+REST equivalent: GET /api/v1/accounts/:account_id/sis_imports/:id
+"""
+type SISImport implements Node & Timestamped {
+  id: ID!
+  accountId: ID!
+  workflowState: WorkflowState!
+  progress: Float
+  processingWarnings: [[String]]
+  processingErrors: [[String]]
+  dataCount: JSON
+  batchMode: Boolean
+  batchModeTermId: ID
+  diffingDataSetIdentifier: String
+  diffed: Boolean
+  changeThreshold: Int
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  account: Account
+}
+
+# ---------------------------------------------------------------------------
+# Conferences & Collaboration
+# ---------------------------------------------------------------------------
+
+"""
+A web conference (BigBlueButton, Zoom plugin, etc.).
+REST equivalent: GET /api/v1/courses/:course_id/conferences/:id
+"""
+type ConferenceMeeting implements Node & Timestamped {
+  id: ID!
+  conferenceType: String!
+  title: String!
+  description: String
+  duration: Float
+  started: Boolean
+  endedAt: DateTime
+  invitees: [User]
+  recordings: [JSON]
+  contextType: String
+  contextId: ID
+  joinUrl: URL
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+"""
+A collaborative document (Google Docs, EtherPad, etc.).
+REST equivalent: GET /api/v1/courses/:course_id/collaborations/:id
+"""
+type Collaboration implements Node & Timestamped {
+  id: ID!
+  collaborationType: String!
+  title: String!
+  description: String
+  userId: ID!
+  documentId: String
+  url: URL
+  contextType: String
+  contextId: ID
+  workflowState: WorkflowState!
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  user: User
+  collaborators(first: Int, after: String): UserConnection
+}
+
+# ---------------------------------------------------------------------------
+# Learning Paths (mastery paths)
+# ---------------------------------------------------------------------------
+
+"""
+A mastery path rule that conditionally releases content based on scores.
+"""
+type LearningPath implements Node {
+  id: ID!
+  assignmentId: ID!
+  scoringRanges: [ScoringRange]
+  selectedSetId: ID
+  overrideScoring: Boolean
+  overrideScore: Float
+
+  assignment: Assignment
+}
+
+"""A score range within a mastery path that maps to an assignment set."""
+type ScoringRange {
+  id: ID!
+  lowerBound: Float
+  upperBound: Float
+  position: Int
+  assignmentSets: [AssignmentSet]
+}
+
+"""A set of assignments released when a scoring range is satisfied."""
+type AssignmentSet {
+  id: ID!
+  scoringRangeId: ID!
+  position: Int
+  assignments: [AssignmentSetAssociation]
+}
+
+"""Link between an assignment set and a specific assignment."""
+type AssignmentSetAssociation {
+  id: ID!
+  assignmentSetId: ID!
+  assignmentId: ID!
+  position: Int
+
+  assignment: Assignment
+}
+
+# ---------------------------------------------------------------------------
+# Connection / Edge wrappers (Relay-style pagination)
+# ---------------------------------------------------------------------------
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type AccountEdge { cursor: String! node: Account }
+type AccountConnection { edges: [AccountEdge] pageInfo: PageInfo! totalCount: Int }
+
+type SubAccountEdge { cursor: String! node: SubAccount }
+type SubAccountConnection { edges: [SubAccountEdge] pageInfo: PageInfo! totalCount: Int }
+
+type CourseEdge { cursor: String! node: Course }
+type CourseConnection { edges: [CourseEdge] pageInfo: PageInfo! totalCount: Int }
+
+type SectionEdge { cursor: String! node: Section }
+type SectionConnection { edges: [SectionEdge] pageInfo: PageInfo! totalCount: Int }
+
+type UserEdge { cursor: String! node: User }
+type UserConnection { edges: [UserEdge] pageInfo: PageInfo! totalCount: Int }
+
+type EnrollmentEdge { cursor: String! node: Enrollment }
+type EnrollmentConnection { edges: [EnrollmentEdge] pageInfo: PageInfo! totalCount: Int }
+
+type AssignmentEdge { cursor: String! node: Assignment }
+type AssignmentConnection { edges: [AssignmentEdge] pageInfo: PageInfo! totalCount: Int }
+
+type AssignmentGroupEdge { cursor: String! node: AssignmentGroup }
+type AssignmentGroupConnection { edges: [AssignmentGroupEdge] pageInfo: PageInfo! totalCount: Int }
+
+type AssignmentOverrideEdge { cursor: String! node: AssignmentOverride }
+type AssignmentOverrideConnection { edges: [AssignmentOverrideEdge] pageInfo: PageInfo! totalCount: Int }
+
+type SubmissionEdge { cursor: String! node: Submission }
+type SubmissionConnection { edges: [SubmissionEdge] pageInfo: PageInfo! totalCount: Int }
+
+type SubmissionHistoryEdge { cursor: String! node: SubmissionHistory }
+type SubmissionHistoryConnection { edges: [SubmissionHistoryEdge] pageInfo: PageInfo! totalCount: Int }
+
+type SubmissionCommentEdge { cursor: String! node: SubmissionComment }
+type SubmissionCommentConnection { edges: [SubmissionCommentEdge] pageInfo: PageInfo! totalCount: Int }
+
+type RubricEdge { cursor: String! node: Rubric }
+type RubricConnection { edges: [RubricEdge] pageInfo: PageInfo! totalCount: Int }
+
+type RubricAssociationEdge { cursor: String! node: RubricAssociation }
+type RubricAssociationConnection { edges: [RubricAssociationEdge] pageInfo: PageInfo! totalCount: Int }
+
+type GradingPeriodEdge { cursor: String! node: GradingPeriod }
+type GradingPeriodConnection { edges: [GradingPeriodEdge] pageInfo: PageInfo! totalCount: Int }
+
+type GradingStandardEdge { cursor: String! node: GradingStandard }
+type GradingStandardConnection { edges: [GradingStandardEdge] pageInfo: PageInfo! totalCount: Int }
+
+type QuizEdge { cursor: String! node: Quiz }
+type QuizConnection { edges: [QuizEdge] pageInfo: PageInfo! totalCount: Int }
+
+type QuizQuestionEdge { cursor: String! node: QuizQuestion }
+type QuizQuestionConnection { edges: [QuizQuestionEdge] pageInfo: PageInfo! totalCount: Int }
+
+type QuizSubmissionEdge { cursor: String! node: QuizSubmission }
+type QuizSubmissionConnection { edges: [QuizSubmissionEdge] pageInfo: PageInfo! totalCount: Int }
+
+type DiscussionEdge { cursor: String! node: Discussion }
+type DiscussionConnection { edges: [DiscussionEdge] pageInfo: PageInfo! totalCount: Int }
+
+type DiscussionEntryEdge { cursor: String! node: DiscussionEntry }
+type DiscussionEntryConnection { edges: [DiscussionEntryEdge] pageInfo: PageInfo! totalCount: Int }
+
+type AnnouncementEdge { cursor: String! node: Announcement }
+type AnnouncementConnection { edges: [AnnouncementEdge] pageInfo: PageInfo! totalCount: Int }
+
+type ModuleEdge { cursor: String! node: Module }
+type ModuleConnection { edges: [ModuleEdge] pageInfo: PageInfo! totalCount: Int }
+
+type ModuleItemEdge { cursor: String! node: ModuleItem }
+type ModuleItemConnection { edges: [ModuleItemEdge] pageInfo: PageInfo! totalCount: Int }
+
+type ContentPageEdge { cursor: String! node: ContentPage }
+type ContentPageConnection { edges: [ContentPageEdge] pageInfo: PageInfo! totalCount: Int }
+
+type FileEdge { cursor: String! node: File }
+type FileConnection { edges: [FileEdge] pageInfo: PageInfo! totalCount: Int }
+
+type FolderEdge { cursor: String! node: Folder }
+type FolderConnection { edges: [FolderEdge] pageInfo: PageInfo! totalCount: Int }
+
+type GroupEdge { cursor: String! node: Group }
+type GroupConnection { edges: [GroupEdge] pageInfo: PageInfo! totalCount: Int }
+
+type GroupCategoryEdge { cursor: String! node: GroupCategory }
+type GroupCategoryConnection { edges: [GroupCategoryEdge] pageInfo: PageInfo! totalCount: Int }
+
+type GroupMembershipEdge { cursor: String! node: GroupMembership }
+type GroupMembershipConnection { edges: [GroupMembershipEdge] pageInfo: PageInfo! totalCount: Int }
+
+type CalendarEventEdge { cursor: String! node: CalendarEvent }
+type CalendarEventConnection { edges: [CalendarEventEdge] pageInfo: PageInfo! totalCount: Int }
+
+type TodoEdge { cursor: String! node: Todo }
+type TodoConnection { edges: [TodoEdge] pageInfo: PageInfo! totalCount: Int }
+
+type OutcomeEdge { cursor: String! node: Outcome }
+type OutcomeConnection { edges: [OutcomeEdge] pageInfo: PageInfo! totalCount: Int }
+
+type OutcomeGroupEdge { cursor: String! node: OutcomeGroup }
+type OutcomeGroupConnection { edges: [OutcomeGroupEdge] pageInfo: PageInfo! totalCount: Int }
+
+type TermEdge { cursor: String! node: Term }
+type TermConnection { edges: [TermEdge] pageInfo: PageInfo! totalCount: Int }
+
+type RoleEdge { cursor: String! node: Role }
+type RoleConnection { edges: [RoleEdge] pageInfo: PageInfo! totalCount: Int }
+
+type ExternalToolEdge { cursor: String! node: ExternalTool }
+type ExternalToolConnection { edges: [ExternalToolEdge] pageInfo: PageInfo! totalCount: Int }
+
+type ContentMigrationEdge { cursor: String! node: ContentMigration }
+type ContentMigrationConnection { edges: [ContentMigrationEdge] pageInfo: PageInfo! totalCount: Int }
+
+type SISImportEdge { cursor: String! node: SISImport }
+type SISImportConnection { edges: [SISImportEdge] pageInfo: PageInfo! totalCount: Int }
+
+type CollaborationEdge { cursor: String! node: Collaboration }
+type CollaborationConnection { edges: [CollaborationEdge] pageInfo: PageInfo! totalCount: Int }
+
+# ---------------------------------------------------------------------------
+# Root Query
+# ---------------------------------------------------------------------------
+
+type Query {
+  """Fetch any Node by its global opaque ID."""
+  node(id: ID!): Node
+
+  """The currently authenticated user."""
+  self: User
+
+  """Look up a course by its Canvas ID or SIS ID."""
+  course(id: ID, sisId: String): Course
+
+  """List courses visible to the current user."""
+  allCourses(first: Int, after: String, state: [WorkflowState]): CourseConnection
+
+  """Look up an account."""
+  account(id: ID!): Account
+
+  """Look up a user."""
+  user(id: ID!): User
+
+  """Look up an assignment."""
+  assignment(id: ID!): Assignment
+
+  """Look up a submission."""
+  submission(id: ID!): Submission
+
+  """Look up a quiz."""
+  quiz(id: ID!): Quiz
+
+  """Look up a discussion topic."""
+  discussion(id: ID!): Discussion
+
+  """Look up an outcome."""
+  outcome(id: ID!): Outcome
+
+  """Look up an enrollment term."""
+  term(id: ID!): Term
+
+  """Look up a group."""
+  group(id: ID!): Group
+
+  """Look up a Canvas file."""
+  file(id: ID!): File
+
+  """Look up a module."""
+  module(id: ID!): Module
+
+  """Look up a rubric."""
+  rubric(id: ID!): Rubric
+}
+
+# ---------------------------------------------------------------------------
+# Root Mutation
+# ---------------------------------------------------------------------------
+
+type Mutation {
+  """Create a submission on behalf of the current user."""
+  createSubmission(input: CreateSubmissionInput!): CreateSubmissionPayload
+
+  """Post a grade on a submission (requires Manage Grades permission)."""
+  postSubmissionGrade(input: PostSubmissionGradeInput!): PostSubmissionGradePayload
+
+  """Mark a submission comment as read."""
+  markSubmissionCommentRead(id: ID!): MarkSubmissionCommentReadPayload
+
+  """Mark a discussion topic entry as read."""
+  markDiscussionEntryRead(id: ID!): MarkDiscussionEntryReadPayload
+
+  """Subscribe or unsubscribe from a discussion topic."""
+  subscribeToDiscussion(topicId: ID!, subscribed: Boolean!): Discussion
+
+  """Create a discussion entry reply."""
+  createDiscussionEntry(input: CreateDiscussionEntryInput!): CreateDiscussionEntryPayload
+
+  """Update a module item's position."""
+  updateModuleItemPosition(moduleId: ID!, itemId: ID!, position: Int!): ModuleItem
+
+  """Publish or unpublish a module."""
+  updateModulePublishedStatus(id: ID!, published: Boolean!): Module
+}
+
+# ---------------------------------------------------------------------------
+# Mutation input / payload types
+# ---------------------------------------------------------------------------
+
+input CreateSubmissionInput {
+  assignmentId: ID!
+  submissionType: SubmissionType!
+  body: String
+  url: URL
+  fileIds: [ID]
+  mediaCommentId: String
+  mediaCommentType: String
+  annotatedDocumentId: ID
+}
+
+type CreateSubmissionPayload {
+  submission: Submission
+  errors: [MutationError]
+}
+
+input PostSubmissionGradeInput {
+  submissionId: ID!
+  score: Float
+  grade: String
+  excused: Boolean
+  comment: String
+  attempt: Int
+}
+
+type PostSubmissionGradePayload {
+  submission: Submission
+  errors: [MutationError]
+}
+
+type MarkSubmissionCommentReadPayload {
+  submissionComment: SubmissionComment
+  errors: [MutationError]
+}
+
+type MarkDiscussionEntryReadPayload {
+  discussionEntry: DiscussionEntry
+  errors: [MutationError]
+}
+
+input CreateDiscussionEntryInput {
+  discussionTopicId: ID!
+  parentEntryId: ID
+  message: String!
+  fileIds: [ID]
+}
+
+type CreateDiscussionEntryPayload {
+  discussionEntry: DiscussionEntry
+  errors: [MutationError]
+}
+
+"""A field-level validation or authorization error returned from a mutation."""
+type MutationError {
+  attribute: String
+  message: String!
+  type: String
+}
