@@ -1,0 +1,807 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Canvas LMS REST API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://canvas.instructure.com/login/oauth2/auth",
+      "accessTokenUrl": "https://canvas.instructure.com/login/oauth2/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Accounts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/accounts",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page (default 10, max varies by endpoint and install)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed). Prefer following RFC 5988 Link headers with rel=\"next\"."
+              },
+              {
+                "name": "include[]",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List accounts that the current user can view or manage."
+        },
+        {
+          "info": {
+            "name": "Get a Single Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/accounts/:account_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas account ID, an SIS account ID prefixed `sis_account_id:`, or `self`."
+              }
+            ]
+          },
+          "docs": "Get a Single Account"
+        },
+        {
+          "info": {
+            "name": "List Active Courses in an Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/accounts/:account_id/courses",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas account ID, an SIS account ID prefixed `sis_account_id:`, or `self`."
+              },
+              {
+                "name": "with_enrollments",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "enrollment_term_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search_term",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "state[]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page (default 10, max varies by endpoint and install)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed). Prefer following RFC 5988 Link headers with rel=\"next\"."
+              }
+            ]
+          },
+          "docs": "List Active Courses in an Account"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Courses",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Courses for the Current User",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/courses",
+            "params": [
+              {
+                "name": "enrollment_type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "enrollment_state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "include[]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page (default 10, max varies by endpoint and install)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed). Prefer following RFC 5988 Link headers with rel=\"next\"."
+              }
+            ]
+          },
+          "docs": "List Courses for the Current User"
+        },
+        {
+          "info": {
+            "name": "Get a Single Course",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              },
+              {
+                "name": "include[]",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get a Single Course"
+        },
+        {
+          "info": {
+            "name": "Update a Course",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a Course"
+        },
+        {
+          "info": {
+            "name": "Conclude or Delete a Course",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              },
+              {
+                "name": "event",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Conclude or Delete a Course"
+        },
+        {
+          "info": {
+            "name": "List Users in a Course",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/users",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              },
+              {
+                "name": "enrollment_type[]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "enrollment_role",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "include[]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search_term",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page (default 10, max varies by endpoint and install)."
+              }
+            ]
+          },
+          "docs": "List Users in a Course"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Enrollments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Enrollments in a Course",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/enrollments",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              },
+              {
+                "name": "type[]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "state[]",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Enrollments in a Course"
+        },
+        {
+          "info": {
+            "name": "Enroll a User in a Course",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/enrollments",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enroll a User in a Course"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Assignments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Assignments in a Course",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/assignments",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              },
+              {
+                "name": "include[]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search_term",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page (default 10, max varies by endpoint and install)."
+              }
+            ]
+          },
+          "docs": "List Assignments in a Course"
+        },
+        {
+          "info": {
+            "name": "Create an Assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/assignments",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an Assignment"
+        },
+        {
+          "info": {
+            "name": "Get a Single Assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/assignments/:assignment_id",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              },
+              {
+                "name": "assignment_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas assignment ID."
+              }
+            ]
+          },
+          "docs": "Get a Single Assignment"
+        },
+        {
+          "info": {
+            "name": "Edit an Assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/assignments/:assignment_id",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              },
+              {
+                "name": "assignment_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas assignment ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Edit an Assignment"
+        },
+        {
+          "info": {
+            "name": "Delete an Assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/assignments/:assignment_id",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              },
+              {
+                "name": "assignment_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas assignment ID."
+              }
+            ]
+          },
+          "docs": "Delete an Assignment"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Submissions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Submissions for an Assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/assignments/:assignment_id/submissions",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              },
+              {
+                "name": "assignment_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas assignment ID."
+              },
+              {
+                "name": "include[]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "grouped",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Submissions for an Assignment"
+        },
+        {
+          "info": {
+            "name": "Get a Single Submission",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/assignments/:assignment_id/submissions/:user_id",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              },
+              {
+                "name": "assignment_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas assignment ID."
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a Single Submission"
+        },
+        {
+          "info": {
+            "name": "Grade or Comment on a Submission",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/assignments/:assignment_id/submissions/:user_id",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              },
+              {
+                "name": "assignment_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas assignment ID."
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Grade or Comment on a Submission"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Modules",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Modules in a Course",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/modules",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              },
+              {
+                "name": "include[]",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Modules in a Course"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Discussions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Discussion Topics in a Course",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/discussion_topics",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              },
+              {
+                "name": "include[]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Discussion Topics in a Course"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Files",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Files in a Course",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/files",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              },
+              {
+                "name": "content_types[]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search_term",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "include[]",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Files in a Course"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a Single User",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/users/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include[]",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get a Single User"
+        },
+        {
+          "info": {
+            "name": "Get the Authenticated User",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/users/self"
+          },
+          "docs": "Get the Authenticated User"
+        },
+        {
+          "info": {
+            "name": "Get the Authenticated User's Profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/users/self/profile"
+          },
+          "docs": "Get the Authenticated User's Profile"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Outcomes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Outcome Groups in an Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/accounts/:account_id/outcome_groups",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas account ID, an SIS account ID prefixed `sis_account_id:`, or `self`."
+              }
+            ]
+          },
+          "docs": "List Outcome Groups in an Account"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
