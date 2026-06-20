@@ -13,7 +13,7 @@ tags:
 - AGPL
 - Canvas
 kind: contract
-image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 access: 3rd-Party
 description: >-
   Canvas is the open, AGPLv3-licensed learning management system created and maintained by Instructure, Inc. and used by
