@@ -3,12 +3,12 @@
   "feeds": [
     {
       "source": "https://www.instructure.com/blog",
-      "feed_url": "https://www.instructure.com/blog",
-      "title": "",
-      "saved": 0,
-      "method": "none"
+      "feed_url": "",
+      "saved": 1,
+      "method": "agent-scrape"
     }
   ],
-  "post_count": 3,
-  "fetched": "2026-06-14T20:42:17Z"
+  "post_count": 9,
+  "fetched": "2026-06-27T12:30:19Z",
+  "agent_pulled": "2026-06-27"
 }

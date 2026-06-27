@@ -252,10 +252,10 @@ apis:
     type: Documentation
     name: DAP Query API Reference
   - url: https://github.com/instructure/dap-client-py
-    type: SDK
+    type: SDKs
     name: DAP Client (Python)
   - url: https://github.com/instructure/canvas-data-loader
-    type: Tool
+    type: Tools
     name: Canvas Data Loader (Rust)
   - url: https://github.com/instructure/canvas-hosted-data-examples
     type: CodeExamples
@@ -297,63 +297,60 @@ apis:
 common:
 - type: PostmanWorkspace
   url: https://www.postman.com/kinlaneapi/canvas-lms/overview
-- type: ArazzoWorkflows
-  url: arazzo/
-  workflows:
-  - url: arazzo/canvas-lms-account-course-audit-and-conclude-workflow.yml
-    name: Canvas LMS Audit Account Course and Conclude It
-    summary: List courses in an account, read one course's detail, then conclude it.
-  - url: arazzo/canvas-lms-assign-and-grade-discussion-workflow.yml
-    name: Canvas LMS Grade a Discussion-backed Assignment
-    summary: Locate a discussion topic's graded assignment, then grade a student's discussion submission.
-  - url: arazzo/canvas-lms-conclude-course-with-grade-check-workflow.yml
-    name: Canvas LMS Conclude Course After Grade Check
-    summary: List a course's enrollments with grades, then conclude the course.
-  - url: arazzo/canvas-lms-copy-assignment-to-course-workflow.yml
-    name: Canvas LMS Copy Assignment to Another Course
-    summary: Read an assignment from a source course and recreate it in a target course.
-  - url: arazzo/canvas-lms-create-assignment-and-confirm-workflow.yml
-    name: Canvas LMS Create Assignment and Confirm
-    summary: Verify a course exists, create an assignment in it, then fetch the assignment back.
-  - url: arazzo/canvas-lms-create-assignment-and-grade-submission-workflow.yml
-    name: Canvas LMS Create Assignment and Grade Submission
-    summary: Create an assignment, find a student's submission, and post a grade plus comment.
-  - url: arazzo/canvas-lms-create-course-shell-then-author-assignment-workflow.yml
-    name: Canvas LMS Configure Course Then Author Assignment
-    summary: Update a course's settings, then create its first assignment, and read it back.
-  - url: arazzo/canvas-lms-enroll-teacher-then-author-assignment-workflow.yml
-    name: Canvas LMS Enroll Teacher Then Author Assignment
-    summary: Enroll a teacher in a course, then create the course's first assignment.
-  - url: arazzo/canvas-lms-enroll-user-and-confirm-workflow.yml
-    name: Canvas LMS Enroll User and Confirm
-    summary: Enroll a user in a course and confirm the enrollment appears in the course roster.
-  - url: arazzo/canvas-lms-excuse-or-grade-submission-workflow.yml
-    name: Canvas LMS Excuse or Grade a Submission
-    summary: Read a submission and branch — excuse it when not submitted, otherwise post a grade.
-  - url: arazzo/canvas-lms-find-or-create-assignment-workflow.yml
-    name: Canvas LMS Find or Create Assignment
-    summary: Search a course for an assignment by name and create it only when it is missing.
-  - url: arazzo/canvas-lms-grade-all-submissions-workflow.yml
-    name: Canvas LMS Grade One of Many Submissions
-    summary: List an assignment's submissions, then post a grade to the first one returned.
-  - url: arazzo/canvas-lms-list-modules-and-grade-module-assignment-workflow.yml
-    name: Canvas LMS Grade an Assignment From a Module
-    summary: List a course's modules with items, then grade a student on a module assignment.
-  - url: arazzo/canvas-lms-onboard-student-to-course-workflow.yml
-    name: Canvas LMS Onboard Student to Course
-    summary: Validate a user, enroll them as a student, and confirm course membership.
-  - url: arazzo/canvas-lms-publish-assignment-and-list-submissions-workflow.yml
-    name: Canvas LMS Publish Assignment and List Submissions
-    summary: Publish a draft assignment, then list every submission for it.
-  - url: arazzo/canvas-lms-section-roster-and-grade-workflow.yml
-    name: Canvas LMS Grade a Student by Section Enrollment
-    summary: Find a student via course section enrollments, then grade their assignment.
-  - url: arazzo/canvas-lms-self-courses-and-create-assignment-workflow.yml
-    name: Canvas LMS Author in the Current User's First Course
-    summary: Identify the authenticated teacher, pick their first taught course, and author an assignment.
-  - url: arazzo/canvas-lms-update-assignment-due-date-and-grade-workflow.yml
-    name: Canvas LMS Extend Due Date Then Grade Late Submission
-    summary: Push an assignment's due date out, then grade a student's late submission.
+- type: Arazzo
+  url: arazzo/canvas-lms-account-course-audit-and-conclude-workflow.yml
+  name: Canvas LMS Audit Account Course and Conclude It
+- type: Arazzo
+  url: arazzo/canvas-lms-assign-and-grade-discussion-workflow.yml
+  name: Canvas LMS Grade a Discussion-backed Assignment
+- type: Arazzo
+  url: arazzo/canvas-lms-conclude-course-with-grade-check-workflow.yml
+  name: Canvas LMS Conclude Course After Grade Check
+- type: Arazzo
+  url: arazzo/canvas-lms-copy-assignment-to-course-workflow.yml
+  name: Canvas LMS Copy Assignment to Another Course
+- type: Arazzo
+  url: arazzo/canvas-lms-create-assignment-and-confirm-workflow.yml
+  name: Canvas LMS Create Assignment and Confirm
+- type: Arazzo
+  url: arazzo/canvas-lms-create-assignment-and-grade-submission-workflow.yml
+  name: Canvas LMS Create Assignment and Grade Submission
+- type: Arazzo
+  url: arazzo/canvas-lms-create-course-shell-then-author-assignment-workflow.yml
+  name: Canvas LMS Configure Course Then Author Assignment
+- type: Arazzo
+  url: arazzo/canvas-lms-enroll-teacher-then-author-assignment-workflow.yml
+  name: Canvas LMS Enroll Teacher Then Author Assignment
+- type: Arazzo
+  url: arazzo/canvas-lms-enroll-user-and-confirm-workflow.yml
+  name: Canvas LMS Enroll User and Confirm
+- type: Arazzo
+  url: arazzo/canvas-lms-excuse-or-grade-submission-workflow.yml
+  name: Canvas LMS Excuse or Grade a Submission
+- type: Arazzo
+  url: arazzo/canvas-lms-find-or-create-assignment-workflow.yml
+  name: Canvas LMS Find or Create Assignment
+- type: Arazzo
+  url: arazzo/canvas-lms-grade-all-submissions-workflow.yml
+  name: Canvas LMS Grade One of Many Submissions
+- type: Arazzo
+  url: arazzo/canvas-lms-list-modules-and-grade-module-assignment-workflow.yml
+  name: Canvas LMS Grade an Assignment From a Module
+- type: Arazzo
+  url: arazzo/canvas-lms-onboard-student-to-course-workflow.yml
+  name: Canvas LMS Onboard Student to Course
+- type: Arazzo
+  url: arazzo/canvas-lms-publish-assignment-and-list-submissions-workflow.yml
+  name: Canvas LMS Publish Assignment and List Submissions
+- type: Arazzo
+  url: arazzo/canvas-lms-section-roster-and-grade-workflow.yml
+  name: Canvas LMS Grade a Student by Section Enrollment
+- type: Arazzo
+  url: arazzo/canvas-lms-self-courses-and-create-assignment-workflow.yml
+  name: Canvas LMS Author in the Current User's First Course
+- type: Arazzo
+  url: arazzo/canvas-lms-update-assignment-due-date-and-grade-workflow.yml
+  name: Canvas LMS Extend Due Date Then Grade Late Submission
 - url: https://www.instructure.com
   name: Instructure
   type: Portal
@@ -362,7 +359,7 @@ common:
   type: Portal
 - url: https://canvas.instructure.com/
   name: Free for Teacher
-  type: SignUp
+  type: Signup
 - url: https://canvas.instructure.com/doc/api/
   name: Canvas REST API Documentation
   type: Documentation
@@ -401,10 +398,10 @@ common:
   type: StatusPage
 - url: https://community.canvaslms.com/
   name: Canvas Community
-  type: Forum
+  type: Forums
 - url: https://community.canvaslms.com/t5/Canvas-Developers-Group/gh-p/canvas-developers
   name: Canvas Developers Group
-  type: Forum
+  type: Forums
 - url: https://www.instructure.com/blog
   name: Instructure Blog
   type: Blog
@@ -434,7 +431,7 @@ common:
   type: GettingStarted
 - url: https://github.com/instructure/canvas-self-hosted
   name: Canvas Self-Hosted Docker Configuration
-  type: Tool
+  type: Tools
 - url: https://github.com/instructure/canvas-ios
   name: Canvas iOS Apps
   type: SourceCode
@@ -443,22 +440,22 @@ common:
   type: SourceCode
 - url: https://github.com/instructure/CanvasAPI
   name: Canvas API for Android
-  type: SDK
+  type: SDKs
 - url: https://github.com/instructure/pandarus
   name: Pandarus (Ruby Canvas Client)
-  type: SDK
+  type: SDKs
 - url: https://github.com/instructure/canvas_oauth_engine
   name: Canvas OAuth Engine (Rails)
-  type: SDK
+  type: SDKs
 - url: https://github.com/instructure/dap-client-py
   name: DAP Client (Python)
-  type: SDK
+  type: SDKs
 - url: https://github.com/instructure/canvas-data-loader
   name: Canvas Data Loader (Rust)
-  type: Tool
+  type: Tools
 - url: https://github.com/instructure/canvas-data-cli
   name: Canvas Data CLI (legacy Canvas Data 1)
-  type: Tool
+  type: Tools
 - url: https://github.com/instructure/canvas-studio-api-examples
   name: Canvas Studio API Examples
   type: CodeExamples
@@ -479,34 +476,34 @@ common:
   type: CodeExamples
 - url: https://github.com/instructure/ims-lti
   name: IMS-LTI Ruby Library
-  type: SDK
+  type: SDKs
 - url: https://github.com/instructure/basiclti-util-java
   name: Basic LTI Util (Java)
-  type: SDK
+  type: SDKs
 - url: https://github.com/instructure/qti
   name: QTI Library
-  type: Tool
+  type: Tools
 - url: https://github.com/instructure/QTIMigrationTool
   name: QTI Migration Tool
-  type: Tool
+  type: Tools
 - url: https://github.com/instructure/moodle2cc
   name: Moodle to Common Cartridge Converter
-  type: Tool
+  type: Tools
 - url: https://github.com/instructure/common-cartridge-viewer
   name: Common Cartridge Viewer
-  type: Tool
+  type: Tools
 - url: https://github.com/instructure/analytics
   name: Canvas Analytics Plugin
-  type: Tool
+  type: Tools
 - url: https://github.com/instructure/instructure-ui
   name: Instructure UI Component Library
-  type: Tool
+  type: Tools
 - url: https://github.com/instructure/canvas-alexa-lambda
   name: Canvas Alexa Lambda
   type: CodeExamples
 - url: https://github.com/instructure/canvas_connect
   name: Adobe Connect Plugin for Canvas
-  type: Tool
+  type: Tools
 - url: https://www.instructure.com/canvas/partners
   name: Canvas Partners & Integrations
   type: Marketplace
