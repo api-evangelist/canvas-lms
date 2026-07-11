@@ -1,0 +1,28 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/canvas-lms-rest-api-openapi.yml
+summary:
+  types:
+  - http
+  - oauth2
+  oauth2_flows:
+  - authorizationCode
+schemes:
+- name: OAuth2
+  type: oauth2
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://canvas.instructure.com/login/oauth2/auth
+    tokenUrl: https://canvas.instructure.com/login/oauth2/token
+    scopes: 3
+  description: Canvas OAuth2 (RFC 6749) authorization code grant. Register a Developer Key in
+    the target Canvas account to obtain a client_id and client_secret.
+  sources:
+  - openapi/canvas-lms-rest-api-openapi.yml
+- name: BearerAuth
+  type: http
+  scheme: bearer
+  description: A Canvas access token. For testing only — production apps MUST use the OAuth2
+    flow per the Canvas API Policy.
+  sources:
+  - openapi/canvas-lms-rest-api-openapi.yml

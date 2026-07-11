@@ -295,6 +295,14 @@ apis:
     logins, admins, change-sis-id mappings, and admin differentiation tags. Supports diffing imports against the
     previous import, batch mode, and asynchronous progress polling.
 common:
+- type: TrustCenter
+  url: security/canvas-lms-trust-center.yml
+- type: VulnerabilityDisclosure
+  url: security/canvas-lms-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/canvas-lms-domain-security.yml
+- type: Authentication
+  url: authentication/canvas-lms-authentication.yml
 - type: OAuthScopes
   url: scopes/canvas-lms-scopes.yml
 - type: PostmanWorkspace
