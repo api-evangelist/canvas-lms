@@ -295,6 +295,8 @@ apis:
     logins, admins, change-sis-id mappings, and admin differentiation tags. Supports diffing imports against the
     previous import, batch mode, and asynchronous progress polling.
 common:
+- type: OAuthScopes
+  url: scopes/canvas-lms-scopes.yml
 - type: PostmanWorkspace
   url: https://www.postman.com/kinlaneapi/canvas-lms/overview
 - type: Arazzo

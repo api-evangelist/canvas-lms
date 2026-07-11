@@ -1,0 +1,31 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/canvas-lms-rest-api-openapi.yml
+schemes:
+- name: OAuth2
+  source: openapi/canvas-lms-rest-api-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://canvas.instructure.com/login/oauth2/auth
+    tokenUrl: https://canvas.instructure.com/login/oauth2/token
+  description: Canvas OAuth2 (RFC 6749) authorization code grant. Register a Developer Key in
+    the target Canvas account to obtain a client_id and client_secret.
+scopes:
+- scope: url:GET|/api/v1/accounts
+  description: Read accounts
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/canvas-lms-rest-api-openapi.yml
+- scope: url:GET|/api/v1/courses
+  description: Read courses
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/canvas-lms-rest-api-openapi.yml
+- scope: url:GET|/api/v1/users/{user_id}
+  description: Read a user
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/canvas-lms-rest-api-openapi.yml
