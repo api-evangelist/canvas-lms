@@ -295,6 +295,8 @@ apis:
     logins, admins, change-sis-id mappings, and admin differentiation tags. Supports diffing imports against the
     previous import, batch mode, and asynchronous progress polling.
 common:
+- type: AgenticAccess
+  url: agentic-access/canvas-lms-agentic-access.yml
 - type: TrustCenter
   url: security/canvas-lms-trust-center.yml
 - type: VulnerabilityDisclosure
