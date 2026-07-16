@@ -1,0 +1,59 @@
+generated: '2026-06-20'
+method: searched
+source: >-
+  Canvas developer docs (pagination, throttling, oauth2, file uploads,
+  masquerading) plus the captured OpenAPI. The cross-cutting request/response
+  semantics that apply to every Canvas REST endpoint, not any single operation.
+description: >-
+  How the Canvas REST API behaves across all operations: authentication style,
+  pagination, rate-limit signaling, relationship hydration, masquerading,
+  the error envelope, file uploads, and versioning.
+base_url_pattern: "https://<canvas-install>/api/v1"
+api_style: REST over HTTPS, JSON responses; form/multipart or JSON request bodies
+authentication:
+  scheme: "OAuth2 bearer token (Authorization: Bearer <token>)"
+  key_types: [OAuth2 developer-key access token, manual personal access token (testing only)]
+  scopes_format: "url:{VERB}|{path}  e.g. url:GET|/api/v1/courses"
+  docs: https://developerdocs.instructure.com/services/canvas/oauth2/file.oauth.md
+  detail: authentication/canvas-lms-authentication.yml
+idempotency:
+  supported: false
+  note: Canvas does not document an Idempotency-Key header; POST/PUT are not idempotent by key.
+pagination:
+  style: RFC 5988 Web Linking
+  mechanism: Link response header with rel="current|next|prev|first|last"
+  request_params:
+    per_page: Items per page (each endpoint has its own default and maximum)
+    page: Page number or bookmark token
+  guidance: Follow the rel="next" URL until absent; do not construct page URLs by hand.
+  docs: https://developerdocs.instructure.com/services/canvas/basics/file.pagination.md
+relationship_hydration:
+  mechanism: include[] query parameter
+  note: Most resources accept include[]=<association> to embed related objects (compound documents).
+rate_limiting:
+  model: Per-access-token dynamic quota with a per-request cost; quota replenishes over time faster than real time.
+  cost_header: X-Request-Cost
+  remaining_header: X-Rate-Limit-Remaining
+  throttled_status: 429 ("Rate Limit Exceeded")
+  parallelism_penalty: Concurrent requests incur a pre-flight penalty credited back as each request completes.
+  guidance: Avoid parallel requests per token; retry 429s after backoff.
+  docs: https://developerdocs.instructure.com/services/canvas/basics/file.throttling.md
+  detail: rate-limits/canvas-lms-rate-limits.yml
+masquerading:
+  param: as_user_id
+  note: Admins with the right permission can act-as another user by appending as_user_id={id}.
+  docs: https://canvas.instructure.com/doc/api/file.masquerading.html
+sis_addressing:
+  note: >-
+    Objects can be addressed by their SIS id instead of the Canvas id using the
+    sis_*_id: prefix syntax in path segments (e.g. sis_course_id:).
+  docs: https://canvas.instructure.com/doc/api/file.object_ids.html
+file_uploads:
+  flow: Three-step — POST to request an upload URL/params, PUT the file to that URL, then confirm.
+  docs: https://canvas.instructure.com/doc/api/file.file_uploads.html
+error_envelope:
+  shape: '{"errors": [{"message": "..."}]}  (validation: errors keyed by field)'
+  detail: errors/canvas-lms-problem-types.yml
+versioning:
+  scheme: URI path (/api/v1)
+  detail: lifecycle/canvas-lms-lifecycle.yml

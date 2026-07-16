@@ -1,0 +1,98 @@
+generated: '2026-06-20'
+method: derived
+status: candidate
+source: openapi/canvas-lms-rest-api-openapi.yml
+description: >-
+  Instructure does not publish an official hosted or remote MCP server for
+  Canvas (searched: docs, npm @modelcontextprotocol, MCP registries — July 2026).
+  A healthy community ecosystem of Canvas MCP servers exists (e.g.
+  vishalsachdev/canvas-mcp ~93 tools, DMontgomery40/mcp-canvas-lms 54 tools,
+  r-huijts/canvas-mcp), all unaffiliated with Instructure. The tools[] below are
+  a CANDIDATE surface derived one-per-operation from the captured Canvas REST
+  OpenAPI — a starting point for wrapping Canvas as MCP, not a published server.
+community_servers:
+- name: vishalsachdev/canvas-mcp
+  url: https://github.com/vishalsachdev/canvas-mcp
+  official: false
+- name: DMontgomery40/mcp-canvas-lms
+  url: https://github.com/DMontgomery40/mcp-canvas-lms
+  official: false
+- name: r-huijts/canvas-mcp
+  url: https://github.com/r-huijts/canvas-mcp
+  official: false
+tools:
+- name: list_accounts
+  description: List accounts that the current user can view or manage
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#listAccounts
+- name: get_account
+  description: Retrieve a single account
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#getAccount
+- name: list_courses_in_account
+  description: List courses in an account
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#listCoursesInAccount
+- name: list_courses
+  description: List the current user's courses
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#listCourses
+- name: get_course
+  description: Retrieve a single course
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#getCourse
+- name: update_course
+  description: Update a course
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#updateCourse
+- name: delete_course
+  description: Delete or conclude a course
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#deleteCourse
+- name: list_course_users
+  description: List users in a course
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#listCourseUsers
+- name: list_course_enrollments
+  description: List enrollments in a course
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#listCourseEnrollments
+- name: enroll_user
+  description: Enroll a user in a course
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#enrollUser
+- name: list_assignments
+  description: List assignments in a course
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#listAssignments
+- name: create_assignment
+  description: Create an assignment
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#createAssignment
+- name: get_assignment
+  description: Retrieve a single assignment
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#getAssignment
+- name: update_assignment
+  description: Update an assignment
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#updateAssignment
+- name: delete_assignment
+  description: Delete an assignment
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#deleteAssignment
+- name: list_submissions
+  description: List submissions for an assignment
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#listSubmissions
+- name: get_submission
+  description: Retrieve a single submission
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#getSubmission
+- name: grade_submission
+  description: Grade or comment on a submission
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#gradeSubmission
+- name: list_modules
+  description: List modules in a course
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#listModules
+- name: list_discussion_topics
+  description: List discussion topics in a course
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#listDiscussionTopics
+- name: list_course_files
+  description: List files in a course
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#listCourseFiles
+- name: get_user
+  description: Retrieve a single user
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#getUser
+- name: get_self
+  description: Retrieve the current user
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#getSelf
+- name: get_self_profile
+  description: Retrieve the current user's profile
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#getSelfProfile
+- name: list_outcome_groups
+  description: List outcome groups in a course
+  source_operation: openapi/canvas-lms-rest-api-openapi.yml#listOutcomeGroups

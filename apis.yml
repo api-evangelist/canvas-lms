@@ -307,6 +307,36 @@ common:
   url: authentication/canvas-lms-authentication.yml
 - type: OAuthScopes
   url: scopes/canvas-lms-scopes.yml
+- type: Packages
+  url: packages/canvas-lms-packages.yml
+- type: WellKnown
+  url: well-known/canvas-lms-well-known.yml
+- type: SecurityTxt
+  url: well-known/canvas-lms-security.txt
+- type: MCPServer
+  url: mcp/canvas-lms-mcp.yml
+- type: LLMsTxt
+  url: llms/canvas-lms-llms.txt
+- type: Overlay
+  url: overlays/canvas-lms-rest-api-overlay.yaml
+- type: Conformance
+  url: conformance/canvas-lms-conformance.yml
+- type: ErrorCatalog
+  url: errors/canvas-lms-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/canvas-lms-lifecycle.yml
+- type: Sandbox
+  url: sandbox/canvas-lms-sandbox.yml
+- type: Conventions
+  url: conventions/canvas-lms-conventions.yml
+- type: ChangeLog
+  url: changelog/canvas-lms-changelog.yml
+- type: CLI
+  url: cli/canvas-lms-cli.yml
+- type: Components
+  url: components/canvas-lms-components.yml
+- type: DataModel
+  url: data-model/canvas-lms-data-model.yml
 - type: PostmanWorkspace
   url: https://www.postman.com/kinlaneapi/canvas-lms/overview
 - type: Arazzo
@@ -591,7 +621,7 @@ common:
   - https://www.instructure.com/about-us
   updated: '2026-05-25'
 created: '2026-05-25T00:00:00.000Z'
-modified: '2026-05-30'
+modified: '2026-06-20'
 position: Consuming
 maintainers:
 - FN: Kin Lane

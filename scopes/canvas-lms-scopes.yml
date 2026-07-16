@@ -1,6 +1,16 @@
-generated: '2026-07-11'
-method: derived
+generated: '2026-06-20'
+method: searched
 source: openapi/canvas-lms-rest-api-openapi.yml
+docs: https://developerdocs.instructure.com/services/canvas/resources/api_token_scopes.md
+scope_format: "url:{VERB}|{path}  e.g. url:GET|/api/v1/courses"
+scope_notes: >-
+  Canvas scopes are per-endpoint and dynamic: each is url:VERB|/api/v1/<path>.
+  Developer keys are configured with the subset of scopes a token may request;
+  when a developer key is set to "enforce scopes", tokens are restricted to the
+  listed scopes. The full live list is enumerable via
+  GET /api/v1/accounts/:account_id/scopes (group_by=resource_name). The scopes
+  below are those the captured OpenAPI operations map to; the docs reference is
+  the authoritative, install-specific source.
 schemes:
 - name: OAuth2
   source: openapi/canvas-lms-rest-api-openapi.yml

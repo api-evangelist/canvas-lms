@@ -1,0 +1,38 @@
+generated: '2026-06-20'
+method: searched
+source: >-
+  https://developerdocs.instructure.com/services/dap/dap-cli-readme.md and the
+  Canvas Data CLI / DAP client repositories. Canvas has no general-purpose REST
+  API CLI; its first-party command-line surface is the Data Access Platform
+  (DAP) client for warehouse-scale data export (and the legacy Canvas Data 1
+  CLI it replaces).
+clis:
+- name: dap
+  status: current
+  purpose: Data Access Platform (Canvas Data 2) command-line client for snapshot + incremental table/event exports.
+  package: instructure-dap-client
+  repo: https://github.com/instructure/dap-client-py
+  docs: https://developerdocs.instructure.com/services/dap/dap-cli-readme.md
+  install:
+    pip: pip install instructure-dap-client
+    with_db: pip install "instructure-dap-client[postgresql,mysql]"
+  requirements:
+    python: ">=3.11"
+    databases: [PostgreSQL 16.3+, MySQL 8.2+, SQL Server 2019+]
+  syntax: "dap [arguments] [command] [flags]"
+  commands:
+  - {name: snapshot, description: Fetch an initial full snapshot of a dataset/table.}
+  - {name: incremental, description: Fetch changes since a previous query (incremental sync).}
+  - {name: initdb, description: Initialize a supported database with DAP data.}
+  - {name: syncdb, description: Synchronize a supported database with the latest DAP data.}
+  - {name: list, description: List available tables/datasets in a namespace.}
+  - {name: schema, description: Retrieve the schema for a table.}
+  reference: https://developerdocs.instructure.com/services/dap/dap-cli-readme/dap-cli-reference.md
+  note: >-
+    Command names above reflect the documented DAP CLI verbs; run `dap --help`
+    for the authoritative, version-specific list. The CLI is a thin wrapper over
+    the instructure-dap-client Python library.
+- name: canvas-data-cli
+  status: legacy
+  purpose: Legacy Canvas Data 1 export CLI; superseded by DAP / Canvas Data 2.
+  repo: https://github.com/instructure/canvas-data-cli

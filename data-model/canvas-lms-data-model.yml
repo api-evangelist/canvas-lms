@@ -1,0 +1,51 @@
+generated: '2026-06-20'
+method: derived
+source: >-
+  Derived from the schema $ref links and id-reference fields in
+  openapi/canvas-lms-rest-api-openapi.yml (components/schemas), enriched with the
+  Canvas object reference at developerdocs.instructure.com. Canvas identifiers
+  are unprefixed 64-bit integers; the SIS layer adds parallel string keys
+  (sis_*_id) and vendor integration_id fields. Relationships use
+  has_one/has_many/belongs_to with the foreign-key field name; direction is from
+  the entity that owns the reference.
+docs: https://developerdocs.instructure.com/services/canvas/resources.md
+notation: Canvas ids are integers (int64); SIS objects carry a parallel sis_*_id string key.
+entities:
+- {name: Account, id: integer, sis_key: sis_account_id, description: A node in the Canvas tenancy hierarchy (root or sub-account).}
+- {name: Course, id: integer, sis_key: sis_course_id, description: A course offering that owns enrollments, assignments, and content.}
+- {name: Enrollment, id: integer, description: A user's role (student/teacher/TA/observer/designer) within a course or section.}
+- {name: User, id: integer, sis_key: sis_user_id, description: A person with a Canvas login.}
+- {name: Profile, id: integer, description: The public profile view of a user.}
+- {name: Assignment, id: integer, description: A gradeable activity in a course.}
+- {name: Submission, id: integer, description: A student's attempt at an assignment, carrying the grade.}
+- {name: SubmissionComment, id: integer, description: A comment on a submission.}
+- {name: Module, id: integer, description: An ordered container of course content items.}
+- {name: DiscussionTopic, id: integer, description: A discussion or announcement; may back an assignment.}
+- {name: File, id: integer, description: An uploaded file/attachment.}
+- {name: OutcomeGroup, id: integer, description: A hierarchical grouping of learning outcomes.}
+relationships:
+- {from: Account, to: Account, type: has_many, via: parent_account_id, note: Sub-accounts point at their parent; all point at root_account_id.}
+- {from: Course, to: Account, type: belongs_to, via: account_id}
+- {from: Course, to: Account, type: belongs_to, via: root_account_id}
+- {from: Course, to: Enrollment, type: has_many, via: enrollments}
+- {from: Course, to: EnrollmentTerm, type: belongs_to, via: enrollment_term_id}
+- {from: Enrollment, to: Course, type: belongs_to, via: course_id}
+- {from: Enrollment, to: User, type: belongs_to, via: user_id}
+- {from: Enrollment, to: User, type: belongs_to, via: associated_user_id, note: Observer link to the observed user.}
+- {from: Enrollment, to: Section, type: belongs_to, via: course_section_id}
+- {from: User, to: Enrollment, type: has_many, via: enrollments}
+- {from: Assignment, to: Course, type: belongs_to, via: course_id}
+- {from: Assignment, to: AssignmentGroup, type: belongs_to, via: assignment_group_id}
+- {from: Assignment, to: GroupCategory, type: belongs_to, via: group_category_id}
+- {from: Assignment, to: User, type: belongs_to, via: final_grader_id, note: Moderated-grading final grader.}
+- {from: Submission, to: Assignment, type: belongs_to, via: assignment_id}
+- {from: Submission, to: User, type: belongs_to, via: user_id}
+- {from: Submission, to: User, type: belongs_to, via: grader_id}
+- {from: Submission, to: Course, type: belongs_to, via: course_id}
+- {from: Submission, to: SubmissionComment, type: has_many, via: submission_comments}
+- {from: SubmissionComment, to: User, type: belongs_to, via: author_id}
+- {from: SubmissionComment, to: File, type: has_many, via: attachments}
+- {from: DiscussionTopic, to: Assignment, type: belongs_to, via: assignment_id, note: Graded discussions link to an assignment.}
+- {from: Module, to: Module, type: has_many, via: prerequisite_module_ids}
+- {from: File, to: Folder, type: belongs_to, via: folder_id}
+- {from: OutcomeGroup, to: OutcomeGroup, type: has_many, via: parent_outcome_group}

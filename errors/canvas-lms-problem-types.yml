@@ -1,0 +1,46 @@
+generated: '2026-06-20'
+method: searched
+source: >-
+  https://developerdocs.instructure.com/services/canvas/basics/file.throttling.md
+  plus the Canvas REST API error conventions. The captured OpenAPI documents
+  only success responses, so the error surface here is taken from the Canvas
+  docs rather than derived from OpenAPI 4xx/5xx. Canvas does NOT use RFC 9457
+  problem+json — it returns a custom JSON envelope.
+format: canvas-errors-envelope
+envelope:
+  shape: '{"errors": [{"message": "..."}]}'
+  validation_shape: '{"errors": {"<field>": [{"message": "...", "error_code": "..."}]}}'
+  notes: >-
+    Most Canvas errors return an "errors" array of {message}. Model-validation
+    failures (422) return "errors" as an object keyed by field name, each value
+    an array of {message, error_code}. Rate-limit responses add response headers
+    rather than a body field.
+problems:
+- status: 401
+  title: Unauthorized
+  meaning: Missing, invalid, or expired access token, or the token lacks the required scope.
+  remediation: Re-run the OAuth2 flow or issue a token whose developer key grants the required url:VERB|/path scope.
+- status: 403
+  title: Forbidden
+  meaning: The authenticated user lacks permission for the action, or (with a rate-limit header) the request was throttled.
+  remediation: Check the user's Canvas role/permissions; if X-Rate-Limit-Remaining is present, back off and retry.
+- status: 404
+  title: Not Found
+  meaning: The resource does not exist or is not visible to the caller.
+  remediation: Verify the id and that the caller (or the as_user_id masqueraded user) can see the object.
+- status: 422
+  title: Unprocessable Entity
+  meaning: Model validation failed; the "errors" object is keyed by field with per-field messages and error_codes.
+  remediation: Correct the offending fields reported in the errors object and resubmit.
+- status: 429
+  title: Rate Limit Exceeded
+  meaning: >-
+    The per-access-token dynamic quota was exhausted. Canvas returns
+    "429 Forbidden (Rate Limit Exceeded)". Every response carries X-Request-Cost;
+    throttled responses carry X-Rate-Limit-Remaining.
+  remediation: Serialize requests (avoid parallelism), honor X-Rate-Limit-Remaining, and retry after the quota replenishes.
+  reference: conventions/canvas-lms-conventions.yml
+- status: 500
+  title: Internal Server Error
+  meaning: An unexpected Canvas server error; may include an error report id.
+  remediation: Retry with backoff; report persistent failures with the error id via the Canvas Community.

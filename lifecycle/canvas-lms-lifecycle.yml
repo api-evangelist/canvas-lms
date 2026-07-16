@@ -1,0 +1,45 @@
+generated: '2026-06-20'
+method: searched
+source: >-
+  Canvas API change log, throttling/versioning docs, the Instructure status
+  page, and the Canvas Releases documentation on the Instructure Community.
+description: >-
+  Canvas is continuously deployed open-source software (github.com/instructure/
+  canvas-lms) released to hosted customers on a rolling cadence. The REST API is
+  versioned in the URI path (/api/v1); Canvas favors additive, non-breaking API
+  evolution and publishes additions/changes/deprecations/removals in a dated
+  change log rather than cutting new numbered API versions.
+versioning:
+  scheme: uri-path
+  current: v1
+  base_path: /api/v1
+  graphql: /api/graphql
+  dap: Canvas Data 2 / DAP (successor to Canvas Data 1 CLI); namespaces canvas + catalog
+  policy: >-
+    Additive-first. Breaking changes are announced in the change log with lead
+    time; the API resource change log tracks additions, changes, deprecations,
+    and removals.
+  docs: https://canvas.instructure.com/doc/api/file.changelog.html
+change_log:
+  url: https://community.canvaslms.com/t5/Change-Log/tkb-p/changelog
+  doc: https://developerdocs.instructure.com/services/canvas/basics/file.changelog.md
+  detail: changelog/canvas-lms-changelog.yml
+deprecation:
+  mechanism: Announced in the API change log (deprecations + removals sections)
+  sunset_header: false
+  deprecation_header: false
+release_schedule:
+  cadence: Rolling; Canvas production is deployed roughly every three weeks
+  environments:
+  - {name: beta, host_pattern: "<school>.beta.instructure.com", refresh: Rebuilt from production weekly (Saturday); new features land the third Monday monthly}
+  - {name: test, host_pattern: "<school>.test.instructure.com", refresh: Rebuilt from production roughly every three weeks}
+  - {name: production, host_pattern: "<school>.instructure.com", refresh: Live}
+  docs: https://community.canvaslms.com/t5/Canvas-Releases/What-are-the-release-schedules-for-beta-production-and-test/ta-p/242411
+sla:
+  url: https://www.instructure.com/policies/api-policy
+  note: >-
+    Free-for-Teacher (canvas.instructure.com) carries no contractual uptime SLA;
+    hosted institutional contracts define availability commitments. API usage is
+    governed by the Canvas API Policy.
+status_page: https://status.instructure.com/
+deprecated_operations: []

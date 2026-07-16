@@ -1,0 +1,44 @@
+generated: '2026-06-20'
+method: searched
+source: >-
+  Instructure UI (instructure-ui) and the Canvas Rich Content Editor API repos.
+  Canvas's embeddable/client-side component surface is Instructure UI — the
+  open-source React design system Canvas itself is built with, published as
+  scoped @instructure/* packages on npm — plus the standalone RCE service.
+  Distinct from the server-side API SDKs in packages/canvas-lms-packages.yml.
+docs:
+- https://instructure.design/
+- https://github.com/instructure/instructure-ui
+families:
+- name: Instructure UI
+  kind: React component library / design system
+  npm_scope: "@instructure/*"
+  example_packages:
+  - "@instructure/ui"
+  - "@instructure/ui-buttons"
+  - "@instructure/ui-forms"
+  - "@instructure/ui-table"
+  - "@instructure/ui-overlays"
+  repo: https://github.com/instructure/instructure-ui
+  docs: https://instructure.design/
+  official: true
+  description: >-
+    The open-source React UI component library that renders the Canvas
+    interface; consumable by LTI tools and integrations that want to match
+    Canvas's look and feel.
+- name: Canvas Rich Content Editor (RCE) API
+  kind: Embeddable rich-text editor service
+  repo: https://github.com/instructure/canvas-rce-api
+  official: true
+  description: >-
+    Standalone service backing the Canvas Rich Content Editor; embeds the same
+    authoring surface used across Canvas.
+- name: Common Cartridge Viewer
+  kind: Embeddable content viewer
+  repo: https://github.com/instructure/common-cartridge-viewer
+  official: true
+  description: Client-side viewer for IMS Common Cartridge packages.
+notes: >-
+  These are UI/embeddable surfaces. LTI 1.3 tool embedding (Deep Linking,
+  iframe launches) is the primary way third parties surface UI inside Canvas and
+  is documented under the LTI Advantage API rather than as a component library.

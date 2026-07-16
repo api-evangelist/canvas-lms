@@ -1,0 +1,49 @@
+generated: '2026-06-20'
+method: searched
+source: live probes of Canvas/Instructure hosts
+description: >-
+  Probe of the /.well-known/ discovery surface across the Instructure/Canvas
+  hosts found in apis.yml (Website, Portal, humanURL, baseURL) and the OpenAPI
+  servers[]. Each path was fetched with a plain HTTPS GET; the HTTP status is
+  recorded verbatim. Only documents returning 200 are saved as raw files. The
+  canvas.instructure.com application host bot-blocks automated well-known
+  requests (503) and the DAP api-gateway host returns 403; absence/blocking is
+  recorded as valid data.
+hosts:
+- host: https://www.instructure.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: canvas-lms-security.txt
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://canvas.instructure.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 503
+  - path: /.well-known/openid-configuration
+    status: 503
+  - path: /.well-known/oauth-authorization-server
+    status: 503
+  - path: /.well-known/api-catalog
+    status: 503
+  - path: /.well-known/ai-plugin.json
+    status: 503
+- host: https://api-gateway.instructure.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+  - path: /.well-known/openid-configuration
+    status: 403
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+  - path: /.well-known/api-catalog
+    status: 403
+  - path: /.well-known/ai-plugin.json
+    status: 403

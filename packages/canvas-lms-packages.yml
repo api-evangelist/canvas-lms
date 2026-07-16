@@ -1,0 +1,77 @@
+generated: '2026-06-20'
+method: searched
+source: >-
+  Public package-registry probes (PyPI, RubyGems, npm) plus the first-party
+  SDK/SourceCode links already catalogued in apis.yml. Instructure does not ship
+  a single umbrella Canvas API SDK; its client surface is spread across the DAP
+  Python client, several Ruby/Java LTI helper libraries, the Instructure UI
+  component packages on npm, and language-specific mobile API clients. Registry
+  HTTP status was recorded at fetch time (200 = present). official:true only
+  where the package is published by the instructure GitHub org / Instructure Inc.
+packages:
+- language: python
+  registry: pypi
+  name: instructure-dap-client
+  url: https://pypi.org/project/instructure-dap-client/
+  source: https://github.com/instructure/dap-client-py
+  install: pip install instructure-dap-client
+  version_seen: 2.2.0
+  official: true
+  description: >-
+    Data Access Platform (DAP / Canvas Data 2) query client and `dap` CLI for
+    warehouse-scale snapshot and incremental exports.
+- language: ruby
+  registry: rubygems
+  name: ims-lti
+  url: https://rubygems.org/gems/ims-lti
+  source: https://github.com/instructure/ims-lti
+  install: gem install ims-lti
+  version_seen: 2.3.7
+  official: true
+  description: Ruby library implementing the IMS LTI tool-provider and tool-consumer flows.
+- language: javascript
+  registry: npm
+  name: "@instructure/ui-buttons"
+  url: https://www.npmjs.com/package/@instructure/ui-buttons
+  source: https://github.com/instructure/instructure-ui
+  install: npm install @instructure/ui-buttons
+  official: true
+  description: >-
+    One package of the Instructure UI (@instructure/ui-*) React component
+    library that Canvas is built with; the full scope publishes dozens of
+    packages under the @instructure npm org. See components/ artifact.
+# Derived from SDK / SourceCode links in apis.yml — first-party instructure org
+# repositories distributed as source (not published to a language registry, or
+# registry not verified this round).
+- language: ruby
+  registry: github
+  name: pandarus
+  url: https://github.com/instructure/pandarus
+  source: https://github.com/instructure/pandarus
+  official: true
+  method: derived
+  description: Ruby client for the Canvas REST API.
+- language: ruby
+  registry: github
+  name: canvas_oauth_engine
+  url: https://github.com/instructure/canvas_oauth_engine
+  source: https://github.com/instructure/canvas_oauth_engine
+  official: true
+  method: derived
+  description: Rails engine implementing the Canvas OAuth2 flow.
+- language: java
+  registry: github
+  name: basiclti-util-java
+  url: https://github.com/instructure/basiclti-util-java
+  source: https://github.com/instructure/basiclti-util-java
+  official: true
+  method: derived
+  description: Java utility library for Basic LTI launches.
+- language: kotlin
+  registry: github
+  name: CanvasAPI
+  url: https://github.com/instructure/CanvasAPI
+  source: https://github.com/instructure/CanvasAPI
+  official: true
+  method: derived
+  description: Canvas REST API client used by the Canvas Android apps.

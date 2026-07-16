@@ -1,0 +1,24 @@
+generated: '2026-06-20'
+method: searched
+source: https://developerdocs.instructure.com/llms.txt
+description: >-
+  Instructure publishes a real llms.txt on its developer documentation portal
+  (developerdocs.instructure.com), plus a marketing-site llms.txt on
+  www.instructure.com. The developer-portal file is the API-relevant index
+  (Canvas, DAP, LTI, Parchment, AB Connect services) and is saved verbatim as
+  canvas-lms-llms.txt; the full expanded corpus is saved as
+  canvas-lms-llms-full.txt. The portal also supports GitBook agent queries by
+  appending .md to any page URL or ?ask= to any .md page.
+files:
+- path: /llms.txt
+  host: https://developerdocs.instructure.com
+  status: 200
+  file: canvas-lms-llms.txt
+- path: /llms-full.txt
+  host: https://developerdocs.instructure.com
+  status: 200
+  file: canvas-lms-llms-full.txt
+- path: /llms.txt
+  host: https://www.instructure.com
+  status: 200
+  note: marketing-site product/company index (not saved; developer-portal index preferred)

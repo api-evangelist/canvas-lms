@@ -1,0 +1,25 @@
+generated: '2026-06-20'
+method: searched
+source: >-
+  https://canvas.instructure.com/doc/api/file.changelog.html and the Canvas
+  Change Log knowledge base on the Instructure Community
+  (community.canvaslms.com/t5/Change-Log/tkb-p/changelog). Canvas maintains a
+  dated API change log organized by release date into Additions, Changes,
+  Deprecations, Removals, and Documentation sections rather than numbered API
+  versions. The live change log is the source of truth; this artifact captures
+  the scheme and pointers, not a full replayed history.
+docs: https://canvas.instructure.com/doc/api/file.changelog.html
+community_changelog: https://community.canvaslms.com/t5/Change-Log/tkb-p/changelog
+versioning:
+  scheme: dated change log against a single URI-path API version (/api/v1)
+  api_version: v1
+  entry_sections: [Additions, Changes, Deprecations, Removals, Documentation]
+  cadence: Aligned to the ~3-week Canvas production deploy train
+  detail: lifecycle/canvas-lms-lifecycle.yml
+notes: >-
+  Canvas does not cut breaking numbered API versions; the change log records
+  per-release additions and (rare) deprecations/removals. Structured recent
+  entries[] are intentionally omitted here because the dated entries live on the
+  Community knowledge base (Khoros), which bot-blocks automated capture — the
+  docs/community URLs above are the canonical, always-current source.
+entries: []

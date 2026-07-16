@@ -1,0 +1,47 @@
+generated: '2026-06-20'
+method: searched
+source: >-
+  Canvas developer docs (OAuth2 / manual tokens, GraphiQL) and the Instructure
+  Community articles on the beta/test environments. Canvas has no synthetic
+  "test money" surface (it is not a payments API); its sandbox story is free
+  developer instances, per-institution non-production environments, and
+  personal access tokens for testing. No test values are invented.
+description: >-
+  How to exercise the Canvas API without touching a production institution: a
+  free hosted instance, per-institution beta/test copies refreshed from
+  production, a hosted GraphiQL explorer, and manually generated personal access
+  tokens for testing.
+docs:
+- https://developerdocs.instructure.com/services/canvas/oauth2/file.oauth.md
+- https://community.canvaslms.com/t5/Canvas-Releases/What-are-the-release-schedules-for-beta-production-and-test/ta-p/242411
+free_instance:
+  name: Canvas Free for Teacher
+  url: https://canvas.instructure.com/
+  signup: https://canvas.instructure.com/register
+  note: A fully functional free Canvas account for building and testing against /api/v1 and /api/graphql.
+environments:
+- name: beta
+  host_pattern: "<school>.beta.instructure.com"
+  purpose: Safe copy for testing upcoming features and integrations.
+  refresh: Overwritten from production every Saturday; new features arrive the third Monday each month.
+  caveat: Data written to beta is discarded on the weekly refresh; email/notifications are typically suppressed.
+- name: test
+  host_pattern: "<school>.test.instructure.com"
+  purpose: A more stable non-production copy for integration testing.
+  refresh: Rebuilt from production roughly every three weeks.
+graphiql_explorer:
+  url_pattern: "https://<canvas-install>/graphiql"
+  free_instance: https://canvas.instructure.com/graphiql
+  note: Hosted interactive GraphQL explorer using the same OAuth2 session.
+test_credentials:
+  personal_access_token:
+    how: >-
+      Account > Settings > Approved Integrations > "+ New Access Token" generates
+      a manual bearer token scoped to the issuing user.
+    scope: Grants the same permissions as the user who created it.
+    caveat: >-
+      Per the Canvas API Policy, manual tokens are for testing/personal use only;
+      production applications MUST use the OAuth2 developer-key flow.
+  masquerade:
+    param: as_user_id
+    note: Admins can act-as another user for testing by appending as_user_id={id} (Masquerading).

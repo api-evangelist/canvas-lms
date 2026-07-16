@@ -1,0 +1,41 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Canvas LMS REST API
+  version: 1.0.0
+# Non-destructive Overlay capturing API Evangelist's enrichment metadata over the
+# harvested Canvas REST OpenAPI. Apply with a spec-compliant Overlay tool; never
+# mutate the original openapi/canvas-lms-rest-api-openapi.yml.
+extends: openapi/canvas-lms-rest-api-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: canvas-lms
+    x-apievangelist-artifacts:
+      authentication: authentication/canvas-lms-authentication.yml
+      scopes: scopes/canvas-lms-scopes.yml
+      conventions: conventions/canvas-lms-conventions.yml
+      errors: errors/canvas-lms-problem-types.yml
+      lifecycle: lifecycle/canvas-lms-lifecycle.yml
+      data_model: data-model/canvas-lms-data-model.yml
+      conformance: conformance/canvas-lms-conformance.yml
+      sandbox: sandbox/canvas-lms-sandbox.yml
+      agentic_access: agentic-access/canvas-lms-agentic-access.yml
+- target: $.info
+  update:
+    x-apievangelist-rate-limit:
+      mechanism: per-user-per-host dynamic quota with request cost
+      cost_header: X-Request-Cost
+      remaining_header: X-Rate-Limit-Remaining
+      throttled_status: 429
+      docs: https://developerdocs.instructure.com/services/canvas/basics/file.throttling.md
+- target: $.info
+  update:
+    x-apievangelist-pagination:
+      style: RFC 5988 Link headers
+      params: [per_page, page]
+      rels: [current, next, prev, first, last]
+      docs: https://developerdocs.instructure.com/services/canvas/basics/file.pagination.md
+- target: $.components.securitySchemes.OAuth2
+  update:
+    x-apievangelist-scopes-format: "url:{VERB}|{path}  e.g. url:GET|/api/v1/courses"
+    x-apievangelist-scopes-docs: https://developerdocs.instructure.com/services/canvas/resources/api_token_scopes.md
