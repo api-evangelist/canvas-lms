@@ -1,0 +1,468 @@
+openapi: 3.1.0
+info:
+  title: Canvas LMS REST Accounts API
+  description: 'The Canvas LMS REST API exposes the full learning-management surface — accounts, courses,
+
+    enrollments, users, assignments, submissions, grades, outcomes, quizzes, modules, pages,
+
+    discussions, files, conversations, calendar events, planner, and more — via
+
+    `/api/v1` on any Canvas install (Free for Teacher at canvas.instructure.com,
+
+    Canvas Cloud, or self-hosted).
+
+
+    Authentication uses OAuth2 (RFC 6749). Tokens are issued via the
+
+    `/login/oauth2/auth` and `/login/oauth2/token` endpoints; clients must be
+
+    registered as a Developer Key in the target Canvas account. Manual personal
+
+    access tokens may be created from a user''s profile for testing only.
+
+
+    Pagination follows RFC 5988 with `Link` response headers (`rel="next"`,
+
+    `"prev"`, `"first"`, `"last"`). Includes can be requested via the
+
+    `include[]` query parameter on most resources. Admin users may impersonate
+
+    other users by appending `as_user_id={id}` (Masquerading).
+
+
+    This OpenAPI document covers the most-used endpoints across Accounts,
+
+    Courses, Enrollments, Users, Assignments, Submissions, Modules, Discussions,
+
+    Files, and Outcomes. The full surface (190+ resource groups) is documented
+
+    at https://canvas.instructure.com/doc/api/all_resources.html and generated
+
+    in the canvas-lms repo via `rake doc:openapi`.
+
+    '
+  version: '1.0'
+  contact:
+    name: Canvas Developer Community
+    url: https://community.canvaslms.com/t5/Canvas-Developers-Group/gh-p/canvas-developers
+  license:
+    name: AGPL-3.0
+    identifier: AGPL-3.0-or-later
+  x-logo:
+    url: https://www.instructure.com/sites/default/files/image/2021-12/Canvas_logo_single_mark.png
+servers:
+- url: https://{canvas_host}/api/v1
+  description: Canvas REST API on any Canvas install
+  variables:
+    canvas_host:
+      default: canvas.instructure.com
+      description: The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)
+security:
+- OAuth2: []
+- BearerAuth: []
+tags:
+- name: Accounts
+  description: Root and sub-accounts that own the Canvas tenancy hierarchy
+paths:
+  /accounts:
+    get:
+      summary: List Accounts
+      description: List accounts that the current user can view or manage.
+      operationId: listAccounts
+      tags:
+      - Accounts
+      parameters:
+      - $ref: '#/components/parameters/PerPage'
+      - $ref: '#/components/parameters/Page'
+      - name: include[]
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - lti_guid
+            - registration_settings
+            - services
+      responses:
+        '200':
+          description: A paginated list of accounts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+  /accounts/{account_id}:
+    get:
+      summary: Get a Single Account
+      operationId: getAccount
+      tags:
+      - Accounts
+      parameters:
+      - $ref: '#/components/parameters/AccountId'
+      responses:
+        '200':
+          description: The account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+  /accounts/{account_id}/courses:
+    get:
+      summary: List Active Courses in an Account
+      operationId: listCoursesInAccount
+      tags:
+      - Accounts
+      parameters:
+      - $ref: '#/components/parameters/AccountId'
+      - name: with_enrollments
+        in: query
+        schema:
+          type: boolean
+      - name: enrollment_term_id
+        in: query
+        schema:
+          type: integer
+      - name: search_term
+        in: query
+        schema:
+          type: string
+      - name: state[]
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - created
+            - claimed
+            - available
+            - completed
+            - deleted
+            - all
+      - $ref: '#/components/parameters/PerPage'
+      - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: A paginated list of courses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+components:
+  parameters:
+    AccountId:
+      name: account_id
+      in: path
+      required: true
+      description: The Canvas account ID, an SIS account ID prefixed `sis_account_id:`, or `self`.
+      schema:
+        type: string
+    PerPage:
+      name: per_page
+      in: query
+      description: Items per page (default 10, max varies by endpoint and install).
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+    Page:
+      name: page
+      in: query
+      description: Page number (1-indexed). Prefer following RFC 5988 Link headers with rel="next".
+      schema:
+        type: integer
+        minimum: 1
+  schemas:
+    Course:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        sis_course_id:
+          type: string
+          nullable: true
+        uuid:
+          type: string
+        integration_id:
+          type: string
+          nullable: true
+        sis_import_id:
+          type: integer
+          nullable: true
+        name:
+          type: string
+        course_code:
+          type: string
+        original_name:
+          type: string
+          nullable: true
+        workflow_state:
+          type: string
+          enum:
+          - unpublished
+          - available
+          - completed
+          - deleted
+        account_id:
+          type: integer
+        root_account_id:
+          type: integer
+        enrollment_term_id:
+          type: integer
+        grading_standard_id:
+          type: integer
+          nullable: true
+        grade_passback_setting:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        start_at:
+          type: string
+          format: date-time
+          nullable: true
+        end_at:
+          type: string
+          format: date-time
+          nullable: true
+        locale:
+          type: string
+          nullable: true
+        enrollments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Enrollment'
+        total_students:
+          type: integer
+        default_view:
+          type: string
+          enum:
+          - feed
+          - wiki
+          - modules
+          - assignments
+          - syllabus
+        syllabus_body:
+          type: string
+          nullable: true
+        needs_grading_count:
+          type: integer
+        is_public:
+          type: boolean
+        is_public_to_auth_users:
+          type: boolean
+        public_syllabus:
+          type: boolean
+        public_syllabus_to_auth:
+          type: boolean
+        storage_quota_mb:
+          type: integer
+        storage_quota_used_mb:
+          type: number
+        hide_final_grades:
+          type: boolean
+        license:
+          type: string
+          nullable: true
+        allow_student_assignment_edits:
+          type: boolean
+        allow_wiki_comments:
+          type: boolean
+        allow_student_forum_attachments:
+          type: boolean
+        open_enrollment:
+          type: boolean
+        self_enrollment:
+          type: boolean
+        restrict_enrollments_to_course_dates:
+          type: boolean
+        course_format:
+          type: string
+          nullable: true
+        time_zone:
+          type: string
+        blueprint:
+          type: boolean
+        template:
+          type: boolean
+        homeroom_course:
+          type: boolean
+    Enrollment:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        course_id:
+          type: integer
+        course_section_id:
+          type: integer
+          nullable: true
+        root_account_id:
+          type: integer
+        type:
+          type: string
+          enum:
+          - StudentEnrollment
+          - TeacherEnrollment
+          - TaEnrollment
+          - DesignerEnrollment
+          - ObserverEnrollment
+        user_id:
+          type: integer
+        associated_user_id:
+          type: integer
+          nullable: true
+        role:
+          type: string
+        role_id:
+          type: integer
+        enrollment_state:
+          type: string
+          enum:
+          - active
+          - invited
+          - creation_pending
+          - deleted
+          - rejected
+          - completed
+          - inactive
+        limit_privileges_to_course_section:
+          type: boolean
+        sis_import_id:
+          type: integer
+          nullable: true
+        sis_account_id:
+          type: string
+          nullable: true
+        sis_course_id:
+          type: string
+          nullable: true
+        sis_section_id:
+          type: string
+          nullable: true
+        sis_user_id:
+          type: string
+          nullable: true
+        section_integration_id:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        start_at:
+          type: string
+          format: date-time
+          nullable: true
+        end_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_activity_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_attended_at:
+          type: string
+          format: date-time
+          nullable: true
+        total_activity_time:
+          type: integer
+        html_url:
+          type: string
+        grades:
+          type: object
+          properties:
+            html_url:
+              type: string
+            current_grade:
+              type: string
+              nullable: true
+            final_grade:
+              type: string
+              nullable: true
+            current_score:
+              type: number
+              nullable: true
+            final_score:
+              type: number
+              nullable: true
+            unposted_current_grade:
+              type: string
+              nullable: true
+            unposted_final_grade:
+              type: string
+              nullable: true
+            unposted_current_score:
+              type: number
+              nullable: true
+            unposted_final_score:
+              type: number
+              nullable: true
+    Account:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        uuid:
+          type: string
+        parent_account_id:
+          type: integer
+          nullable: true
+        root_account_id:
+          type: integer
+          nullable: true
+        workflow_state:
+          type: string
+          enum:
+          - active
+          - deleted
+        default_storage_quota_mb:
+          type: integer
+        default_user_storage_quota_mb:
+          type: integer
+        default_group_storage_quota_mb:
+          type: integer
+        default_time_zone:
+          type: string
+        sis_account_id:
+          type: string
+          nullable: true
+        integration_id:
+          type: string
+          nullable: true
+        sis_import_id:
+          type: integer
+          nullable: true
+        lti_guid:
+          type: string
+          nullable: true
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: Canvas OAuth2 (RFC 6749) authorization code grant. Register a Developer Key in the target Canvas account to obtain a client_id and client_secret.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://canvas.instructure.com/login/oauth2/auth
+          tokenUrl: https://canvas.instructure.com/login/oauth2/token
+          refreshUrl: https://canvas.instructure.com/login/oauth2/token
+          scopes:
+            url:GET|/api/v1/accounts: Read accounts
+            url:GET|/api/v1/courses: Read courses
+            url:GET|/api/v1/users/{user_id}: Read a user
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: A Canvas access token. For testing only — production apps MUST use the OAuth2 flow per the Canvas API Policy.

@@ -1,0 +1,388 @@
+openapi: 3.1.0
+info:
+  title: Canvas LMS REST Accounts Submissions API
+  description: 'The Canvas LMS REST API exposes the full learning-management surface — accounts, courses,
+
+    enrollments, users, assignments, submissions, grades, outcomes, quizzes, modules, pages,
+
+    discussions, files, conversations, calendar events, planner, and more — via
+
+    `/api/v1` on any Canvas install (Free for Teacher at canvas.instructure.com,
+
+    Canvas Cloud, or self-hosted).
+
+
+    Authentication uses OAuth2 (RFC 6749). Tokens are issued via the
+
+    `/login/oauth2/auth` and `/login/oauth2/token` endpoints; clients must be
+
+    registered as a Developer Key in the target Canvas account. Manual personal
+
+    access tokens may be created from a user''s profile for testing only.
+
+
+    Pagination follows RFC 5988 with `Link` response headers (`rel="next"`,
+
+    `"prev"`, `"first"`, `"last"`). Includes can be requested via the
+
+    `include[]` query parameter on most resources. Admin users may impersonate
+
+    other users by appending `as_user_id={id}` (Masquerading).
+
+
+    This OpenAPI document covers the most-used endpoints across Accounts,
+
+    Courses, Enrollments, Users, Assignments, Submissions, Modules, Discussions,
+
+    Files, and Outcomes. The full surface (190+ resource groups) is documented
+
+    at https://canvas.instructure.com/doc/api/all_resources.html and generated
+
+    in the canvas-lms repo via `rake doc:openapi`.
+
+    '
+  version: '1.0'
+  contact:
+    name: Canvas Developer Community
+    url: https://community.canvaslms.com/t5/Canvas-Developers-Group/gh-p/canvas-developers
+  license:
+    name: AGPL-3.0
+    identifier: AGPL-3.0-or-later
+  x-logo:
+    url: https://www.instructure.com/sites/default/files/image/2021-12/Canvas_logo_single_mark.png
+servers:
+- url: https://{canvas_host}/api/v1
+  description: Canvas REST API on any Canvas install
+  variables:
+    canvas_host:
+      default: canvas.instructure.com
+      description: The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)
+security:
+- OAuth2: []
+- BearerAuth: []
+tags:
+- name: Submissions
+  description: Student submissions, grades, and submission comments
+paths:
+  /courses/{course_id}/assignments/{assignment_id}/submissions:
+    get:
+      summary: List Submissions for an Assignment
+      operationId: listSubmissions
+      tags:
+      - Submissions
+      parameters:
+      - $ref: '#/components/parameters/CourseId'
+      - $ref: '#/components/parameters/AssignmentId'
+      - name: include[]
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - submission_history
+            - submission_comments
+            - rubric_assessment
+            - assignment
+            - visibility
+            - course
+            - user
+            - group
+            - read_status
+            - student_entered_score
+      - name: grouped
+        in: query
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: A paginated list of submissions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Submission'
+  /courses/{course_id}/assignments/{assignment_id}/submissions/{user_id}:
+    get:
+      summary: Get a Single Submission
+      operationId: getSubmission
+      tags:
+      - Submissions
+      parameters:
+      - $ref: '#/components/parameters/CourseId'
+      - $ref: '#/components/parameters/AssignmentId'
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The submission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Submission'
+    put:
+      summary: Grade or Comment on a Submission
+      operationId: gradeSubmission
+      tags:
+      - Submissions
+      parameters:
+      - $ref: '#/components/parameters/CourseId'
+      - $ref: '#/components/parameters/AssignmentId'
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                submission:
+                  type: object
+                  properties:
+                    posted_grade:
+                      type: string
+                    excuse:
+                      type: boolean
+                    late_policy_status:
+                      type: string
+                      enum:
+                      - late
+                      - missing
+                      - none
+                      - extended
+                    seconds_late_override:
+                      type: integer
+                comment:
+                  type: object
+                  properties:
+                    text_comment:
+                      type: string
+                    group_comment:
+                      type: boolean
+                rubric_assessment:
+                  type: object
+                  additionalProperties: true
+      responses:
+        '200':
+          description: The updated submission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Submission'
+components:
+  parameters:
+    AssignmentId:
+      name: assignment_id
+      in: path
+      required: true
+      description: The Canvas assignment ID.
+      schema:
+        type: string
+    CourseId:
+      name: course_id
+      in: path
+      required: true
+      description: The Canvas course ID or an SIS course ID prefixed `sis_course_id:`.
+      schema:
+        type: string
+  schemas:
+    Submission:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        assignment_id:
+          type: integer
+        user_id:
+          type: integer
+        grader_id:
+          type: integer
+          nullable: true
+        course_id:
+          type: integer
+        attempt:
+          type: integer
+          nullable: true
+        body:
+          type: string
+          nullable: true
+        grade:
+          type: string
+          nullable: true
+        grade_matches_current_submission:
+          type: boolean
+        html_url:
+          type: string
+        preview_url:
+          type: string
+        score:
+          type: number
+          nullable: true
+        submission_comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubmissionComment'
+        submission_type:
+          type: string
+          nullable: true
+        submitted_at:
+          type: string
+          format: date-time
+          nullable: true
+        url:
+          type: string
+          nullable: true
+        workflow_state:
+          type: string
+          enum:
+          - graded
+          - submitted
+          - unsubmitted
+          - pending_review
+        late:
+          type: boolean
+        missing:
+          type: boolean
+        excused:
+          type: boolean
+        late_policy_status:
+          type: string
+          nullable: true
+          enum:
+          - late
+          - missing
+          - none
+          - extended
+        seconds_late:
+          type: integer
+          nullable: true
+        points_deducted:
+          type: number
+          nullable: true
+        entered_grade:
+          type: string
+          nullable: true
+        entered_score:
+          type: number
+          nullable: true
+        posted_at:
+          type: string
+          format: date-time
+          nullable: true
+        read_status:
+          type: string
+          enum:
+          - read
+          - unread
+        redo_request:
+          type: boolean
+    File:
+      type: object
+      properties:
+        id:
+          type: integer
+        uuid:
+          type: string
+        folder_id:
+          type: integer
+          nullable: true
+        display_name:
+          type: string
+        filename:
+          type: string
+        content-type:
+          type: string
+        url:
+          type: string
+        size:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        unlock_at:
+          type: string
+          format: date-time
+          nullable: true
+        locked:
+          type: boolean
+        hidden:
+          type: boolean
+        lock_at:
+          type: string
+          format: date-time
+          nullable: true
+        hidden_for_user:
+          type: boolean
+        thumbnail_url:
+          type: string
+          nullable: true
+        modified_at:
+          type: string
+          format: date-time
+        mime_class:
+          type: string
+        media_entry_id:
+          type: string
+          nullable: true
+        locked_for_user:
+          type: boolean
+        upload_status:
+          type: string
+          enum:
+          - pending
+          - errored
+          - success
+    SubmissionComment:
+      type: object
+      properties:
+        id:
+          type: integer
+        author_id:
+          type: integer
+        author_name:
+          type: string
+        comment:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        edited_at:
+          type: string
+          format: date-time
+          nullable: true
+        media_comment:
+          type: object
+          additionalProperties: true
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/File'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: Canvas OAuth2 (RFC 6749) authorization code grant. Register a Developer Key in the target Canvas account to obtain a client_id and client_secret.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://canvas.instructure.com/login/oauth2/auth
+          tokenUrl: https://canvas.instructure.com/login/oauth2/token
+          refreshUrl: https://canvas.instructure.com/login/oauth2/token
+          scopes:
+            url:GET|/api/v1/accounts: Read accounts
+            url:GET|/api/v1/courses: Read courses
+            url:GET|/api/v1/users/{user_id}: Read a user
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: A Canvas access token. For testing only — production apps MUST use the OAuth2 flow per the Canvas API Policy.

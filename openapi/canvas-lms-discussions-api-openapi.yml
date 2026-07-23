@@ -1,0 +1,200 @@
+openapi: 3.1.0
+info:
+  title: Canvas LMS REST Accounts Discussions API
+  description: 'The Canvas LMS REST API exposes the full learning-management surface — accounts, courses,
+
+    enrollments, users, assignments, submissions, grades, outcomes, quizzes, modules, pages,
+
+    discussions, files, conversations, calendar events, planner, and more — via
+
+    `/api/v1` on any Canvas install (Free for Teacher at canvas.instructure.com,
+
+    Canvas Cloud, or self-hosted).
+
+
+    Authentication uses OAuth2 (RFC 6749). Tokens are issued via the
+
+    `/login/oauth2/auth` and `/login/oauth2/token` endpoints; clients must be
+
+    registered as a Developer Key in the target Canvas account. Manual personal
+
+    access tokens may be created from a user''s profile for testing only.
+
+
+    Pagination follows RFC 5988 with `Link` response headers (`rel="next"`,
+
+    `"prev"`, `"first"`, `"last"`). Includes can be requested via the
+
+    `include[]` query parameter on most resources. Admin users may impersonate
+
+    other users by appending `as_user_id={id}` (Masquerading).
+
+
+    This OpenAPI document covers the most-used endpoints across Accounts,
+
+    Courses, Enrollments, Users, Assignments, Submissions, Modules, Discussions,
+
+    Files, and Outcomes. The full surface (190+ resource groups) is documented
+
+    at https://canvas.instructure.com/doc/api/all_resources.html and generated
+
+    in the canvas-lms repo via `rake doc:openapi`.
+
+    '
+  version: '1.0'
+  contact:
+    name: Canvas Developer Community
+    url: https://community.canvaslms.com/t5/Canvas-Developers-Group/gh-p/canvas-developers
+  license:
+    name: AGPL-3.0
+    identifier: AGPL-3.0-or-later
+  x-logo:
+    url: https://www.instructure.com/sites/default/files/image/2021-12/Canvas_logo_single_mark.png
+servers:
+- url: https://{canvas_host}/api/v1
+  description: Canvas REST API on any Canvas install
+  variables:
+    canvas_host:
+      default: canvas.instructure.com
+      description: The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)
+security:
+- OAuth2: []
+- BearerAuth: []
+tags:
+- name: Discussions
+  description: Discussion topics and entries
+paths:
+  /courses/{course_id}/discussion_topics:
+    get:
+      summary: List Discussion Topics in a Course
+      operationId: listDiscussionTopics
+      tags:
+      - Discussions
+      parameters:
+      - $ref: '#/components/parameters/CourseId'
+      - name: include[]
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - all_dates
+            - sections
+            - sections_user_count
+            - overrides
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          enum:
+          - position
+          - recent_activity
+          - title
+      responses:
+        '200':
+          description: A paginated list of discussion topics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DiscussionTopic'
+components:
+  parameters:
+    CourseId:
+      name: course_id
+      in: path
+      required: true
+      description: The Canvas course ID or an SIS course ID prefixed `sis_course_id:`.
+      schema:
+        type: string
+  schemas:
+    DiscussionTopic:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        message:
+          type: string
+          nullable: true
+        html_url:
+          type: string
+        posted_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_reply_at:
+          type: string
+          format: date-time
+          nullable: true
+        require_initial_post:
+          type: boolean
+        user_can_see_posts:
+          type: boolean
+        discussion_subentry_count:
+          type: integer
+        read_state:
+          type: string
+          enum:
+          - read
+          - unread
+        unread_count:
+          type: integer
+        subscribed:
+          type: boolean
+        assignment_id:
+          type: integer
+          nullable: true
+        delayed_post_at:
+          type: string
+          format: date-time
+          nullable: true
+        published:
+          type: boolean
+        lock_at:
+          type: string
+          format: date-time
+          nullable: true
+        locked:
+          type: boolean
+        pinned:
+          type: boolean
+        locked_for_user:
+          type: boolean
+        discussion_type:
+          type: string
+          enum:
+          - side_comment
+          - threaded
+          - not_threaded
+        position:
+          type: integer
+          nullable: true
+        allow_rating:
+          type: boolean
+        only_graders_can_rate:
+          type: boolean
+        sort_by_rating:
+          type: boolean
+        is_announcement:
+          type: boolean
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: Canvas OAuth2 (RFC 6749) authorization code grant. Register a Developer Key in the target Canvas account to obtain a client_id and client_secret.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://canvas.instructure.com/login/oauth2/auth
+          tokenUrl: https://canvas.instructure.com/login/oauth2/token
+          refreshUrl: https://canvas.instructure.com/login/oauth2/token
+          scopes:
+            url:GET|/api/v1/accounts: Read accounts
+            url:GET|/api/v1/courses: Read courses
+            url:GET|/api/v1/users/{user_id}: Read a user
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: A Canvas access token. For testing only — production apps MUST use the OAuth2 flow per the Canvas API Policy.

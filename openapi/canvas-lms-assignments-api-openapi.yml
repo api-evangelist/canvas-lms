@@ -1,0 +1,381 @@
+openapi: 3.1.0
+info:
+  title: Canvas LMS REST Accounts Assignments API
+  description: 'The Canvas LMS REST API exposes the full learning-management surface — accounts, courses,
+
+    enrollments, users, assignments, submissions, grades, outcomes, quizzes, modules, pages,
+
+    discussions, files, conversations, calendar events, planner, and more — via
+
+    `/api/v1` on any Canvas install (Free for Teacher at canvas.instructure.com,
+
+    Canvas Cloud, or self-hosted).
+
+
+    Authentication uses OAuth2 (RFC 6749). Tokens are issued via the
+
+    `/login/oauth2/auth` and `/login/oauth2/token` endpoints; clients must be
+
+    registered as a Developer Key in the target Canvas account. Manual personal
+
+    access tokens may be created from a user''s profile for testing only.
+
+
+    Pagination follows RFC 5988 with `Link` response headers (`rel="next"`,
+
+    `"prev"`, `"first"`, `"last"`). Includes can be requested via the
+
+    `include[]` query parameter on most resources. Admin users may impersonate
+
+    other users by appending `as_user_id={id}` (Masquerading).
+
+
+    This OpenAPI document covers the most-used endpoints across Accounts,
+
+    Courses, Enrollments, Users, Assignments, Submissions, Modules, Discussions,
+
+    Files, and Outcomes. The full surface (190+ resource groups) is documented
+
+    at https://canvas.instructure.com/doc/api/all_resources.html and generated
+
+    in the canvas-lms repo via `rake doc:openapi`.
+
+    '
+  version: '1.0'
+  contact:
+    name: Canvas Developer Community
+    url: https://community.canvaslms.com/t5/Canvas-Developers-Group/gh-p/canvas-developers
+  license:
+    name: AGPL-3.0
+    identifier: AGPL-3.0-or-later
+  x-logo:
+    url: https://www.instructure.com/sites/default/files/image/2021-12/Canvas_logo_single_mark.png
+servers:
+- url: https://{canvas_host}/api/v1
+  description: Canvas REST API on any Canvas install
+  variables:
+    canvas_host:
+      default: canvas.instructure.com
+      description: The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)
+security:
+- OAuth2: []
+- BearerAuth: []
+tags:
+- name: Assignments
+  description: Assignments, due dates, submission types, and grading
+paths:
+  /courses/{course_id}/assignments:
+    get:
+      summary: List Assignments in a Course
+      operationId: listAssignments
+      tags:
+      - Assignments
+      parameters:
+      - $ref: '#/components/parameters/CourseId'
+      - name: include[]
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - submission
+            - assignment_visibility
+            - all_dates
+            - overrides
+            - observed_users
+            - can_edit
+            - score_statistics
+            - ab_guid
+      - name: search_term
+        in: query
+        schema:
+          type: string
+      - name: order_by
+        in: query
+        schema:
+          type: string
+          enum:
+          - position
+          - name
+          - due_at
+      - name: bucket
+        in: query
+        schema:
+          type: string
+          enum:
+          - past
+          - overdue
+          - undated
+          - ungraded
+          - unsubmitted
+          - upcoming
+          - future
+      - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: A paginated list of assignments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Assignment'
+    post:
+      summary: Create an Assignment
+      operationId: createAssignment
+      tags:
+      - Assignments
+      parameters:
+      - $ref: '#/components/parameters/CourseId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                assignment:
+                  $ref: '#/components/schemas/Assignment'
+      responses:
+        '201':
+          description: The created assignment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assignment'
+  /courses/{course_id}/assignments/{assignment_id}:
+    get:
+      summary: Get a Single Assignment
+      operationId: getAssignment
+      tags:
+      - Assignments
+      parameters:
+      - $ref: '#/components/parameters/CourseId'
+      - $ref: '#/components/parameters/AssignmentId'
+      responses:
+        '200':
+          description: The assignment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assignment'
+    put:
+      summary: Edit an Assignment
+      operationId: updateAssignment
+      tags:
+      - Assignments
+      parameters:
+      - $ref: '#/components/parameters/CourseId'
+      - $ref: '#/components/parameters/AssignmentId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                assignment:
+                  $ref: '#/components/schemas/Assignment'
+      responses:
+        '200':
+          description: The updated assignment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assignment'
+    delete:
+      summary: Delete an Assignment
+      operationId: deleteAssignment
+      tags:
+      - Assignments
+      parameters:
+      - $ref: '#/components/parameters/CourseId'
+      - $ref: '#/components/parameters/AssignmentId'
+      responses:
+        '200':
+          description: The deleted assignment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assignment'
+components:
+  parameters:
+    CourseId:
+      name: course_id
+      in: path
+      required: true
+      description: The Canvas course ID or an SIS course ID prefixed `sis_course_id:`.
+      schema:
+        type: string
+    PerPage:
+      name: per_page
+      in: query
+      description: Items per page (default 10, max varies by endpoint and install).
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+    AssignmentId:
+      name: assignment_id
+      in: path
+      required: true
+      description: The Canvas assignment ID.
+      schema:
+        type: string
+  schemas:
+    Assignment:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        due_at:
+          type: string
+          format: date-time
+          nullable: true
+        lock_at:
+          type: string
+          format: date-time
+          nullable: true
+        unlock_at:
+          type: string
+          format: date-time
+          nullable: true
+        course_id:
+          type: integer
+        html_url:
+          type: string
+        submissions_download_url:
+          type: string
+        assignment_group_id:
+          type: integer
+        due_date_required:
+          type: boolean
+        allowed_extensions:
+          type: array
+          items:
+            type: string
+        max_name_length:
+          type: integer
+        turnitin_enabled:
+          type: boolean
+        vericite_enabled:
+          type: boolean
+        peer_reviews:
+          type: boolean
+        automatic_peer_reviews:
+          type: boolean
+        peer_review_count:
+          type: integer
+        group_category_id:
+          type: integer
+          nullable: true
+        needs_grading_count:
+          type: integer
+        position:
+          type: integer
+        post_to_sis:
+          type: boolean
+          nullable: true
+        integration_id:
+          type: string
+          nullable: true
+        integration_data:
+          type: object
+          additionalProperties: true
+        points_possible:
+          type: number
+        submission_types:
+          type: array
+          items:
+            type: string
+            enum:
+            - discussion_topic
+            - online_quiz
+            - on_paper
+            - none
+            - external_tool
+            - online_text_entry
+            - online_url
+            - online_upload
+            - media_recording
+            - student_annotation
+        has_submitted_submissions:
+          type: boolean
+        grading_type:
+          type: string
+          enum:
+          - pass_fail
+          - percent
+          - letter_grade
+          - gpa_scale
+          - points
+          - not_graded
+        grading_standard_id:
+          type: integer
+          nullable: true
+        published:
+          type: boolean
+        unpublishable:
+          type: boolean
+        only_visible_to_overrides:
+          type: boolean
+        locked_for_user:
+          type: boolean
+        muted:
+          type: boolean
+        omit_from_final_grade:
+          type: boolean
+        hide_in_gradebook:
+          type: boolean
+        moderated_grading:
+          type: boolean
+        grader_count:
+          type: integer
+        final_grader_id:
+          type: integer
+          nullable: true
+        grader_comments_visible_to_graders:
+          type: boolean
+        graders_anonymous_to_graders:
+          type: boolean
+        grader_names_visible_to_final_grader:
+          type: boolean
+        anonymous_grading:
+          type: boolean
+        allowed_attempts:
+          type: integer
+        post_manually:
+          type: boolean
+        external_tool_tag_attributes:
+          type: object
+          additionalProperties: true
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: Canvas OAuth2 (RFC 6749) authorization code grant. Register a Developer Key in the target Canvas account to obtain a client_id and client_secret.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://canvas.instructure.com/login/oauth2/auth
+          tokenUrl: https://canvas.instructure.com/login/oauth2/token
+          refreshUrl: https://canvas.instructure.com/login/oauth2/token
+          scopes:
+            url:GET|/api/v1/accounts: Read accounts
+            url:GET|/api/v1/courses: Read courses
+            url:GET|/api/v1/users/{user_id}: Read a user
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: A Canvas access token. For testing only — production apps MUST use the OAuth2 flow per the Canvas API Policy.
