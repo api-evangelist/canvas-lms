@@ -13,7 +13,20 @@ tags:
 - AGPL
 - Canvas
 kind: contract
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: free
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Free · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/canvas-lms.png
 access: 3rd-Party
 description: >-
   Canvas is the open, AGPLv3-licensed learning management system created and maintained by Instructure, Inc. and used by
@@ -27,67 +40,6 @@ description: >-
   Canvas is the same software that powers canvas.instructure.com (Free for Teacher), Canvas Cloud for institutions, and
   self-hosted deployments.
 apis:
-- aid: canvas-lms:canvas-rest-api
-  name: Canvas REST API
-  tags:
-  - REST
-  - Courses
-  - Users
-  - Assignments
-  - Grades
-  - Enrollments
-  - LMS
-  humanURL: https://canvas.instructure.com/doc/api/
-  baseURL: https://<canvas-install-url>/api/v1
-  properties:
-  - url: https://canvas.instructure.com/doc/api/
-    type: Documentation
-  - url: https://canvas.instructure.com/doc/api/all_resources.html
-    type: Documentation
-    name: All Resources Reference
-  - url: openapi/canvas-lms-rest-api-openapi.yml
-    type: OpenAPI
-  - url: json-schema/canvas-lms-course-schema.json
-    type: JSONSchema
-  - url: json-schema/canvas-lms-assignment-schema.json
-    type: JSONSchema
-  - url: json-ld/canvas-lms-context.jsonld
-    type: JSONLD
-  - url: https://canvas.instructure.com/doc/api/file.oauth.html
-    type: Authentication
-    name: OAuth2 Overview
-  - url: https://canvas.instructure.com/doc/api/file.oauth_endpoints.html
-    type: Authentication
-    name: OAuth2 Endpoints
-  - url: https://canvas.instructure.com/doc/api/file.developer_keys.html
-    type: Authentication
-    name: Developer Keys
-  - url: https://canvas.instructure.com/doc/api/file.pagination.html
-    type: Pagination
-  - url: https://canvas.instructure.com/doc/api/file.throttling.html
-    type: RateLimits
-  - url: https://canvas.instructure.com/doc/api/file.file_uploads.html
-    type: Documentation
-    name: File Uploads
-  - url: https://canvas.instructure.com/doc/api/file.masquerading.html
-    type: Documentation
-    name: Masquerading (Act-As)
-  - url: https://canvas.instructure.com/doc/api/file.changelog.html
-    type: ChangeLog
-  description: >-
-    The canonical Canvas REST API at /api/v1. 190+ controller-driven resource groups covering Accounts, Account
-    Calendars, Account Notifications, Account Reports, Admins, Announcements, Appointment Groups, Assignments,
-    Assignment Groups, Assignment Extensions, Authentication Providers, Audit Logs (Authentications, Course, Grade
-    Change), Blueprint Courses, Bookmarks, Brand Configs, Calendar Events, Collaborations, Communication Channels,
-    Conferences, Content Exports, Content Migrations, Content Shares, Conversations, Courses, Course Pace, Course
-    Reports, Custom Gradebook Columns, Developer Keys, Discussion Topics, Enrollments, Enrollment Terms, ePortfolios,
-    ePub Exports, External Tools, Favorites, Feature Flags, Files, Folders, Gradebook History, Grading Periods,
-    Grading Standards, Group Categories, Groups, JWTs, Late Policy, Live Assessments, Logins, Media Objects, Modules,
-    New Quizzes, Notification Preferences, Outcomes, Outcome Groups, Outcome Imports, Outcome Results, Pages, Peer
-    Reviews, Planner, Polls, Progress, Quizzes, Quiz Submissions, Roles, Rubrics, Sections, SIS Imports, Sub-Accounts,
-    Submissions, Submission Comments, Tabs, User Observees, Users, AI Conversations, AI Experiences, and more.
-    Authentication via OAuth2 (RFC 6749) with developer-key-issued client credentials; supports manual access tokens
-    for testing and masquerading via the as_user_id parameter.
 - aid: canvas-lms:canvas-graphql-api
   name: Canvas GraphQL API
   tags:
@@ -107,10 +59,10 @@ apis:
   - url: graphql/canvas-lms-graphql.md
     type: GraphQL
   description: >-
-    GraphQL endpoint exposing the Canvas object graph (courses, users, enrollments, assignments, submissions, modules,
-    discussion topics, outcomes, account hierarchies, etc.). Permissions mirror the REST API. Includes a hosted
-    GraphiQL explorer at /graphiql for query development. Authentication uses the same OAuth2 bearer tokens as the
-    REST API.
+    GraphQL endpoint exposing the Canvas object graph (courses, users, enrollments, assignments, submissions,
+    modules, discussion topics, outcomes, account hierarchies, etc.). Permissions mirror the REST API.
+    Includes a hosted GraphiQL explorer at /graphiql for query development. Authentication uses the same
+    OAuth2 bearer tokens as the REST API.
 - aid: canvas-lms:canvas-lti-advantage
   name: Canvas LTI Advantage Services
   tags:
@@ -156,10 +108,10 @@ apis:
     type: Documentation
     name: LTI Registrations
   description: >-
-    1EdTech (IMS Global) LTI 1.3 / LTI Advantage implementation. Includes Deep Linking 2.0, Names and Role
-    Provisioning Services (NRPS), Assignment and Grade Services (Line Items, Score, Result), Dynamic Registration,
-    Platform Notification Service, and JWK-based key exchange. Authentication uses JWT client assertions per the IMS
-    Security Framework.
+    1EdTech (IMS Global) LTI 1.3 / LTI Advantage implementation. Includes Deep Linking 2.0, Names and
+    Role Provisioning Services (NRPS), Assignment and Grade Services (Line Items, Score, Result), Dynamic
+    Registration, Platform Notification Service, and JWK-based key exchange. Authentication uses JWT client
+    assertions per the IMS Security Framework.
 - aid: canvas-lms:canvas-platform-notification-service
   name: Canvas Platform Notification Service
   tags:
@@ -175,13 +127,15 @@ apis:
   - url: https://canvas.instructure.com/doc/api/notice_handlers.html
     type: Documentation
     name: Notice Handlers
-  - url: https://canvas.instructure.com/doc/api/webhooks_subscriptions_for_plagiarism_platform.html
+  - url: >-
+      https://canvas.instructure.com/doc/api/webhooks_subscriptions_for_plagiarism_platform.html
     type: Documentation
     name: Plagiarism Platform Webhook Subscriptions
   description: >-
-    Platform Notification Service (PNS) enables server-to-server communication by allowing Canvas to send Notices
-    (webhook deliveries) to LTI tools outside the scope of an active user session. Tools register notice handlers for
-    specific event types and receive signed deliveries that integrate with the IMS LTI 1.3 security model.
+    Platform Notification Service (PNS) enables server-to-server communication by allowing Canvas to send
+    Notices (webhook deliveries) to LTI tools outside the scope of an active user session. Tools register
+    notice handlers for specific event types and receive signed deliveries that integrate with the IMS
+    LTI 1.3 security model.
 - aid: canvas-lms:canvas-live-events
   name: Canvas Live Events
   tags:
@@ -203,7 +157,8 @@ apis:
   - url: https://github.com/instructure/canvas-lms/tree/master/doc/api/data_services
     type: Documentation
     name: Canvas Data Services Event Schemas (Source)
-  - url: https://github.com/instructure/canvas-lms/tree/master/doc/api/data_services/json/canvas/event-types
+  - url: >-
+      https://github.com/instructure/canvas-lms/tree/master/doc/api/data_services/json/canvas/event-types
     type: Documentation
     name: Canvas Event-Type JSON Descriptors
   - url: https://github.com/instructure/canvas-lms/tree/master/doc/api/data_services/json/caliper
@@ -227,15 +182,16 @@ apis:
   - url: openapi/canvas-lms-live-events-asyncapi.yml
     type: AsyncAPI
   description: >-
-    Canvas Live Events stream lifecycle events emitted by Canvas (course, enrollment, assignment, submission, grade
-    change, discussion, module, outcome, file/attachment, SIS batch, conversation, quiz, wiki page, LTI resource link,
-    login, asset access, and more) to subscribed destinations. Customers subscribe via Canvas Data Services and choose
-    a delivery method — AWS SQS (standard queue named beginning with `canvas-live-events`, granted to Canvas AWS
-    account 636161780776, optional IAM key/secret/region) or an HTTPS webhook (POSTs the event JSON, or a signed JWT
-    whose signing keys rotate monthly and are advertised at the Canvas JWKS endpoint). Two payload formats are
-    supported — Canvas JSON and Caliper IMS. Failed HTTPS deliveries are retried up to three times with exponential
-    backoff over ~10–20 minutes; sustained failure deactivates the subscription. Live Events are designed for
-    analytics and data collection workflows, not for use cases requiring strictly up-to-date data.
+    Canvas Live Events stream lifecycle events emitted by Canvas (course, enrollment, assignment, submission,
+    grade change, discussion, module, outcome, file/attachment, SIS batch, conversation, quiz, wiki page,
+    LTI resource link, login, asset access, and more) to subscribed destinations. Customers subscribe
+    via Canvas Data Services and choose a delivery method — AWS SQS (standard queue named beginning with
+    `canvas-live-events`, granted to Canvas AWS account 636161780776, optional IAM key/secret/region)
+    or an HTTPS webhook (POSTs the event JSON, or a signed JWT whose signing keys rotate monthly and are
+    advertised at the Canvas JWKS endpoint). Two payload formats are supported — Canvas JSON and Caliper
+    IMS. Failed HTTPS deliveries are retried up to three times with exponential backoff over ~10–20 minutes;
+    sustained failure deactivates the subscription. Live Events are designed for analytics and data collection
+    workflows, not for use cases requiring strictly up-to-date data.
 - aid: canvas-lms:canvas-data-access-platform
   name: Canvas Data Access Platform
   tags:
@@ -260,10 +216,10 @@ apis:
   - url: https://github.com/instructure/canvas-hosted-data-examples
     type: CodeExamples
   description: >-
-    Data Access Platform (DAP) is the warehouse-scale data export API for Canvas Data 2 — the successor to Canvas Data
-    1 / Canvas Data CLI. DAP exposes Canvas tables and Caliper-derived event streams as snapshot and incremental
-    queries against the canvas and catalog namespaces, intended for bulk download into a customer's data lake or
-    warehouse.
+    Data Access Platform (DAP) is the warehouse-scale data export API for Canvas Data 2 — the successor
+    to Canvas Data 1 / Canvas Data CLI. DAP exposes Canvas tables and Caliper-derived event streams as
+    snapshot and incremental queries against the canvas and catalog namespaces, intended for bulk download
+    into a customer's data lake or warehouse.
 - aid: canvas-lms:canvas-sis-import-api
   name: Canvas SIS Import API
   tags:
@@ -291,9 +247,369 @@ apis:
     name: SIS Integration
   description: >-
     The SIS Import API ingests Canvas's canonical SIS CSV format (and ZIP archives of those CSVs) to provision
-    accounts, terms, courses, sections, users, enrollments, groups, group memberships, cross-listings, user observers,
-    logins, admins, change-sis-id mappings, and admin differentiation tags. Supports diffing imports against the
-    previous import, batch mode, and asynchronous progress polling.
+    accounts, terms, courses, sections, users, enrollments, groups, group memberships, cross-listings,
+    user observers, logins, admins, change-sis-id mappings, and admin differentiation tags. Supports diffing
+    imports against the previous import, batch mode, and asynchronous progress polling.
+- aid: canvas-lms:canvas-lms-accounts-api
+  name: Canvas LMS Accounts API
+  description: Root and sub-accounts that own the Canvas tenancy hierarchy
+  humanURL: https://canvas.instructure.com/doc/api/
+  baseURL: https://<canvas-install-url>/api/v1
+  tags:
+  - Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/canvas-lms-accounts-api-openapi.yml
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/all_resources.html
+  - type: JSONSchema
+    url: json-schema/canvas-lms-course-schema.json
+  - type: JSONSchema
+    url: json-schema/canvas-lms-assignment-schema.json
+  - type: JSONLD
+    url: json-ld/canvas-lms-context.jsonld
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.oauth.html
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.oauth_endpoints.html
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.developer_keys.html
+  - type: Pagination
+    url: https://canvas.instructure.com/doc/api/file.pagination.html
+  - type: RateLimits
+    url: https://canvas.instructure.com/doc/api/file.throttling.html
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/file.file_uploads.html
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/file.masquerading.html
+  - type: ChangeLog
+    url: https://canvas.instructure.com/doc/api/file.changelog.html
+- aid: canvas-lms:canvas-lms-assignments-api
+  name: Canvas LMS Assignments API
+  description: Assignments, due dates, submission types, and grading
+  humanURL: https://canvas.instructure.com/doc/api/
+  baseURL: https://<canvas-install-url>/api/v1
+  tags:
+  - Assignments
+  properties:
+  - type: OpenAPI
+    url: openapi/canvas-lms-assignments-api-openapi.yml
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/all_resources.html
+  - type: JSONSchema
+    url: json-schema/canvas-lms-course-schema.json
+  - type: JSONSchema
+    url: json-schema/canvas-lms-assignment-schema.json
+  - type: JSONLD
+    url: json-ld/canvas-lms-context.jsonld
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.oauth.html
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.oauth_endpoints.html
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.developer_keys.html
+  - type: Pagination
+    url: https://canvas.instructure.com/doc/api/file.pagination.html
+  - type: RateLimits
+    url: https://canvas.instructure.com/doc/api/file.throttling.html
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/file.file_uploads.html
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/file.masquerading.html
+  - type: ChangeLog
+    url: https://canvas.instructure.com/doc/api/file.changelog.html
+- aid: canvas-lms:canvas-lms-courses-api
+  name: Canvas LMS Courses API
+  description: The Canvas Course resource and its lifecycle
+  humanURL: https://canvas.instructure.com/doc/api/
+  baseURL: https://<canvas-install-url>/api/v1
+  tags:
+  - Courses
+  properties:
+  - type: OpenAPI
+    url: openapi/canvas-lms-courses-api-openapi.yml
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/all_resources.html
+  - type: JSONSchema
+    url: json-schema/canvas-lms-course-schema.json
+  - type: JSONSchema
+    url: json-schema/canvas-lms-assignment-schema.json
+  - type: JSONLD
+    url: json-ld/canvas-lms-context.jsonld
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.oauth.html
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.oauth_endpoints.html
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.developer_keys.html
+  - type: Pagination
+    url: https://canvas.instructure.com/doc/api/file.pagination.html
+  - type: RateLimits
+    url: https://canvas.instructure.com/doc/api/file.throttling.html
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/file.file_uploads.html
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/file.masquerading.html
+  - type: ChangeLog
+    url: https://canvas.instructure.com/doc/api/file.changelog.html
+- aid: canvas-lms:canvas-lms-discussions-api
+  name: Canvas LMS Discussions API
+  description: Discussion topics and entries
+  humanURL: https://canvas.instructure.com/doc/api/
+  baseURL: https://<canvas-install-url>/api/v1
+  tags:
+  - Discussions
+  properties:
+  - type: OpenAPI
+    url: openapi/canvas-lms-discussions-api-openapi.yml
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/all_resources.html
+  - type: JSONSchema
+    url: json-schema/canvas-lms-course-schema.json
+  - type: JSONSchema
+    url: json-schema/canvas-lms-assignment-schema.json
+  - type: JSONLD
+    url: json-ld/canvas-lms-context.jsonld
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.oauth.html
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.oauth_endpoints.html
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.developer_keys.html
+  - type: Pagination
+    url: https://canvas.instructure.com/doc/api/file.pagination.html
+  - type: RateLimits
+    url: https://canvas.instructure.com/doc/api/file.throttling.html
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/file.file_uploads.html
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/file.masquerading.html
+  - type: ChangeLog
+    url: https://canvas.instructure.com/doc/api/file.changelog.html
+- aid: canvas-lms:canvas-lms-enrollments-api
+  name: Canvas LMS Enrollments API
+  description: Student, teacher, TA, observer, and designer enrollments within a course or section
+  humanURL: https://canvas.instructure.com/doc/api/
+  baseURL: https://<canvas-install-url>/api/v1
+  tags:
+  - Enrollments
+  properties:
+  - type: OpenAPI
+    url: openapi/canvas-lms-enrollments-api-openapi.yml
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/all_resources.html
+  - type: JSONSchema
+    url: json-schema/canvas-lms-course-schema.json
+  - type: JSONSchema
+    url: json-schema/canvas-lms-assignment-schema.json
+  - type: JSONLD
+    url: json-ld/canvas-lms-context.jsonld
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.oauth.html
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.oauth_endpoints.html
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.developer_keys.html
+  - type: Pagination
+    url: https://canvas.instructure.com/doc/api/file.pagination.html
+  - type: RateLimits
+    url: https://canvas.instructure.com/doc/api/file.throttling.html
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/file.file_uploads.html
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/file.masquerading.html
+  - type: ChangeLog
+    url: https://canvas.instructure.com/doc/api/file.changelog.html
+- aid: canvas-lms:canvas-lms-files-api
+  name: Canvas LMS Files API
+  description: Course/user/group files and folders
+  humanURL: https://canvas.instructure.com/doc/api/
+  baseURL: https://<canvas-install-url>/api/v1
+  tags:
+  - Files
+  properties:
+  - type: OpenAPI
+    url: openapi/canvas-lms-files-api-openapi.yml
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/all_resources.html
+  - type: JSONSchema
+    url: json-schema/canvas-lms-course-schema.json
+  - type: JSONSchema
+    url: json-schema/canvas-lms-assignment-schema.json
+  - type: JSONLD
+    url: json-ld/canvas-lms-context.jsonld
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.oauth.html
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.oauth_endpoints.html
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.developer_keys.html
+  - type: Pagination
+    url: https://canvas.instructure.com/doc/api/file.pagination.html
+  - type: RateLimits
+    url: https://canvas.instructure.com/doc/api/file.throttling.html
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/file.file_uploads.html
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/file.masquerading.html
+  - type: ChangeLog
+    url: https://canvas.instructure.com/doc/api/file.changelog.html
+- aid: canvas-lms:canvas-lms-modules-api
+  name: Canvas LMS Modules API
+  description: Course modules and module items
+  humanURL: https://canvas.instructure.com/doc/api/
+  baseURL: https://<canvas-install-url>/api/v1
+  tags:
+  - Modules
+  properties:
+  - type: OpenAPI
+    url: openapi/canvas-lms-modules-api-openapi.yml
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/all_resources.html
+  - type: JSONSchema
+    url: json-schema/canvas-lms-course-schema.json
+  - type: JSONSchema
+    url: json-schema/canvas-lms-assignment-schema.json
+  - type: JSONLD
+    url: json-ld/canvas-lms-context.jsonld
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.oauth.html
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.oauth_endpoints.html
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.developer_keys.html
+  - type: Pagination
+    url: https://canvas.instructure.com/doc/api/file.pagination.html
+  - type: RateLimits
+    url: https://canvas.instructure.com/doc/api/file.throttling.html
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/file.file_uploads.html
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/file.masquerading.html
+  - type: ChangeLog
+    url: https://canvas.instructure.com/doc/api/file.changelog.html
+- aid: canvas-lms:canvas-lms-outcomes-api
+  name: Canvas LMS Outcomes API
+  description: Learning outcomes and outcome results
+  humanURL: https://canvas.instructure.com/doc/api/
+  baseURL: https://<canvas-install-url>/api/v1
+  tags:
+  - Outcomes
+  properties:
+  - type: OpenAPI
+    url: openapi/canvas-lms-outcomes-api-openapi.yml
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/all_resources.html
+  - type: JSONSchema
+    url: json-schema/canvas-lms-course-schema.json
+  - type: JSONSchema
+    url: json-schema/canvas-lms-assignment-schema.json
+  - type: JSONLD
+    url: json-ld/canvas-lms-context.jsonld
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.oauth.html
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.oauth_endpoints.html
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.developer_keys.html
+  - type: Pagination
+    url: https://canvas.instructure.com/doc/api/file.pagination.html
+  - type: RateLimits
+    url: https://canvas.instructure.com/doc/api/file.throttling.html
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/file.file_uploads.html
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/file.masquerading.html
+  - type: ChangeLog
+    url: https://canvas.instructure.com/doc/api/file.changelog.html
+- aid: canvas-lms:canvas-lms-submissions-api
+  name: Canvas LMS Submissions API
+  description: Student submissions, grades, and submission comments
+  humanURL: https://canvas.instructure.com/doc/api/
+  baseURL: https://<canvas-install-url>/api/v1
+  tags:
+  - Submissions
+  properties:
+  - type: OpenAPI
+    url: openapi/canvas-lms-submissions-api-openapi.yml
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/all_resources.html
+  - type: JSONSchema
+    url: json-schema/canvas-lms-course-schema.json
+  - type: JSONSchema
+    url: json-schema/canvas-lms-assignment-schema.json
+  - type: JSONLD
+    url: json-ld/canvas-lms-context.jsonld
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.oauth.html
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.oauth_endpoints.html
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.developer_keys.html
+  - type: Pagination
+    url: https://canvas.instructure.com/doc/api/file.pagination.html
+  - type: RateLimits
+    url: https://canvas.instructure.com/doc/api/file.throttling.html
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/file.file_uploads.html
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/file.masquerading.html
+  - type: ChangeLog
+    url: https://canvas.instructure.com/doc/api/file.changelog.html
+- aid: canvas-lms:canvas-lms-users-api
+  name: Canvas LMS Users API
+  description: User accounts, profiles, and per-user resources
+  humanURL: https://canvas.instructure.com/doc/api/
+  baseURL: https://<canvas-install-url>/api/v1
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/canvas-lms-users-api-openapi.yml
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/all_resources.html
+  - type: JSONSchema
+    url: json-schema/canvas-lms-course-schema.json
+  - type: JSONSchema
+    url: json-schema/canvas-lms-assignment-schema.json
+  - type: JSONLD
+    url: json-ld/canvas-lms-context.jsonld
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.oauth.html
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.oauth_endpoints.html
+  - type: Authentication
+    url: https://canvas.instructure.com/doc/api/file.developer_keys.html
+  - type: Pagination
+    url: https://canvas.instructure.com/doc/api/file.pagination.html
+  - type: RateLimits
+    url: https://canvas.instructure.com/doc/api/file.throttling.html
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/file.file_uploads.html
+  - type: Documentation
+    url: https://canvas.instructure.com/doc/api/file.masquerading.html
+  - type: ChangeLog
+    url: https://canvas.instructure.com/doc/api/file.changelog.html
 common:
 - type: AgenticAccess
   url: agentic-access/canvas-lms-agentic-access.yml
