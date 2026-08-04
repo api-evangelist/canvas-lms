@@ -1,0 +1,1074 @@
+openapi: 3.1.0
+info:
+  title: Canvas LMS REST API
+  description: |
+    The Canvas LMS REST API exposes the full learning-management surface — accounts, courses,
+    enrollments, users, assignments, submissions, grades, outcomes, quizzes, modules, pages,
+    discussions, files, conversations, calendar events, planner, and more — via
+    `/api/v1` on any Canvas install (Free for Teacher at canvas.instructure.com,
+    Canvas Cloud, or self-hosted).
+
+    Authentication uses OAuth2 (RFC 6749). Tokens are issued via the
+    `/login/oauth2/auth` and `/login/oauth2/token` endpoints; clients must be
+    registered as a Developer Key in the target Canvas account. Manual personal
+    access tokens may be created from a user's profile for testing only.
+
+    Pagination follows RFC 5988 with `Link` response headers (`rel="next"`,
+    `"prev"`, `"first"`, `"last"`). Includes can be requested via the
+    `include[]` query parameter on most resources. Admin users may impersonate
+    other users by appending `as_user_id={id}` (Masquerading).
+
+    This OpenAPI document covers the most-used endpoints across Accounts,
+    Courses, Enrollments, Users, Assignments, Submissions, Modules, Discussions,
+    Files, and Outcomes. The full surface (190+ resource groups) is documented
+    at https://canvas.instructure.com/doc/api/all_resources.html and generated
+    in the canvas-lms repo via `rake doc:openapi`.
+  version: '1.0'
+  contact:
+    name: Canvas Developer Community
+    url: https://community.canvaslms.com/t5/Canvas-Developers-Group/gh-p/canvas-developers
+  license:
+    name: AGPL-3.0
+    identifier: AGPL-3.0-or-later
+  x-logo:
+    url: https://www.instructure.com/sites/default/files/image/2021-12/Canvas_logo_single_mark.png
+
+servers:
+  - url: https://{canvas_host}/api/v1
+    description: Canvas REST API on any Canvas install
+    variables:
+      canvas_host:
+        default: canvas.instructure.com
+        description: The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)
+
+security:
+  - OAuth2: []
+  - BearerAuth: []
+
+tags:
+  - name: Accounts
+    description: Root and sub-accounts that own the Canvas tenancy hierarchy
+  - name: Courses
+    description: The Canvas Course resource and its lifecycle
+  - name: Enrollments
+    description: Student, teacher, TA, observer, and designer enrollments within a course or section
+  - name: Users
+    description: User accounts, profiles, and per-user resources
+  - name: Assignments
+    description: Assignments, due dates, submission types, and grading
+  - name: Submissions
+    description: Student submissions, grades, and submission comments
+  - name: Modules
+    description: Course modules and module items
+  - name: Discussions
+    description: Discussion topics and entries
+  - name: Files
+    description: Course/user/group files and folders
+  - name: Outcomes
+    description: Learning outcomes and outcome results
+
+paths:
+  /accounts:
+    get:
+      summary: List Accounts
+      description: List accounts that the current user can view or manage.
+      operationId: listAccounts
+      tags: [Accounts]
+      parameters:
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Page'
+        - name: include[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [lti_guid, registration_settings, services]
+      responses:
+        '200':
+          description: A paginated list of accounts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+  /accounts/{account_id}:
+    get:
+      summary: Get a Single Account
+      operationId: getAccount
+      tags: [Accounts]
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+      responses:
+        '200':
+          description: The account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+  /accounts/{account_id}/courses:
+    get:
+      summary: List Active Courses in an Account
+      operationId: listCoursesInAccount
+      tags: [Accounts, Courses]
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - name: with_enrollments
+          in: query
+          schema: {type: boolean}
+        - name: enrollment_term_id
+          in: query
+          schema: {type: integer}
+        - name: search_term
+          in: query
+          schema: {type: string}
+        - name: state[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [created, claimed, available, completed, deleted, all]
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: A paginated list of courses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+  /courses:
+    get:
+      summary: List Courses for the Current User
+      operationId: listCourses
+      tags: [Courses]
+      parameters:
+        - name: enrollment_type
+          in: query
+          schema:
+            type: string
+            enum: [teacher, student, ta, observer, designer]
+        - name: enrollment_state
+          in: query
+          schema:
+            type: string
+            enum: [active, invited_or_pending, completed]
+        - name: include[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [needs_grading_count, syllabus_body, public_description, total_scores, term, course_progress, sections, storage_quota_used_mb, total_students, passback_status, favorites, teachers, observed_users, course_image, banner_image, concluded]
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Page'
+      responses:
+        '200':
+          description: A paginated list of courses for the authenticated user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+  /courses/{course_id}:
+    get:
+      summary: Get a Single Course
+      operationId: getCourse
+      tags: [Courses]
+      parameters:
+        - $ref: '#/components/parameters/CourseId'
+        - name: include[]
+          in: query
+          schema:
+            type: array
+            items: {type: string}
+      responses:
+        '200':
+          description: The course
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+    put:
+      summary: Update a Course
+      operationId: updateCourse
+      tags: [Courses]
+      parameters:
+        - $ref: '#/components/parameters/CourseId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                course:
+                  $ref: '#/components/schemas/Course'
+      responses:
+        '200':
+          description: The updated course
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+    delete:
+      summary: Conclude or Delete a Course
+      operationId: deleteCourse
+      tags: [Courses]
+      parameters:
+        - $ref: '#/components/parameters/CourseId'
+        - name: event
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [delete, conclude]
+      responses:
+        '200':
+          description: Success acknowledgement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  delete: {type: boolean}
+                  conclude: {type: boolean}
+  /courses/{course_id}/users:
+    get:
+      summary: List Users in a Course
+      operationId: listCourseUsers
+      tags: [Courses, Users]
+      parameters:
+        - $ref: '#/components/parameters/CourseId'
+        - name: enrollment_type[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [teacher, student, student_view, ta, observer, designer]
+        - name: enrollment_role
+          in: query
+          schema: {type: string}
+        - name: include[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [enrollments, locked, avatar_url, test_student, bio, custom_links, current_grading_period_scores, uuid]
+        - name: search_term
+          in: query
+          schema: {type: string}
+        - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: A paginated list of users in the course
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+  /courses/{course_id}/enrollments:
+    get:
+      summary: List Enrollments in a Course
+      operationId: listCourseEnrollments
+      tags: [Enrollments]
+      parameters:
+        - $ref: '#/components/parameters/CourseId'
+        - name: type[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [StudentEnrollment, TeacherEnrollment, TaEnrollment, DesignerEnrollment, ObserverEnrollment]
+        - name: state[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [active, invited, creation_pending, deleted, rejected, completed, inactive]
+      responses:
+        '200':
+          description: A paginated list of enrollments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Enrollment'
+    post:
+      summary: Enroll a User in a Course
+      operationId: enrollUser
+      tags: [Enrollments]
+      parameters:
+        - $ref: '#/components/parameters/CourseId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enrollment:
+                  $ref: '#/components/schemas/Enrollment'
+      responses:
+        '200':
+          description: The created enrollment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enrollment'
+  /courses/{course_id}/assignments:
+    get:
+      summary: List Assignments in a Course
+      operationId: listAssignments
+      tags: [Assignments]
+      parameters:
+        - $ref: '#/components/parameters/CourseId'
+        - name: include[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [submission, assignment_visibility, all_dates, overrides, observed_users, can_edit, score_statistics, ab_guid]
+        - name: search_term
+          in: query
+          schema: {type: string}
+        - name: order_by
+          in: query
+          schema:
+            type: string
+            enum: [position, name, due_at]
+        - name: bucket
+          in: query
+          schema:
+            type: string
+            enum: [past, overdue, undated, ungraded, unsubmitted, upcoming, future]
+        - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: A paginated list of assignments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Assignment'
+    post:
+      summary: Create an Assignment
+      operationId: createAssignment
+      tags: [Assignments]
+      parameters:
+        - $ref: '#/components/parameters/CourseId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                assignment:
+                  $ref: '#/components/schemas/Assignment'
+      responses:
+        '201':
+          description: The created assignment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assignment'
+  /courses/{course_id}/assignments/{assignment_id}:
+    get:
+      summary: Get a Single Assignment
+      operationId: getAssignment
+      tags: [Assignments]
+      parameters:
+        - $ref: '#/components/parameters/CourseId'
+        - $ref: '#/components/parameters/AssignmentId'
+      responses:
+        '200':
+          description: The assignment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assignment'
+    put:
+      summary: Edit an Assignment
+      operationId: updateAssignment
+      tags: [Assignments]
+      parameters:
+        - $ref: '#/components/parameters/CourseId'
+        - $ref: '#/components/parameters/AssignmentId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                assignment:
+                  $ref: '#/components/schemas/Assignment'
+      responses:
+        '200':
+          description: The updated assignment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assignment'
+    delete:
+      summary: Delete an Assignment
+      operationId: deleteAssignment
+      tags: [Assignments]
+      parameters:
+        - $ref: '#/components/parameters/CourseId'
+        - $ref: '#/components/parameters/AssignmentId'
+      responses:
+        '200':
+          description: The deleted assignment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assignment'
+  /courses/{course_id}/assignments/{assignment_id}/submissions:
+    get:
+      summary: List Submissions for an Assignment
+      operationId: listSubmissions
+      tags: [Submissions]
+      parameters:
+        - $ref: '#/components/parameters/CourseId'
+        - $ref: '#/components/parameters/AssignmentId'
+        - name: include[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [submission_history, submission_comments, rubric_assessment, assignment, visibility, course, user, group, read_status, student_entered_score]
+        - name: grouped
+          in: query
+          schema: {type: boolean}
+      responses:
+        '200':
+          description: A paginated list of submissions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Submission'
+  /courses/{course_id}/assignments/{assignment_id}/submissions/{user_id}:
+    get:
+      summary: Get a Single Submission
+      operationId: getSubmission
+      tags: [Submissions]
+      parameters:
+        - $ref: '#/components/parameters/CourseId'
+        - $ref: '#/components/parameters/AssignmentId'
+        - name: user_id
+          in: path
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: The submission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Submission'
+    put:
+      summary: Grade or Comment on a Submission
+      operationId: gradeSubmission
+      tags: [Submissions]
+      parameters:
+        - $ref: '#/components/parameters/CourseId'
+        - $ref: '#/components/parameters/AssignmentId'
+        - name: user_id
+          in: path
+          required: true
+          schema: {type: string}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                submission:
+                  type: object
+                  properties:
+                    posted_grade: {type: string}
+                    excuse: {type: boolean}
+                    late_policy_status: {type: string, enum: [late, missing, none, extended]}
+                    seconds_late_override: {type: integer}
+                comment:
+                  type: object
+                  properties:
+                    text_comment: {type: string}
+                    group_comment: {type: boolean}
+                rubric_assessment:
+                  type: object
+                  additionalProperties: true
+      responses:
+        '200':
+          description: The updated submission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Submission'
+  /courses/{course_id}/modules:
+    get:
+      summary: List Modules in a Course
+      operationId: listModules
+      tags: [Modules]
+      parameters:
+        - $ref: '#/components/parameters/CourseId'
+        - name: include[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [items, content_details]
+      responses:
+        '200':
+          description: A paginated list of modules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Module'
+  /courses/{course_id}/discussion_topics:
+    get:
+      summary: List Discussion Topics in a Course
+      operationId: listDiscussionTopics
+      tags: [Discussions]
+      parameters:
+        - $ref: '#/components/parameters/CourseId'
+        - name: include[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [all_dates, sections, sections_user_count, overrides]
+        - name: order_by
+          in: query
+          schema:
+            type: string
+            enum: [position, recent_activity, title]
+      responses:
+        '200':
+          description: A paginated list of discussion topics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DiscussionTopic'
+  /courses/{course_id}/files:
+    get:
+      summary: List Files in a Course
+      operationId: listCourseFiles
+      tags: [Files]
+      parameters:
+        - $ref: '#/components/parameters/CourseId'
+        - name: content_types[]
+          in: query
+          schema:
+            type: array
+            items: {type: string}
+        - name: search_term
+          in: query
+          schema: {type: string}
+        - name: include[]
+          in: query
+          schema:
+            type: array
+            items: {type: string, enum: [user, usage_rights, enhanced_preview_url, context_asset_string]}
+      responses:
+        '200':
+          description: A paginated list of files
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/File'
+  /users/{user_id}:
+    get:
+      summary: Get a Single User
+      operationId: getUser
+      tags: [Users]
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema: {type: string}
+        - name: include[]
+          in: query
+          schema:
+            type: array
+            items: {type: string, enum: [uuid, last_login]}
+      responses:
+        '200':
+          description: The user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /users/self:
+    get:
+      summary: Get the Authenticated User
+      operationId: getSelf
+      tags: [Users]
+      responses:
+        '200':
+          description: The authenticated user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /users/self/profile:
+    get:
+      summary: Get the Authenticated User's Profile
+      operationId: getSelfProfile
+      tags: [Users]
+      responses:
+        '200':
+          description: The user profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+  /accounts/{account_id}/outcome_groups:
+    get:
+      summary: List Outcome Groups in an Account
+      operationId: listOutcomeGroups
+      tags: [Outcomes]
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+      responses:
+        '200':
+          description: A paginated list of outcome groups
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OutcomeGroup'
+
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: Canvas OAuth2 (RFC 6749) authorization code grant. Register a Developer Key in the target Canvas account to obtain a client_id and client_secret.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://canvas.instructure.com/login/oauth2/auth
+          tokenUrl: https://canvas.instructure.com/login/oauth2/token
+          refreshUrl: https://canvas.instructure.com/login/oauth2/token
+          scopes:
+            url:GET|/api/v1/accounts: Read accounts
+            url:GET|/api/v1/courses: Read courses
+            url:GET|/api/v1/users/{user_id}: Read a user
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: A Canvas access token. For testing only — production apps MUST use the OAuth2 flow per the Canvas API Policy.
+  parameters:
+    PerPage:
+      name: per_page
+      in: query
+      description: Items per page (default 10, max varies by endpoint and install).
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+    Page:
+      name: page
+      in: query
+      description: 'Page number (1-indexed). Prefer following RFC 5988 Link headers with rel="next".'
+      schema:
+        type: integer
+        minimum: 1
+    AccountId:
+      name: account_id
+      in: path
+      required: true
+      description: The Canvas account ID, an SIS account ID prefixed `sis_account_id:`, or `self`.
+      schema: {type: string}
+    CourseId:
+      name: course_id
+      in: path
+      required: true
+      description: The Canvas course ID or an SIS course ID prefixed `sis_course_id:`.
+      schema: {type: string}
+    AssignmentId:
+      name: assignment_id
+      in: path
+      required: true
+      description: The Canvas assignment ID.
+      schema: {type: string}
+  schemas:
+    Account:
+      type: object
+      properties:
+        id: {type: integer, format: int64}
+        name: {type: string}
+        uuid: {type: string}
+        parent_account_id: {type: integer, nullable: true}
+        root_account_id: {type: integer, nullable: true}
+        workflow_state: {type: string, enum: [active, deleted]}
+        default_storage_quota_mb: {type: integer}
+        default_user_storage_quota_mb: {type: integer}
+        default_group_storage_quota_mb: {type: integer}
+        default_time_zone: {type: string}
+        sis_account_id: {type: string, nullable: true}
+        integration_id: {type: string, nullable: true}
+        sis_import_id: {type: integer, nullable: true}
+        lti_guid: {type: string, nullable: true}
+    Course:
+      type: object
+      properties:
+        id: {type: integer, format: int64}
+        sis_course_id: {type: string, nullable: true}
+        uuid: {type: string}
+        integration_id: {type: string, nullable: true}
+        sis_import_id: {type: integer, nullable: true}
+        name: {type: string}
+        course_code: {type: string}
+        original_name: {type: string, nullable: true}
+        workflow_state: {type: string, enum: [unpublished, available, completed, deleted]}
+        account_id: {type: integer}
+        root_account_id: {type: integer}
+        enrollment_term_id: {type: integer}
+        grading_standard_id: {type: integer, nullable: true}
+        grade_passback_setting: {type: string, nullable: true}
+        created_at: {type: string, format: date-time}
+        start_at: {type: string, format: date-time, nullable: true}
+        end_at: {type: string, format: date-time, nullable: true}
+        locale: {type: string, nullable: true}
+        enrollments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Enrollment'
+        total_students: {type: integer}
+        default_view: {type: string, enum: [feed, wiki, modules, assignments, syllabus]}
+        syllabus_body: {type: string, nullable: true}
+        needs_grading_count: {type: integer}
+        is_public: {type: boolean}
+        is_public_to_auth_users: {type: boolean}
+        public_syllabus: {type: boolean}
+        public_syllabus_to_auth: {type: boolean}
+        storage_quota_mb: {type: integer}
+        storage_quota_used_mb: {type: number}
+        hide_final_grades: {type: boolean}
+        license: {type: string, nullable: true}
+        allow_student_assignment_edits: {type: boolean}
+        allow_wiki_comments: {type: boolean}
+        allow_student_forum_attachments: {type: boolean}
+        open_enrollment: {type: boolean}
+        self_enrollment: {type: boolean}
+        restrict_enrollments_to_course_dates: {type: boolean}
+        course_format: {type: string, nullable: true}
+        time_zone: {type: string}
+        blueprint: {type: boolean}
+        template: {type: boolean}
+        homeroom_course: {type: boolean}
+    Enrollment:
+      type: object
+      properties:
+        id: {type: integer, format: int64}
+        course_id: {type: integer}
+        course_section_id: {type: integer, nullable: true}
+        root_account_id: {type: integer}
+        type:
+          type: string
+          enum: [StudentEnrollment, TeacherEnrollment, TaEnrollment, DesignerEnrollment, ObserverEnrollment]
+        user_id: {type: integer}
+        associated_user_id: {type: integer, nullable: true}
+        role: {type: string}
+        role_id: {type: integer}
+        enrollment_state: {type: string, enum: [active, invited, creation_pending, deleted, rejected, completed, inactive]}
+        limit_privileges_to_course_section: {type: boolean}
+        sis_import_id: {type: integer, nullable: true}
+        sis_account_id: {type: string, nullable: true}
+        sis_course_id: {type: string, nullable: true}
+        sis_section_id: {type: string, nullable: true}
+        sis_user_id: {type: string, nullable: true}
+        section_integration_id: {type: string, nullable: true}
+        created_at: {type: string, format: date-time}
+        updated_at: {type: string, format: date-time}
+        start_at: {type: string, format: date-time, nullable: true}
+        end_at: {type: string, format: date-time, nullable: true}
+        last_activity_at: {type: string, format: date-time, nullable: true}
+        last_attended_at: {type: string, format: date-time, nullable: true}
+        total_activity_time: {type: integer}
+        html_url: {type: string}
+        grades:
+          type: object
+          properties:
+            html_url: {type: string}
+            current_grade: {type: string, nullable: true}
+            final_grade: {type: string, nullable: true}
+            current_score: {type: number, nullable: true}
+            final_score: {type: number, nullable: true}
+            unposted_current_grade: {type: string, nullable: true}
+            unposted_final_grade: {type: string, nullable: true}
+            unposted_current_score: {type: number, nullable: true}
+            unposted_final_score: {type: number, nullable: true}
+    User:
+      type: object
+      properties:
+        id: {type: integer, format: int64}
+        name: {type: string}
+        sortable_name: {type: string}
+        short_name: {type: string}
+        sis_user_id: {type: string, nullable: true}
+        sis_import_id: {type: integer, nullable: true}
+        integration_id: {type: string, nullable: true}
+        login_id: {type: string}
+        avatar_url: {type: string, nullable: true}
+        avatar_state: {type: string, nullable: true}
+        enrollments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Enrollment'
+        email: {type: string, nullable: true}
+        locale: {type: string, nullable: true}
+        last_login: {type: string, format: date-time, nullable: true}
+        time_zone: {type: string}
+        bio: {type: string, nullable: true}
+        pronouns: {type: string, nullable: true}
+    Profile:
+      type: object
+      properties:
+        id: {type: integer}
+        name: {type: string}
+        short_name: {type: string}
+        sortable_name: {type: string}
+        title: {type: string, nullable: true}
+        bio: {type: string, nullable: true}
+        primary_email: {type: string, nullable: true}
+        login_id: {type: string}
+        sis_user_id: {type: string, nullable: true}
+        lti_user_id: {type: string, nullable: true}
+        avatar_url: {type: string, nullable: true}
+        calendar:
+          type: object
+          properties:
+            ics: {type: string}
+        time_zone: {type: string}
+        locale: {type: string, nullable: true}
+    Assignment:
+      type: object
+      properties:
+        id: {type: integer, format: int64}
+        name: {type: string}
+        description: {type: string, nullable: true}
+        created_at: {type: string, format: date-time}
+        updated_at: {type: string, format: date-time}
+        due_at: {type: string, format: date-time, nullable: true}
+        lock_at: {type: string, format: date-time, nullable: true}
+        unlock_at: {type: string, format: date-time, nullable: true}
+        course_id: {type: integer}
+        html_url: {type: string}
+        submissions_download_url: {type: string}
+        assignment_group_id: {type: integer}
+        due_date_required: {type: boolean}
+        allowed_extensions:
+          type: array
+          items: {type: string}
+        max_name_length: {type: integer}
+        turnitin_enabled: {type: boolean}
+        vericite_enabled: {type: boolean}
+        peer_reviews: {type: boolean}
+        automatic_peer_reviews: {type: boolean}
+        peer_review_count: {type: integer}
+        group_category_id: {type: integer, nullable: true}
+        needs_grading_count: {type: integer}
+        position: {type: integer}
+        post_to_sis: {type: boolean, nullable: true}
+        integration_id: {type: string, nullable: true}
+        integration_data:
+          type: object
+          additionalProperties: true
+        points_possible: {type: number}
+        submission_types:
+          type: array
+          items:
+            type: string
+            enum: [discussion_topic, online_quiz, on_paper, none, external_tool, online_text_entry, online_url, online_upload, media_recording, student_annotation]
+        has_submitted_submissions: {type: boolean}
+        grading_type:
+          type: string
+          enum: [pass_fail, percent, letter_grade, gpa_scale, points, not_graded]
+        grading_standard_id: {type: integer, nullable: true}
+        published: {type: boolean}
+        unpublishable: {type: boolean}
+        only_visible_to_overrides: {type: boolean}
+        locked_for_user: {type: boolean}
+        muted: {type: boolean}
+        omit_from_final_grade: {type: boolean}
+        hide_in_gradebook: {type: boolean}
+        moderated_grading: {type: boolean}
+        grader_count: {type: integer}
+        final_grader_id: {type: integer, nullable: true}
+        grader_comments_visible_to_graders: {type: boolean}
+        graders_anonymous_to_graders: {type: boolean}
+        grader_names_visible_to_final_grader: {type: boolean}
+        anonymous_grading: {type: boolean}
+        allowed_attempts: {type: integer}
+        post_manually: {type: boolean}
+        external_tool_tag_attributes:
+          type: object
+          additionalProperties: true
+    Submission:
+      type: object
+      properties:
+        id: {type: integer, format: int64}
+        assignment_id: {type: integer}
+        user_id: {type: integer}
+        grader_id: {type: integer, nullable: true}
+        course_id: {type: integer}
+        attempt: {type: integer, nullable: true}
+        body: {type: string, nullable: true}
+        grade: {type: string, nullable: true}
+        grade_matches_current_submission: {type: boolean}
+        html_url: {type: string}
+        preview_url: {type: string}
+        score: {type: number, nullable: true}
+        submission_comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubmissionComment'
+        submission_type: {type: string, nullable: true}
+        submitted_at: {type: string, format: date-time, nullable: true}
+        url: {type: string, nullable: true}
+        workflow_state:
+          type: string
+          enum: [graded, submitted, unsubmitted, pending_review]
+        late: {type: boolean}
+        missing: {type: boolean}
+        excused: {type: boolean}
+        late_policy_status: {type: string, nullable: true, enum: [late, missing, none, extended]}
+        seconds_late: {type: integer, nullable: true}
+        points_deducted: {type: number, nullable: true}
+        entered_grade: {type: string, nullable: true}
+        entered_score: {type: number, nullable: true}
+        posted_at: {type: string, format: date-time, nullable: true}
+        read_status: {type: string, enum: [read, unread]}
+        redo_request: {type: boolean}
+    SubmissionComment:
+      type: object
+      properties:
+        id: {type: integer}
+        author_id: {type: integer}
+        author_name: {type: string}
+        comment: {type: string}
+        created_at: {type: string, format: date-time}
+        edited_at: {type: string, format: date-time, nullable: true}
+        media_comment:
+          type: object
+          additionalProperties: true
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/File'
+    Module:
+      type: object
+      properties:
+        id: {type: integer}
+        workflow_state: {type: string, enum: [active, deleted]}
+        position: {type: integer}
+        name: {type: string}
+        unlock_at: {type: string, format: date-time, nullable: true}
+        require_sequential_progress: {type: boolean}
+        prerequisite_module_ids:
+          type: array
+          items: {type: integer}
+        items_count: {type: integer}
+        items_url: {type: string}
+        state: {type: string, enum: [locked, unlocked, started, completed]}
+        completed_at: {type: string, format: date-time, nullable: true}
+        publish_final_grade: {type: boolean}
+        published: {type: boolean}
+    DiscussionTopic:
+      type: object
+      properties:
+        id: {type: integer}
+        title: {type: string}
+        message: {type: string, nullable: true}
+        html_url: {type: string}
+        posted_at: {type: string, format: date-time, nullable: true}
+        last_reply_at: {type: string, format: date-time, nullable: true}
+        require_initial_post: {type: boolean}
+        user_can_see_posts: {type: boolean}
+        discussion_subentry_count: {type: integer}
+        read_state: {type: string, enum: [read, unread]}
+        unread_count: {type: integer}
+        subscribed: {type: boolean}
+        assignment_id: {type: integer, nullable: true}
+        delayed_post_at: {type: string, format: date-time, nullable: true}
+        published: {type: boolean}
+        lock_at: {type: string, format: date-time, nullable: true}
+        locked: {type: boolean}
+        pinned: {type: boolean}
+        locked_for_user: {type: boolean}
+        discussion_type: {type: string, enum: [side_comment, threaded, not_threaded]}
+        position: {type: integer, nullable: true}
+        allow_rating: {type: boolean}
+        only_graders_can_rate: {type: boolean}
+        sort_by_rating: {type: boolean}
+        is_announcement: {type: boolean}
+    File:
+      type: object
+      properties:
+        id: {type: integer}
+        uuid: {type: string}
+        folder_id: {type: integer, nullable: true}
+        display_name: {type: string}
+        filename: {type: string}
+        content-type: {type: string}
+        url: {type: string}
+        size: {type: integer}
+        created_at: {type: string, format: date-time}
+        updated_at: {type: string, format: date-time}
+        unlock_at: {type: string, format: date-time, nullable: true}
+        locked: {type: boolean}
+        hidden: {type: boolean}
+        lock_at: {type: string, format: date-time, nullable: true}
+        hidden_for_user: {type: boolean}
+        thumbnail_url: {type: string, nullable: true}
+        modified_at: {type: string, format: date-time}
+        mime_class: {type: string}
+        media_entry_id: {type: string, nullable: true}
+        locked_for_user: {type: boolean}
+        upload_status: {type: string, enum: [pending, errored, success]}
+    OutcomeGroup:
+      type: object
+      properties:
+        id: {type: integer}
+        url: {type: string}
+        parent_outcome_group:
+          type: object
+          additionalProperties: true
+        context_id: {type: integer, nullable: true}
+        context_type: {type: string, nullable: true}
+        title: {type: string}
+        description: {type: string, nullable: true}
+        vendor_guid: {type: string, nullable: true}
+        subgroups_url: {type: string}
+        outcomes_url: {type: string}
+        import_url: {type: string}
+        can_edit: {type: boolean}

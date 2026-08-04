@@ -1,0 +1,32 @@
+{
+  "provider": "canvas-lms",
+  "sources": [
+    "canvas-lms-accounts-api-openapi.yml",
+    "canvas-lms-assignments-api-openapi.yml",
+    "canvas-lms-courses-api-openapi.yml",
+    "canvas-lms-discussions-api-openapi.yml",
+    "canvas-lms-enrollments-api-openapi.yml",
+    "canvas-lms-files-api-openapi.yml",
+    "canvas-lms-modules-api-openapi.yml",
+    "canvas-lms-outcomes-api-openapi.yml",
+    "canvas-lms-submissions-api-openapi.yml",
+    "canvas-lms-users-api-openapi.yml"
+  ],
+  "outputs": [
+    "canvas-lms-accounts-api-openapi.yml",
+    "canvas-lms-assignments-api-openapi.yml",
+    "canvas-lms-courses-api-openapi.yml",
+    "canvas-lms-discussions-api-openapi.yml",
+    "canvas-lms-enrollments-api-openapi.yml",
+    "canvas-lms-files-api-openapi.yml",
+    "canvas-lms-modules-api-openapi.yml",
+    "canvas-lms-outcomes-api-openapi.yml",
+    "canvas-lms-submissions-api-openapi.yml",
+    "canvas-lms-users-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
