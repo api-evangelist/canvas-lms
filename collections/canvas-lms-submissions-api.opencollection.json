@@ -1,0 +1,129 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Canvas LMS REST Accounts Submissions API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://canvas.instructure.com/login/oauth2/auth",
+      "accessTokenUrl": "https://canvas.instructure.com/login/oauth2/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Submissions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Submissions for an Assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/assignments/:assignment_id/submissions",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              },
+              {
+                "name": "assignment_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas assignment ID."
+              },
+              {
+                "name": "include[]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "grouped",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Submissions for an Assignment"
+        },
+        {
+          "info": {
+            "name": "Get a Single Submission",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/assignments/:assignment_id/submissions/:user_id",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              },
+              {
+                "name": "assignment_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas assignment ID."
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a Single Submission"
+        },
+        {
+          "info": {
+            "name": "Grade or Comment on a Submission",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/assignments/:assignment_id/submissions/:user_id",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              },
+              {
+                "name": "assignment_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas assignment ID."
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Grade or Comment on a Submission"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

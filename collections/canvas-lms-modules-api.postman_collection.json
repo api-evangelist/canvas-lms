@@ -1,0 +1,193 @@
+{
+  "item": [
+    {
+      "id": "2a6ca94b-bbd7-46a2-8abf-641f5bd3f3ad",
+      "name": "Modules",
+      "description": {
+        "content": "Course modules and module items",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d8b037dc-c2e1-4c00-bd18-bc9d95175644",
+          "name": "List Modules in a Course",
+          "request": {
+            "name": "List Modules in a Course",
+            "description": {},
+            "url": {
+              "path": [
+                "courses",
+                ":course_id",
+                "modules"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include[]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "include[]",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "course_id",
+                  "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                },
+                {
+                  "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                  "type": "any",
+                  "value": "{{canvas_host}}",
+                  "key": "canvas_host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3c0dc980-aa68-46f8-94ba-890ce56e0e5f",
+              "name": "A paginated list of modules",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "courses",
+                    ":course_id",
+                    "modules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include[]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include[]",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "course_id",
+                      "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                    },
+                    {
+                      "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                      "type": "any",
+                      "value": "{{canvas_host}}",
+                      "key": "canvas_host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 767,\n    \"workflow_state\": \"active\",\n    \"position\": 1594,\n    \"name\": \"string\",\n    \"unlock_at\": \"1982-11-17T23:30:37.972Z\",\n    \"require_sequential_progress\": true,\n    \"prerequisite_module_ids\": [\n      8316,\n      9967\n    ],\n    \"items_count\": 3098,\n    \"items_url\": \"string\",\n    \"state\": \"started\",\n    \"completed_at\": \"1959-12-08T08:29:36.329Z\",\n    \"publish_final_grade\": false,\n    \"published\": false\n  },\n  {\n    \"id\": 2370,\n    \"workflow_state\": \"active\",\n    \"position\": 3104,\n    \"name\": \"string\",\n    \"unlock_at\": \"2022-02-04T22:47:16.439Z\",\n    \"require_sequential_progress\": false,\n    \"prerequisite_module_ids\": [\n      5965,\n      6946\n    ],\n    \"items_count\": 725,\n    \"items_url\": \"string\",\n    \"state\": \"completed\",\n    \"completed_at\": \"1997-02-28T11:08:58.561Z\",\n    \"publish_final_grade\": true,\n    \"published\": false\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "canvas.instructure.com",
+      "key": "canvas_host"
+    },
+    {
+      "type": "string",
+      "value": "https://{{canvas_host}}/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "url:GET|/api/v1/accounts url:GET|/api/v1/courses url:GET|/api/v1/users/{user_id}"
+      },
+      {
+        "key": "redirect_uri",
+        "value": "https://canvas.instructure.com/login/oauth2/token"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://canvas.instructure.com/login/oauth2/token"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://canvas.instructure.com/login/oauth2/auth"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "7216df77-7297-45e3-b3a2-4fb07c204c72",
+    "name": "Canvas LMS REST Accounts Modules API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Canvas LMS REST API exposes the full learning-management surface — accounts, courses,\nenrollments, users, assignments, submissions, grades, outcomes, quizzes, modules, pages,\ndiscussions, files, conversations, calendar events, planner, and more — via\n`/api/v1` on any Canvas install (Free for Teacher at canvas.instructure.com,\nCanvas Cloud, or self-hosted).\n\nAuthentication uses OAuth2 (RFC 6749). Tokens are issued via the\n`/login/oauth2/auth` and `/login/oauth2/token` endpoints; clients must be\nregistered as a Developer Key in the target Canvas account. Manual personal\naccess tokens may be created from a user's profile for testing only.\n\nPagination follows RFC 5988 with `Link` response headers (`rel=\"next\"`,\n`\"prev\"`, `\"first\"`, `\"last\"`). Includes can be requested via the\n`include[]` query parameter on most resources. Admin users may impersonate\nother users by appending `as_user_id={id}` (Masquerading).\n\nThis OpenAPI document covers the most-used endpoints across Accounts,\nCourses, Enrollments, Users, Assignments, Submissions, Modules, Discussions,\nFiles, and Outcomes. The full surface (190+ resource groups) is documented\nat https://canvas.instructure.com/doc/api/all_resources.html and generated\nin the canvas-lms repo via `rake doc:openapi`.\n\n\nContact Support:\n Name: Canvas Developer Community",
+      "type": "text/plain"
+    }
+  }
+}

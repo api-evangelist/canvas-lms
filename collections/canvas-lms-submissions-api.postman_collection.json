@@ -1,0 +1,523 @@
+{
+  "item": [
+    {
+      "id": "9b3f0214-8123-419c-a455-ee02d310a7df",
+      "name": "Submissions",
+      "description": {
+        "content": "Student submissions, grades, and submission comments",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "78620615-70d0-4faf-ab08-b1d42873cc03",
+          "name": "List Submissions for an Assignment",
+          "request": {
+            "name": "List Submissions for an Assignment",
+            "description": {},
+            "url": {
+              "path": [
+                "courses",
+                ":course_id",
+                "assignments",
+                ":assignment_id",
+                "submissions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include[]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "include[]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "grouped",
+                  "value": "<boolean>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "course_id",
+                  "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assignment_id",
+                  "description": "(Required) The Canvas assignment ID."
+                },
+                {
+                  "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                  "type": "any",
+                  "value": "{{canvas_host}}",
+                  "key": "canvas_host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5b73d65c-9a17-46d1-93e0-7ac59543656b",
+              "name": "A paginated list of submissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "courses",
+                    ":course_id",
+                    "assignments",
+                    ":assignment_id",
+                    "submissions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include[]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include[]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "grouped",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "course_id",
+                      "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assignment_id",
+                      "description": "(Required) The Canvas assignment ID."
+                    },
+                    {
+                      "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                      "type": "any",
+                      "value": "{{canvas_host}}",
+                      "key": "canvas_host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 8312,\n    \"assignment_id\": 645,\n    \"user_id\": 4627,\n    \"grader_id\": 1292,\n    \"course_id\": 2680,\n    \"attempt\": 2015,\n    \"body\": \"string\",\n    \"grade\": \"string\",\n    \"grade_matches_current_submission\": false,\n    \"html_url\": \"string\",\n    \"preview_url\": \"string\",\n    \"score\": 3732.4091216707357,\n    \"submission_comments\": [\n      {\n        \"id\": 1234,\n        \"author_id\": 4557,\n        \"author_name\": \"string\",\n        \"comment\": \"string\",\n        \"created_at\": \"2009-08-29T08:17:24.691Z\",\n        \"edited_at\": \"1977-04-20T01:14:06.334Z\",\n        \"media_comment\": {\n          \"key_0\": true,\n          \"key_1\": 4135,\n          \"key_2\": false\n        },\n        \"attachments\": [\n          {\n            \"id\": 2510,\n            \"uuid\": \"string\",\n            \"folder_id\": 6508,\n            \"display_name\": \"string\",\n            \"filename\": \"string\",\n            \"content-type\": \"string\",\n            \"url\": \"string\",\n            \"size\": 6127,\n            \"created_at\": \"1989-10-09T04:48:24.362Z\",\n            \"updated_at\": \"1965-05-03T03:36:00.278Z\",\n            \"unlock_at\": \"1963-01-02T17:53:11.945Z\",\n            \"locked\": true,\n            \"hidden\": true,\n            \"lock_at\": \"2011-09-19T08:29:37.749Z\",\n            \"hidden_for_user\": true,\n            \"thumbnail_url\": \"string\",\n            \"modified_at\": \"1967-01-08T22:50:01.947Z\",\n            \"mime_class\": \"string\",\n            \"media_entry_id\": \"string\",\n            \"locked_for_user\": true,\n            \"upload_status\": \"success\"\n          },\n          {\n            \"id\": 9626,\n            \"uuid\": \"string\",\n            \"folder_id\": 1803,\n            \"display_name\": \"string\",\n            \"filename\": \"string\",\n            \"content-type\": \"string\",\n            \"url\": \"string\",\n            \"size\": 1177,\n            \"created_at\": \"1977-08-05T19:06:02.005Z\",\n            \"updated_at\": \"1947-01-31T03:39:08.033Z\",\n            \"unlock_at\": \"2000-03-16T17:51:38.492Z\",\n            \"locked\": true,\n            \"hidden\": false,\n            \"lock_at\": \"1987-10-27T16:57:39.408Z\",\n            \"hidden_for_user\": true,\n            \"thumbnail_url\": \"string\",\n            \"modified_at\": \"2012-02-27T12:39:10.866Z\",\n            \"mime_class\": \"string\",\n            \"media_entry_id\": \"string\",\n            \"locked_for_user\": false,\n            \"upload_status\": \"success\"\n          }\n        ]\n      },\n      {\n        \"id\": 8457,\n        \"author_id\": 7148,\n        \"author_name\": \"string\",\n        \"comment\": \"string\",\n        \"created_at\": \"1999-02-24T04:50:19.445Z\",\n        \"edited_at\": \"2023-02-27T11:58:53.816Z\",\n        \"media_comment\": {\n          \"key_0\": 3842.903804858725,\n          \"key_1\": 597\n        },\n        \"attachments\": [\n          {\n            \"id\": 7955,\n            \"uuid\": \"string\",\n            \"folder_id\": 8401,\n            \"display_name\": \"string\",\n            \"filename\": \"string\",\n            \"content-type\": \"string\",\n            \"url\": \"string\",\n            \"size\": 2145,\n            \"created_at\": \"2026-03-04T11:12:28.896Z\",\n            \"updated_at\": \"1968-08-14T17:07:44.978Z\",\n            \"unlock_at\": \"2024-10-17T22:37:54.645Z\",\n            \"locked\": false,\n            \"hidden\": false,\n            \"lock_at\": \"1982-03-01T14:17:08.395Z\",\n            \"hidden_for_user\": false,\n            \"thumbnail_url\": \"string\",\n            \"modified_at\": \"1949-10-01T00:43:58.863Z\",\n            \"mime_class\": \"string\",\n            \"media_entry_id\": \"string\",\n            \"locked_for_user\": false,\n            \"upload_status\": \"errored\"\n          },\n          {\n            \"id\": 3234,\n            \"uuid\": \"string\",\n            \"folder_id\": 4404,\n            \"display_name\": \"string\",\n            \"filename\": \"string\",\n            \"content-type\": \"string\",\n            \"url\": \"string\",\n            \"size\": 134,\n            \"created_at\": \"1987-06-11T00:37:06.856Z\",\n            \"updated_at\": \"1952-07-02T18:47:53.677Z\",\n            \"unlock_at\": \"2004-07-02T08:04:01.786Z\",\n            \"locked\": true,\n            \"hidden\": true,\n            \"lock_at\": \"1976-11-27T17:44:45.368Z\",\n            \"hidden_for_user\": false,\n            \"thumbnail_url\": \"string\",\n            \"modified_at\": \"1962-04-11T05:54:05.008Z\",\n            \"mime_class\": \"string\",\n            \"media_entry_id\": \"string\",\n            \"locked_for_user\": false,\n            \"upload_status\": \"errored\"\n          }\n        ]\n      }\n    ],\n    \"submission_type\": \"string\",\n    \"submitted_at\": \"2026-03-15T10:46:43.378Z\",\n    \"url\": \"string\",\n    \"workflow_state\": \"graded\",\n    \"late\": false,\n    \"missing\": false,\n    \"excused\": false,\n    \"late_policy_status\": \"missing\",\n    \"seconds_late\": 1847,\n    \"points_deducted\": 5416.355879297681,\n    \"entered_grade\": \"string\",\n    \"entered_score\": 1213.431050195024,\n    \"posted_at\": \"1970-11-28T10:25:26.726Z\",\n    \"read_status\": \"read\",\n    \"redo_request\": true\n  },\n  {\n    \"id\": 9583,\n    \"assignment_id\": 2930,\n    \"user_id\": 4839,\n    \"grader_id\": 157,\n    \"course_id\": 4831,\n    \"attempt\": 9945,\n    \"body\": \"string\",\n    \"grade\": \"string\",\n    \"grade_matches_current_submission\": false,\n    \"html_url\": \"string\",\n    \"preview_url\": \"string\",\n    \"score\": 102.16196460273497,\n    \"submission_comments\": [\n      {\n        \"id\": 8422,\n        \"author_id\": 6926,\n        \"author_name\": \"string\",\n        \"comment\": \"string\",\n        \"created_at\": \"1954-06-02T09:47:26.835Z\",\n        \"edited_at\": \"1951-10-20T19:09:44.872Z\",\n        \"media_comment\": {\n          \"key_0\": false\n        },\n        \"attachments\": [\n          {\n            \"id\": 3107,\n            \"uuid\": \"string\",\n            \"folder_id\": 5929,\n            \"display_name\": \"string\",\n            \"filename\": \"string\",\n            \"content-type\": \"string\",\n            \"url\": \"string\",\n            \"size\": 7208,\n            \"created_at\": \"1976-10-01T19:41:27.552Z\",\n            \"updated_at\": \"2023-10-20T21:09:58.909Z\",\n            \"unlock_at\": \"2011-04-09T00:12:12.365Z\",\n            \"locked\": false,\n            \"hidden\": true,\n            \"lock_at\": \"1979-10-11T09:22:37.031Z\",\n            \"hidden_for_user\": true,\n            \"thumbnail_url\": \"string\",\n            \"modified_at\": \"2010-10-16T21:44:48.198Z\",\n            \"mime_class\": \"string\",\n            \"media_entry_id\": \"string\",\n            \"locked_for_user\": false,\n            \"upload_status\": \"pending\"\n          },\n          {\n            \"id\": 1109,\n            \"uuid\": \"string\",\n            \"folder_id\": 4525,\n            \"display_name\": \"string\",\n            \"filename\": \"string\",\n            \"content-type\": \"string\",\n            \"url\": \"string\",\n            \"size\": 1928,\n            \"created_at\": \"1976-12-13T09:09:05.864Z\",\n            \"updated_at\": \"1977-01-11T06:15:15.063Z\",\n            \"unlock_at\": \"1997-11-05T18:44:33.839Z\",\n            \"locked\": true,\n            \"hidden\": true,\n            \"lock_at\": \"2020-06-08T12:07:59.624Z\",\n            \"hidden_for_user\": true,\n            \"thumbnail_url\": \"string\",\n            \"modified_at\": \"1972-08-27T08:25:59.473Z\",\n            \"mime_class\": \"string\",\n            \"media_entry_id\": \"string\",\n            \"locked_for_user\": false,\n            \"upload_status\": \"errored\"\n          }\n        ]\n      },\n      {\n        \"id\": 5429,\n        \"author_id\": 6423,\n        \"author_name\": \"string\",\n        \"comment\": \"string\",\n        \"created_at\": \"1946-10-12T03:40:24.348Z\",\n        \"edited_at\": \"1988-12-23T13:12:53.194Z\",\n        \"media_comment\": {\n          \"key_0\": 1814,\n          \"key_1\": 2366,\n          \"key_2\": true\n        },\n        \"attachments\": [\n          {\n            \"id\": 790,\n            \"uuid\": \"string\",\n            \"folder_id\": 492,\n            \"display_name\": \"string\",\n            \"filename\": \"string\",\n            \"content-type\": \"string\",\n            \"url\": \"string\",\n            \"size\": 4270,\n            \"created_at\": \"1970-04-13T14:16:13.019Z\",\n            \"updated_at\": \"1999-06-08T05:31:36.517Z\",\n            \"unlock_at\": \"1965-02-15T12:37:38.966Z\",\n            \"locked\": false,\n            \"hidden\": false,\n            \"lock_at\": \"2017-08-10T13:11:18.429Z\",\n            \"hidden_for_user\": true,\n            \"thumbnail_url\": \"string\",\n            \"modified_at\": \"1980-03-13T15:17:00.935Z\",\n            \"mime_class\": \"string\",\n            \"media_entry_id\": \"string\",\n            \"locked_for_user\": true,\n            \"upload_status\": \"success\"\n          },\n          {\n            \"id\": 8405,\n            \"uuid\": \"string\",\n            \"folder_id\": 6900,\n            \"display_name\": \"string\",\n            \"filename\": \"string\",\n            \"content-type\": \"string\",\n            \"url\": \"string\",\n            \"size\": 9324,\n            \"created_at\": \"1956-04-19T00:00:10.492Z\",\n            \"updated_at\": \"1978-04-07T05:17:00.027Z\",\n            \"unlock_at\": \"1964-01-01T11:19:08.916Z\",\n            \"locked\": true,\n            \"hidden\": false,\n            \"lock_at\": \"2010-11-14T06:26:14.831Z\",\n            \"hidden_for_user\": false,\n            \"thumbnail_url\": \"string\",\n            \"modified_at\": \"2001-09-07T23:15:53.022Z\",\n            \"mime_class\": \"string\",\n            \"media_entry_id\": \"string\",\n            \"locked_for_user\": false,\n            \"upload_status\": \"pending\"\n          }\n        ]\n      }\n    ],\n    \"submission_type\": \"string\",\n    \"submitted_at\": \"1982-05-03T21:09:57.708Z\",\n    \"url\": \"string\",\n    \"workflow_state\": \"unsubmitted\",\n    \"late\": false,\n    \"missing\": false,\n    \"excused\": true,\n    \"late_policy_status\": \"extended\",\n    \"seconds_late\": 6031,\n    \"points_deducted\": 1076.6110221691927,\n    \"entered_grade\": \"string\",\n    \"entered_score\": 4765.1602425664105,\n    \"posted_at\": \"2016-09-09T00:31:44.548Z\",\n    \"read_status\": \"read\",\n    \"redo_request\": true\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f66418fb-470c-4c78-a45b-6cec04d4f4fd",
+          "name": "Get a Single Submission",
+          "request": {
+            "name": "Get a Single Submission",
+            "description": {},
+            "url": {
+              "path": [
+                "courses",
+                ":course_id",
+                "assignments",
+                ":assignment_id",
+                "submissions",
+                ":user_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "course_id",
+                  "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assignment_id",
+                  "description": "(Required) The Canvas assignment ID."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "user_id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                  "type": "any",
+                  "value": "{{canvas_host}}",
+                  "key": "canvas_host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "17500987-e184-4fc3-bb52-396ec11cfbed",
+              "name": "The submission",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "courses",
+                    ":course_id",
+                    "assignments",
+                    ":assignment_id",
+                    "submissions",
+                    ":user_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "course_id",
+                      "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assignment_id",
+                      "description": "(Required) The Canvas assignment ID."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                      "type": "any",
+                      "value": "{{canvas_host}}",
+                      "key": "canvas_host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 8026,\n  \"assignment_id\": 1207,\n  \"user_id\": 1995,\n  \"grader_id\": 5859,\n  \"course_id\": 6064,\n  \"attempt\": 2877,\n  \"body\": \"string\",\n  \"grade\": \"string\",\n  \"grade_matches_current_submission\": false,\n  \"html_url\": \"string\",\n  \"preview_url\": \"string\",\n  \"score\": 7874.731717003293,\n  \"submission_comments\": [\n    {\n      \"id\": 7944,\n      \"author_id\": 3357,\n      \"author_name\": \"string\",\n      \"comment\": \"string\",\n      \"created_at\": \"1974-03-12T15:57:04.414Z\",\n      \"edited_at\": \"2007-12-23T02:38:37.997Z\",\n      \"media_comment\": {\n        \"key_0\": \"string\"\n      },\n      \"attachments\": [\n        {\n          \"id\": 6035,\n          \"uuid\": \"string\",\n          \"folder_id\": 7676,\n          \"display_name\": \"string\",\n          \"filename\": \"string\",\n          \"content-type\": \"string\",\n          \"url\": \"string\",\n          \"size\": 7618,\n          \"created_at\": \"1986-11-27T23:16:52.347Z\",\n          \"updated_at\": \"2000-06-23T03:13:32.292Z\",\n          \"unlock_at\": \"1973-02-27T12:06:08.989Z\",\n          \"locked\": false,\n          \"hidden\": true,\n          \"lock_at\": \"1949-04-16T01:16:13.761Z\",\n          \"hidden_for_user\": true,\n          \"thumbnail_url\": \"string\",\n          \"modified_at\": \"1972-11-18T09:20:35.527Z\",\n          \"mime_class\": \"string\",\n          \"media_entry_id\": \"string\",\n          \"locked_for_user\": false,\n          \"upload_status\": \"pending\"\n        },\n        {\n          \"id\": 8226,\n          \"uuid\": \"string\",\n          \"folder_id\": 6964,\n          \"display_name\": \"string\",\n          \"filename\": \"string\",\n          \"content-type\": \"string\",\n          \"url\": \"string\",\n          \"size\": 6747,\n          \"created_at\": \"2013-02-15T11:56:22.309Z\",\n          \"updated_at\": \"1988-03-13T10:31:14.664Z\",\n          \"unlock_at\": \"2014-02-22T23:32:03.275Z\",\n          \"locked\": true,\n          \"hidden\": false,\n          \"lock_at\": \"1954-01-31T15:18:53.740Z\",\n          \"hidden_for_user\": true,\n          \"thumbnail_url\": \"string\",\n          \"modified_at\": \"2000-06-04T14:57:13.746Z\",\n          \"mime_class\": \"string\",\n          \"media_entry_id\": \"string\",\n          \"locked_for_user\": false,\n          \"upload_status\": \"success\"\n        }\n      ]\n    },\n    {\n      \"id\": 5462,\n      \"author_id\": 4290,\n      \"author_name\": \"string\",\n      \"comment\": \"string\",\n      \"created_at\": \"1976-04-12T08:18:56.874Z\",\n      \"edited_at\": \"1952-05-07T12:31:02.809Z\",\n      \"media_comment\": {\n        \"key_0\": 7627,\n        \"key_1\": \"string\",\n        \"key_2\": \"string\",\n        \"key_3\": 4690\n      },\n      \"attachments\": [\n        {\n          \"id\": 1767,\n          \"uuid\": \"string\",\n          \"folder_id\": 6282,\n          \"display_name\": \"string\",\n          \"filename\": \"string\",\n          \"content-type\": \"string\",\n          \"url\": \"string\",\n          \"size\": 3712,\n          \"created_at\": \"1980-12-14T23:11:25.877Z\",\n          \"updated_at\": \"2013-12-01T18:40:14.921Z\",\n          \"unlock_at\": \"1988-04-13T04:40:37.569Z\",\n          \"locked\": false,\n          \"hidden\": true,\n          \"lock_at\": \"2010-06-27T07:01:22.471Z\",\n          \"hidden_for_user\": false,\n          \"thumbnail_url\": \"string\",\n          \"modified_at\": \"2011-02-09T19:31:37.492Z\",\n          \"mime_class\": \"string\",\n          \"media_entry_id\": \"string\",\n          \"locked_for_user\": false,\n          \"upload_status\": \"pending\"\n        },\n        {\n          \"id\": 9452,\n          \"uuid\": \"string\",\n          \"folder_id\": 5075,\n          \"display_name\": \"string\",\n          \"filename\": \"string\",\n          \"content-type\": \"string\",\n          \"url\": \"string\",\n          \"size\": 8761,\n          \"created_at\": \"1980-12-28T02:09:24.092Z\",\n          \"updated_at\": \"1965-04-05T01:02:51.782Z\",\n          \"unlock_at\": \"1984-02-02T02:23:37.176Z\",\n          \"locked\": true,\n          \"hidden\": true,\n          \"lock_at\": \"1956-08-25T05:12:45.505Z\",\n          \"hidden_for_user\": false,\n          \"thumbnail_url\": \"string\",\n          \"modified_at\": \"1996-01-26T07:15:50.648Z\",\n          \"mime_class\": \"string\",\n          \"media_entry_id\": \"string\",\n          \"locked_for_user\": false,\n          \"upload_status\": \"pending\"\n        }\n      ]\n    }\n  ],\n  \"submission_type\": \"string\",\n  \"submitted_at\": \"1961-05-13T08:21:19.428Z\",\n  \"url\": \"string\",\n  \"workflow_state\": \"unsubmitted\",\n  \"late\": true,\n  \"missing\": true,\n  \"excused\": true,\n  \"late_policy_status\": \"extended\",\n  \"seconds_late\": 6452,\n  \"points_deducted\": 3500.656211987392,\n  \"entered_grade\": \"string\",\n  \"entered_score\": 5457.582189797281,\n  \"posted_at\": \"2001-01-30T04:44:27.237Z\",\n  \"read_status\": \"unread\",\n  \"redo_request\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b2a76e56-ae44-4329-958e-1d1430177a16",
+          "name": "Grade or Comment on a Submission",
+          "request": {
+            "name": "Grade or Comment on a Submission",
+            "description": {},
+            "url": {
+              "path": [
+                "courses",
+                ":course_id",
+                "assignments",
+                ":assignment_id",
+                "submissions",
+                ":user_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "course_id",
+                  "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assignment_id",
+                  "description": "(Required) The Canvas assignment ID."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "user_id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                  "type": "any",
+                  "value": "{{canvas_host}}",
+                  "key": "canvas_host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"submission\": {\n    \"posted_grade\": \"<string>\",\n    \"excuse\": \"<boolean>\",\n    \"late_policy_status\": \"<string>\",\n    \"seconds_late_override\": \"<integer>\"\n  },\n  \"comment\": {\n    \"text_comment\": \"<string>\",\n    \"group_comment\": \"<boolean>\"\n  },\n  \"rubric_assessment\": {\n    \"key_0\": false,\n    \"key_1\": false\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ffe4238e-9d91-4240-9356-f3aa58dc97d6",
+              "name": "The updated submission",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "courses",
+                    ":course_id",
+                    "assignments",
+                    ":assignment_id",
+                    "submissions",
+                    ":user_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "course_id",
+                      "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assignment_id",
+                      "description": "(Required) The Canvas assignment ID."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                      "type": "any",
+                      "value": "{{canvas_host}}",
+                      "key": "canvas_host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"submission\": {\n    \"posted_grade\": \"<string>\",\n    \"excuse\": \"<boolean>\",\n    \"late_policy_status\": \"<string>\",\n    \"seconds_late_override\": \"<integer>\"\n  },\n  \"comment\": {\n    \"text_comment\": \"<string>\",\n    \"group_comment\": \"<boolean>\"\n  },\n  \"rubric_assessment\": {\n    \"key_0\": 6502.980643616249,\n    \"key_1\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 8026,\n  \"assignment_id\": 1207,\n  \"user_id\": 1995,\n  \"grader_id\": 5859,\n  \"course_id\": 6064,\n  \"attempt\": 2877,\n  \"body\": \"string\",\n  \"grade\": \"string\",\n  \"grade_matches_current_submission\": false,\n  \"html_url\": \"string\",\n  \"preview_url\": \"string\",\n  \"score\": 7874.731717003293,\n  \"submission_comments\": [\n    {\n      \"id\": 7944,\n      \"author_id\": 3357,\n      \"author_name\": \"string\",\n      \"comment\": \"string\",\n      \"created_at\": \"1974-03-12T15:57:04.414Z\",\n      \"edited_at\": \"2007-12-23T02:38:37.997Z\",\n      \"media_comment\": {\n        \"key_0\": \"string\"\n      },\n      \"attachments\": [\n        {\n          \"id\": 6035,\n          \"uuid\": \"string\",\n          \"folder_id\": 7676,\n          \"display_name\": \"string\",\n          \"filename\": \"string\",\n          \"content-type\": \"string\",\n          \"url\": \"string\",\n          \"size\": 7618,\n          \"created_at\": \"1986-11-27T23:16:52.347Z\",\n          \"updated_at\": \"2000-06-23T03:13:32.292Z\",\n          \"unlock_at\": \"1973-02-27T12:06:08.989Z\",\n          \"locked\": false,\n          \"hidden\": true,\n          \"lock_at\": \"1949-04-16T01:16:13.761Z\",\n          \"hidden_for_user\": true,\n          \"thumbnail_url\": \"string\",\n          \"modified_at\": \"1972-11-18T09:20:35.527Z\",\n          \"mime_class\": \"string\",\n          \"media_entry_id\": \"string\",\n          \"locked_for_user\": false,\n          \"upload_status\": \"pending\"\n        },\n        {\n          \"id\": 8226,\n          \"uuid\": \"string\",\n          \"folder_id\": 6964,\n          \"display_name\": \"string\",\n          \"filename\": \"string\",\n          \"content-type\": \"string\",\n          \"url\": \"string\",\n          \"size\": 6747,\n          \"created_at\": \"2013-02-15T11:56:22.309Z\",\n          \"updated_at\": \"1988-03-13T10:31:14.664Z\",\n          \"unlock_at\": \"2014-02-22T23:32:03.275Z\",\n          \"locked\": true,\n          \"hidden\": false,\n          \"lock_at\": \"1954-01-31T15:18:53.740Z\",\n          \"hidden_for_user\": true,\n          \"thumbnail_url\": \"string\",\n          \"modified_at\": \"2000-06-04T14:57:13.746Z\",\n          \"mime_class\": \"string\",\n          \"media_entry_id\": \"string\",\n          \"locked_for_user\": false,\n          \"upload_status\": \"success\"\n        }\n      ]\n    },\n    {\n      \"id\": 5462,\n      \"author_id\": 4290,\n      \"author_name\": \"string\",\n      \"comment\": \"string\",\n      \"created_at\": \"1976-04-12T08:18:56.874Z\",\n      \"edited_at\": \"1952-05-07T12:31:02.809Z\",\n      \"media_comment\": {\n        \"key_0\": 7627,\n        \"key_1\": \"string\",\n        \"key_2\": \"string\",\n        \"key_3\": 4690\n      },\n      \"attachments\": [\n        {\n          \"id\": 1767,\n          \"uuid\": \"string\",\n          \"folder_id\": 6282,\n          \"display_name\": \"string\",\n          \"filename\": \"string\",\n          \"content-type\": \"string\",\n          \"url\": \"string\",\n          \"size\": 3712,\n          \"created_at\": \"1980-12-14T23:11:25.877Z\",\n          \"updated_at\": \"2013-12-01T18:40:14.921Z\",\n          \"unlock_at\": \"1988-04-13T04:40:37.569Z\",\n          \"locked\": false,\n          \"hidden\": true,\n          \"lock_at\": \"2010-06-27T07:01:22.471Z\",\n          \"hidden_for_user\": false,\n          \"thumbnail_url\": \"string\",\n          \"modified_at\": \"2011-02-09T19:31:37.492Z\",\n          \"mime_class\": \"string\",\n          \"media_entry_id\": \"string\",\n          \"locked_for_user\": false,\n          \"upload_status\": \"pending\"\n        },\n        {\n          \"id\": 9452,\n          \"uuid\": \"string\",\n          \"folder_id\": 5075,\n          \"display_name\": \"string\",\n          \"filename\": \"string\",\n          \"content-type\": \"string\",\n          \"url\": \"string\",\n          \"size\": 8761,\n          \"created_at\": \"1980-12-28T02:09:24.092Z\",\n          \"updated_at\": \"1965-04-05T01:02:51.782Z\",\n          \"unlock_at\": \"1984-02-02T02:23:37.176Z\",\n          \"locked\": true,\n          \"hidden\": true,\n          \"lock_at\": \"1956-08-25T05:12:45.505Z\",\n          \"hidden_for_user\": false,\n          \"thumbnail_url\": \"string\",\n          \"modified_at\": \"1996-01-26T07:15:50.648Z\",\n          \"mime_class\": \"string\",\n          \"media_entry_id\": \"string\",\n          \"locked_for_user\": false,\n          \"upload_status\": \"pending\"\n        }\n      ]\n    }\n  ],\n  \"submission_type\": \"string\",\n  \"submitted_at\": \"1961-05-13T08:21:19.428Z\",\n  \"url\": \"string\",\n  \"workflow_state\": \"unsubmitted\",\n  \"late\": true,\n  \"missing\": true,\n  \"excused\": true,\n  \"late_policy_status\": \"extended\",\n  \"seconds_late\": 6452,\n  \"points_deducted\": 3500.656211987392,\n  \"entered_grade\": \"string\",\n  \"entered_score\": 5457.582189797281,\n  \"posted_at\": \"2001-01-30T04:44:27.237Z\",\n  \"read_status\": \"unread\",\n  \"redo_request\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "canvas.instructure.com",
+      "key": "canvas_host"
+    },
+    {
+      "type": "string",
+      "value": "https://{{canvas_host}}/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "url:GET|/api/v1/accounts url:GET|/api/v1/courses url:GET|/api/v1/users/{user_id}"
+      },
+      {
+        "key": "redirect_uri",
+        "value": "https://canvas.instructure.com/login/oauth2/token"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://canvas.instructure.com/login/oauth2/token"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://canvas.instructure.com/login/oauth2/auth"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "3e16122d-8508-443f-a4b1-bf63245fe2c2",
+    "name": "Canvas LMS REST Accounts Submissions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Canvas LMS REST API exposes the full learning-management surface — accounts, courses,\nenrollments, users, assignments, submissions, grades, outcomes, quizzes, modules, pages,\ndiscussions, files, conversations, calendar events, planner, and more — via\n`/api/v1` on any Canvas install (Free for Teacher at canvas.instructure.com,\nCanvas Cloud, or self-hosted).\n\nAuthentication uses OAuth2 (RFC 6749). Tokens are issued via the\n`/login/oauth2/auth` and `/login/oauth2/token` endpoints; clients must be\nregistered as a Developer Key in the target Canvas account. Manual personal\naccess tokens may be created from a user's profile for testing only.\n\nPagination follows RFC 5988 with `Link` response headers (`rel=\"next\"`,\n`\"prev\"`, `\"first\"`, `\"last\"`). Includes can be requested via the\n`include[]` query parameter on most resources. Admin users may impersonate\nother users by appending `as_user_id={id}` (Masquerading).\n\nThis OpenAPI document covers the most-used endpoints across Accounts,\nCourses, Enrollments, Users, Assignments, Submissions, Modules, Discussions,\nFiles, and Outcomes. The full surface (190+ resource groups) is documented\nat https://canvas.instructure.com/doc/api/all_resources.html and generated\nin the canvas-lms repo via `rake doc:openapi`.\n\n\nContact Support:\n Name: Canvas Developer Community",
+      "type": "text/plain"
+    }
+  }
+}

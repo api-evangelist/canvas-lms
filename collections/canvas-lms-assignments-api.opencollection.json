@@ -1,0 +1,177 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Canvas LMS REST Accounts Assignments API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://canvas.instructure.com/login/oauth2/auth",
+      "accessTokenUrl": "https://canvas.instructure.com/login/oauth2/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Assignments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Assignments in a Course",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/assignments",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              },
+              {
+                "name": "include[]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search_term",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order_by",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page (default 10, max varies by endpoint and install)."
+              }
+            ]
+          },
+          "docs": "List Assignments in a Course"
+        },
+        {
+          "info": {
+            "name": "Create an Assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/assignments",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an Assignment"
+        },
+        {
+          "info": {
+            "name": "Get a Single Assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/assignments/:assignment_id",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              },
+              {
+                "name": "assignment_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas assignment ID."
+              }
+            ]
+          },
+          "docs": "Get a Single Assignment"
+        },
+        {
+          "info": {
+            "name": "Edit an Assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/assignments/:assignment_id",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              },
+              {
+                "name": "assignment_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas assignment ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Edit an Assignment"
+        },
+        {
+          "info": {
+            "name": "Delete an Assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/assignments/:assignment_id",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              },
+              {
+                "name": "assignment_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas assignment ID."
+              }
+            ]
+          },
+          "docs": "Delete an Assignment"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

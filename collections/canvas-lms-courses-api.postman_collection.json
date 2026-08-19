@@ -1,0 +1,928 @@
+{
+  "item": [
+    {
+      "id": "c75464d2-35ca-4289-a958-f408d5b9bdf4",
+      "name": "Courses",
+      "description": {
+        "content": "The Canvas Course resource and its lifecycle",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0d99b60c-6189-42ec-817f-0be4aff55960",
+          "name": "List Active Courses in an Account",
+          "request": {
+            "name": "List Active Courses in an Account",
+            "description": {},
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "courses"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "with_enrollments",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "enrollment_term_id",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "search_term",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "state[]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "state[]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "<integer>",
+                  "description": "Items per page (default 10, max varies by endpoint and install)."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "Page number (1-indexed). Prefer following RFC 5988 Link headers with rel=\"next\"."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) The Canvas account ID, an SIS account ID prefixed `sis_account_id:`, or `self`."
+                },
+                {
+                  "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                  "type": "any",
+                  "value": "{{canvas_host}}",
+                  "key": "canvas_host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "db8ee61e-79b1-413e-b90b-a79bb3c27dc7",
+              "name": "A paginated list of courses",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "accounts",
+                    ":account_id",
+                    "courses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "with_enrollments",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "enrollment_term_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "search_term",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "state[]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "state[]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account_id",
+                      "description": "(Required) The Canvas account ID, an SIS account ID prefixed `sis_account_id:`, or `self`."
+                    },
+                    {
+                      "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                      "type": "any",
+                      "value": "{{canvas_host}}",
+                      "key": "canvas_host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 2188,\n    \"sis_course_id\": \"string\",\n    \"uuid\": \"string\",\n    \"integration_id\": \"string\",\n    \"sis_import_id\": 504,\n    \"name\": \"string\",\n    \"course_code\": \"string\",\n    \"original_name\": \"string\",\n    \"workflow_state\": \"completed\",\n    \"account_id\": 7293,\n    \"root_account_id\": 3085,\n    \"enrollment_term_id\": 5386,\n    \"grading_standard_id\": 8974,\n    \"grade_passback_setting\": \"string\",\n    \"created_at\": \"1962-11-15T06:51:48.500Z\",\n    \"start_at\": \"1948-10-25T08:22:06.925Z\",\n    \"end_at\": \"2008-03-17T11:25:41.729Z\",\n    \"locale\": \"string\",\n    \"enrollments\": [\n      {\n        \"id\": 7797,\n        \"course_id\": 7576,\n        \"course_section_id\": 4459,\n        \"root_account_id\": 7858,\n        \"type\": \"TeacherEnrollment\",\n        \"user_id\": 7233,\n        \"associated_user_id\": 781,\n        \"role\": \"string\",\n        \"role_id\": 948,\n        \"enrollment_state\": \"inactive\",\n        \"limit_privileges_to_course_section\": false,\n        \"sis_import_id\": 9891,\n        \"sis_account_id\": \"string\",\n        \"sis_course_id\": \"string\",\n        \"sis_section_id\": \"string\",\n        \"sis_user_id\": \"string\",\n        \"section_integration_id\": \"string\",\n        \"created_at\": \"1956-12-11T02:55:37.960Z\",\n        \"updated_at\": \"1946-12-11T09:49:19.851Z\",\n        \"start_at\": \"1970-08-09T11:47:28.793Z\",\n        \"end_at\": \"2019-06-25T09:53:47.809Z\",\n        \"last_activity_at\": \"1976-09-30T13:28:36.742Z\",\n        \"last_attended_at\": \"2017-04-06T14:13:57.262Z\",\n        \"total_activity_time\": 3896,\n        \"html_url\": \"string\",\n        \"grades\": {\n          \"html_url\": \"string\",\n          \"current_grade\": \"string\",\n          \"final_grade\": \"string\",\n          \"current_score\": 9099.337331515244,\n          \"final_score\": 1838.3731990597184,\n          \"unposted_current_grade\": \"string\",\n          \"unposted_final_grade\": \"string\",\n          \"unposted_current_score\": 9506.2296312176,\n          \"unposted_final_score\": 360.5934635720742\n        }\n      },\n      {\n        \"id\": 8227,\n        \"course_id\": 878,\n        \"course_section_id\": 207,\n        \"root_account_id\": 2542,\n        \"type\": \"TeacherEnrollment\",\n        \"user_id\": 3822,\n        \"associated_user_id\": 9321,\n        \"role\": \"string\",\n        \"role_id\": 6278,\n        \"enrollment_state\": \"creation_pending\",\n        \"limit_privileges_to_course_section\": false,\n        \"sis_import_id\": 6653,\n        \"sis_account_id\": \"string\",\n        \"sis_course_id\": \"string\",\n        \"sis_section_id\": \"string\",\n        \"sis_user_id\": \"string\",\n        \"section_integration_id\": \"string\",\n        \"created_at\": \"2004-08-08T06:10:04.391Z\",\n        \"updated_at\": \"1991-04-28T17:52:12.382Z\",\n        \"start_at\": \"1959-05-25T14:16:53.523Z\",\n        \"end_at\": \"1996-07-18T01:14:09.933Z\",\n        \"last_activity_at\": \"1965-01-28T04:57:38.818Z\",\n        \"last_attended_at\": \"1947-03-26T00:59:11.755Z\",\n        \"total_activity_time\": 8443,\n        \"html_url\": \"string\",\n        \"grades\": {\n          \"html_url\": \"string\",\n          \"current_grade\": \"string\",\n          \"final_grade\": \"string\",\n          \"current_score\": 2746.0997551690657,\n          \"final_score\": 1684.1390856127846,\n          \"unposted_current_grade\": \"string\",\n          \"unposted_final_grade\": \"string\",\n          \"unposted_current_score\": 4394.112554888006,\n          \"unposted_final_score\": 6370.080521974955\n        }\n      }\n    ],\n    \"total_students\": 7300,\n    \"default_view\": \"syllabus\",\n    \"syllabus_body\": \"string\",\n    \"needs_grading_count\": 6975,\n    \"is_public\": true,\n    \"is_public_to_auth_users\": true,\n    \"public_syllabus\": true,\n    \"public_syllabus_to_auth\": false,\n    \"storage_quota_mb\": 916,\n    \"storage_quota_used_mb\": 1753.6102064339443,\n    \"hide_final_grades\": true,\n    \"license\": \"string\",\n    \"allow_student_assignment_edits\": false,\n    \"allow_wiki_comments\": true,\n    \"allow_student_forum_attachments\": false,\n    \"open_enrollment\": true,\n    \"self_enrollment\": true,\n    \"restrict_enrollments_to_course_dates\": true,\n    \"course_format\": \"string\",\n    \"time_zone\": \"string\",\n    \"blueprint\": false,\n    \"template\": false,\n    \"homeroom_course\": false\n  },\n  {\n    \"id\": 4041,\n    \"sis_course_id\": \"string\",\n    \"uuid\": \"string\",\n    \"integration_id\": \"string\",\n    \"sis_import_id\": 4488,\n    \"name\": \"string\",\n    \"course_code\": \"string\",\n    \"original_name\": \"string\",\n    \"workflow_state\": \"completed\",\n    \"account_id\": 1260,\n    \"root_account_id\": 4687,\n    \"enrollment_term_id\": 5808,\n    \"grading_standard_id\": 7889,\n    \"grade_passback_setting\": \"string\",\n    \"created_at\": \"1964-05-04T14:19:44.134Z\",\n    \"start_at\": \"1977-02-10T06:32:34.646Z\",\n    \"end_at\": \"1953-09-11T14:36:36.041Z\",\n    \"locale\": \"string\",\n    \"enrollments\": [\n      {\n        \"id\": 3796,\n        \"course_id\": 6708,\n        \"course_section_id\": 3258,\n        \"root_account_id\": 1132,\n        \"type\": \"TaEnrollment\",\n        \"user_id\": 5568,\n        \"associated_user_id\": 1904,\n        \"role\": \"string\",\n        \"role_id\": 4140,\n        \"enrollment_state\": \"creation_pending\",\n        \"limit_privileges_to_course_section\": false,\n        \"sis_import_id\": 2794,\n        \"sis_account_id\": \"string\",\n        \"sis_course_id\": \"string\",\n        \"sis_section_id\": \"string\",\n        \"sis_user_id\": \"string\",\n        \"section_integration_id\": \"string\",\n        \"created_at\": \"1978-11-27T15:23:04.822Z\",\n        \"updated_at\": \"1980-05-20T19:33:24.447Z\",\n        \"start_at\": \"2022-07-13T20:05:26.367Z\",\n        \"end_at\": \"1948-08-07T01:16:16.087Z\",\n        \"last_activity_at\": \"1973-07-07T04:04:51.494Z\",\n        \"last_attended_at\": \"2016-05-12T21:39:06.517Z\",\n        \"total_activity_time\": 1134,\n        \"html_url\": \"string\",\n        \"grades\": {\n          \"html_url\": \"string\",\n          \"current_grade\": \"string\",\n          \"final_grade\": \"string\",\n          \"current_score\": 9563.618985910653,\n          \"final_score\": 6406.906702833721,\n          \"unposted_current_grade\": \"string\",\n          \"unposted_final_grade\": \"string\",\n          \"unposted_current_score\": 6827.572497960137,\n          \"unposted_final_score\": 3969.962213440794\n        }\n      },\n      {\n        \"id\": 3708,\n        \"course_id\": 8912,\n        \"course_section_id\": 6393,\n        \"root_account_id\": 3703,\n        \"type\": \"StudentEnrollment\",\n        \"user_id\": 9063,\n        \"associated_user_id\": 728,\n        \"role\": \"string\",\n        \"role_id\": 5251,\n        \"enrollment_state\": \"completed\",\n        \"limit_privileges_to_course_section\": false,\n        \"sis_import_id\": 2987,\n        \"sis_account_id\": \"string\",\n        \"sis_course_id\": \"string\",\n        \"sis_section_id\": \"string\",\n        \"sis_user_id\": \"string\",\n        \"section_integration_id\": \"string\",\n        \"created_at\": \"1953-12-08T06:29:49.958Z\",\n        \"updated_at\": \"2018-06-15T23:58:58.330Z\",\n        \"start_at\": \"2022-02-11T03:20:00.755Z\",\n        \"end_at\": \"2001-08-06T16:35:58.867Z\",\n        \"last_activity_at\": \"1988-02-12T03:39:25.851Z\",\n        \"last_attended_at\": \"1999-07-20T18:26:34.556Z\",\n        \"total_activity_time\": 4614,\n        \"html_url\": \"string\",\n        \"grades\": {\n          \"html_url\": \"string\",\n          \"current_grade\": \"string\",\n          \"final_grade\": \"string\",\n          \"current_score\": 6562.553782577183,\n          \"final_score\": 6468.8715487009085,\n          \"unposted_current_grade\": \"string\",\n          \"unposted_final_grade\": \"string\",\n          \"unposted_current_score\": 4852.22672620783,\n          \"unposted_final_score\": 3009.3623647611025\n        }\n      }\n    ],\n    \"total_students\": 3393,\n    \"default_view\": \"modules\",\n    \"syllabus_body\": \"string\",\n    \"needs_grading_count\": 2466,\n    \"is_public\": true,\n    \"is_public_to_auth_users\": false,\n    \"public_syllabus\": false,\n    \"public_syllabus_to_auth\": true,\n    \"storage_quota_mb\": 2962,\n    \"storage_quota_used_mb\": 9605.051569070683,\n    \"hide_final_grades\": true,\n    \"license\": \"string\",\n    \"allow_student_assignment_edits\": false,\n    \"allow_wiki_comments\": true,\n    \"allow_student_forum_attachments\": true,\n    \"open_enrollment\": false,\n    \"self_enrollment\": true,\n    \"restrict_enrollments_to_course_dates\": true,\n    \"course_format\": \"string\",\n    \"time_zone\": \"string\",\n    \"blueprint\": true,\n    \"template\": true,\n    \"homeroom_course\": true\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2d8cfbba-a0ff-45fb-857c-e81aeb0146cb",
+          "name": "List Courses for the Current User",
+          "request": {
+            "name": "List Courses for the Current User",
+            "description": {},
+            "url": {
+              "path": [
+                "courses"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "enrollment_type",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "enrollment_state",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "include[]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "include[]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "<integer>",
+                  "description": "Items per page (default 10, max varies by endpoint and install)."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "Page number (1-indexed). Prefer following RFC 5988 Link headers with rel=\"next\"."
+                }
+              ],
+              "variable": [
+                {
+                  "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                  "type": "any",
+                  "value": "{{canvas_host}}",
+                  "key": "canvas_host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f3f25002-e498-412b-8b4c-b12bc201e754",
+              "name": "A paginated list of courses for the authenticated user",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "courses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "enrollment_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "enrollment_state",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include[]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include[]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                      "type": "any",
+                      "value": "{{canvas_host}}",
+                      "key": "canvas_host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 2188,\n    \"sis_course_id\": \"string\",\n    \"uuid\": \"string\",\n    \"integration_id\": \"string\",\n    \"sis_import_id\": 504,\n    \"name\": \"string\",\n    \"course_code\": \"string\",\n    \"original_name\": \"string\",\n    \"workflow_state\": \"completed\",\n    \"account_id\": 7293,\n    \"root_account_id\": 3085,\n    \"enrollment_term_id\": 5386,\n    \"grading_standard_id\": 8974,\n    \"grade_passback_setting\": \"string\",\n    \"created_at\": \"1962-11-15T06:51:48.500Z\",\n    \"start_at\": \"1948-10-25T08:22:06.925Z\",\n    \"end_at\": \"2008-03-17T11:25:41.729Z\",\n    \"locale\": \"string\",\n    \"enrollments\": [\n      {\n        \"id\": 7797,\n        \"course_id\": 7576,\n        \"course_section_id\": 4459,\n        \"root_account_id\": 7858,\n        \"type\": \"TeacherEnrollment\",\n        \"user_id\": 7233,\n        \"associated_user_id\": 781,\n        \"role\": \"string\",\n        \"role_id\": 948,\n        \"enrollment_state\": \"inactive\",\n        \"limit_privileges_to_course_section\": false,\n        \"sis_import_id\": 9891,\n        \"sis_account_id\": \"string\",\n        \"sis_course_id\": \"string\",\n        \"sis_section_id\": \"string\",\n        \"sis_user_id\": \"string\",\n        \"section_integration_id\": \"string\",\n        \"created_at\": \"1956-12-11T02:55:37.960Z\",\n        \"updated_at\": \"1946-12-11T09:49:19.851Z\",\n        \"start_at\": \"1970-08-09T11:47:28.793Z\",\n        \"end_at\": \"2019-06-25T09:53:47.809Z\",\n        \"last_activity_at\": \"1976-09-30T13:28:36.742Z\",\n        \"last_attended_at\": \"2017-04-06T14:13:57.262Z\",\n        \"total_activity_time\": 3896,\n        \"html_url\": \"string\",\n        \"grades\": {\n          \"html_url\": \"string\",\n          \"current_grade\": \"string\",\n          \"final_grade\": \"string\",\n          \"current_score\": 9099.337331515244,\n          \"final_score\": 1838.3731990597184,\n          \"unposted_current_grade\": \"string\",\n          \"unposted_final_grade\": \"string\",\n          \"unposted_current_score\": 9506.2296312176,\n          \"unposted_final_score\": 360.5934635720742\n        }\n      },\n      {\n        \"id\": 8227,\n        \"course_id\": 878,\n        \"course_section_id\": 207,\n        \"root_account_id\": 2542,\n        \"type\": \"TeacherEnrollment\",\n        \"user_id\": 3822,\n        \"associated_user_id\": 9321,\n        \"role\": \"string\",\n        \"role_id\": 6278,\n        \"enrollment_state\": \"creation_pending\",\n        \"limit_privileges_to_course_section\": false,\n        \"sis_import_id\": 6653,\n        \"sis_account_id\": \"string\",\n        \"sis_course_id\": \"string\",\n        \"sis_section_id\": \"string\",\n        \"sis_user_id\": \"string\",\n        \"section_integration_id\": \"string\",\n        \"created_at\": \"2004-08-08T06:10:04.391Z\",\n        \"updated_at\": \"1991-04-28T17:52:12.382Z\",\n        \"start_at\": \"1959-05-25T14:16:53.523Z\",\n        \"end_at\": \"1996-07-18T01:14:09.933Z\",\n        \"last_activity_at\": \"1965-01-28T04:57:38.818Z\",\n        \"last_attended_at\": \"1947-03-26T00:59:11.755Z\",\n        \"total_activity_time\": 8443,\n        \"html_url\": \"string\",\n        \"grades\": {\n          \"html_url\": \"string\",\n          \"current_grade\": \"string\",\n          \"final_grade\": \"string\",\n          \"current_score\": 2746.0997551690657,\n          \"final_score\": 1684.1390856127846,\n          \"unposted_current_grade\": \"string\",\n          \"unposted_final_grade\": \"string\",\n          \"unposted_current_score\": 4394.112554888006,\n          \"unposted_final_score\": 6370.080521974955\n        }\n      }\n    ],\n    \"total_students\": 7300,\n    \"default_view\": \"syllabus\",\n    \"syllabus_body\": \"string\",\n    \"needs_grading_count\": 6975,\n    \"is_public\": true,\n    \"is_public_to_auth_users\": true,\n    \"public_syllabus\": true,\n    \"public_syllabus_to_auth\": false,\n    \"storage_quota_mb\": 916,\n    \"storage_quota_used_mb\": 1753.6102064339443,\n    \"hide_final_grades\": true,\n    \"license\": \"string\",\n    \"allow_student_assignment_edits\": false,\n    \"allow_wiki_comments\": true,\n    \"allow_student_forum_attachments\": false,\n    \"open_enrollment\": true,\n    \"self_enrollment\": true,\n    \"restrict_enrollments_to_course_dates\": true,\n    \"course_format\": \"string\",\n    \"time_zone\": \"string\",\n    \"blueprint\": false,\n    \"template\": false,\n    \"homeroom_course\": false\n  },\n  {\n    \"id\": 4041,\n    \"sis_course_id\": \"string\",\n    \"uuid\": \"string\",\n    \"integration_id\": \"string\",\n    \"sis_import_id\": 4488,\n    \"name\": \"string\",\n    \"course_code\": \"string\",\n    \"original_name\": \"string\",\n    \"workflow_state\": \"completed\",\n    \"account_id\": 1260,\n    \"root_account_id\": 4687,\n    \"enrollment_term_id\": 5808,\n    \"grading_standard_id\": 7889,\n    \"grade_passback_setting\": \"string\",\n    \"created_at\": \"1964-05-04T14:19:44.134Z\",\n    \"start_at\": \"1977-02-10T06:32:34.646Z\",\n    \"end_at\": \"1953-09-11T14:36:36.041Z\",\n    \"locale\": \"string\",\n    \"enrollments\": [\n      {\n        \"id\": 3796,\n        \"course_id\": 6708,\n        \"course_section_id\": 3258,\n        \"root_account_id\": 1132,\n        \"type\": \"TaEnrollment\",\n        \"user_id\": 5568,\n        \"associated_user_id\": 1904,\n        \"role\": \"string\",\n        \"role_id\": 4140,\n        \"enrollment_state\": \"creation_pending\",\n        \"limit_privileges_to_course_section\": false,\n        \"sis_import_id\": 2794,\n        \"sis_account_id\": \"string\",\n        \"sis_course_id\": \"string\",\n        \"sis_section_id\": \"string\",\n        \"sis_user_id\": \"string\",\n        \"section_integration_id\": \"string\",\n        \"created_at\": \"1978-11-27T15:23:04.822Z\",\n        \"updated_at\": \"1980-05-20T19:33:24.447Z\",\n        \"start_at\": \"2022-07-13T20:05:26.367Z\",\n        \"end_at\": \"1948-08-07T01:16:16.087Z\",\n        \"last_activity_at\": \"1973-07-07T04:04:51.494Z\",\n        \"last_attended_at\": \"2016-05-12T21:39:06.517Z\",\n        \"total_activity_time\": 1134,\n        \"html_url\": \"string\",\n        \"grades\": {\n          \"html_url\": \"string\",\n          \"current_grade\": \"string\",\n          \"final_grade\": \"string\",\n          \"current_score\": 9563.618985910653,\n          \"final_score\": 6406.906702833721,\n          \"unposted_current_grade\": \"string\",\n          \"unposted_final_grade\": \"string\",\n          \"unposted_current_score\": 6827.572497960137,\n          \"unposted_final_score\": 3969.962213440794\n        }\n      },\n      {\n        \"id\": 3708,\n        \"course_id\": 8912,\n        \"course_section_id\": 6393,\n        \"root_account_id\": 3703,\n        \"type\": \"StudentEnrollment\",\n        \"user_id\": 9063,\n        \"associated_user_id\": 728,\n        \"role\": \"string\",\n        \"role_id\": 5251,\n        \"enrollment_state\": \"completed\",\n        \"limit_privileges_to_course_section\": false,\n        \"sis_import_id\": 2987,\n        \"sis_account_id\": \"string\",\n        \"sis_course_id\": \"string\",\n        \"sis_section_id\": \"string\",\n        \"sis_user_id\": \"string\",\n        \"section_integration_id\": \"string\",\n        \"created_at\": \"1953-12-08T06:29:49.958Z\",\n        \"updated_at\": \"2018-06-15T23:58:58.330Z\",\n        \"start_at\": \"2022-02-11T03:20:00.755Z\",\n        \"end_at\": \"2001-08-06T16:35:58.867Z\",\n        \"last_activity_at\": \"1988-02-12T03:39:25.851Z\",\n        \"last_attended_at\": \"1999-07-20T18:26:34.556Z\",\n        \"total_activity_time\": 4614,\n        \"html_url\": \"string\",\n        \"grades\": {\n          \"html_url\": \"string\",\n          \"current_grade\": \"string\",\n          \"final_grade\": \"string\",\n          \"current_score\": 6562.553782577183,\n          \"final_score\": 6468.8715487009085,\n          \"unposted_current_grade\": \"string\",\n          \"unposted_final_grade\": \"string\",\n          \"unposted_current_score\": 4852.22672620783,\n          \"unposted_final_score\": 3009.3623647611025\n        }\n      }\n    ],\n    \"total_students\": 3393,\n    \"default_view\": \"modules\",\n    \"syllabus_body\": \"string\",\n    \"needs_grading_count\": 2466,\n    \"is_public\": true,\n    \"is_public_to_auth_users\": false,\n    \"public_syllabus\": false,\n    \"public_syllabus_to_auth\": true,\n    \"storage_quota_mb\": 2962,\n    \"storage_quota_used_mb\": 9605.051569070683,\n    \"hide_final_grades\": true,\n    \"license\": \"string\",\n    \"allow_student_assignment_edits\": false,\n    \"allow_wiki_comments\": true,\n    \"allow_student_forum_attachments\": true,\n    \"open_enrollment\": false,\n    \"self_enrollment\": true,\n    \"restrict_enrollments_to_course_dates\": true,\n    \"course_format\": \"string\",\n    \"time_zone\": \"string\",\n    \"blueprint\": true,\n    \"template\": true,\n    \"homeroom_course\": true\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a0a58e50-f87a-4732-b9aa-2ac930b68ab2",
+          "name": "Get a Single Course",
+          "request": {
+            "name": "Get a Single Course",
+            "description": {},
+            "url": {
+              "path": [
+                "courses",
+                ":course_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include[]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "include[]",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "course_id",
+                  "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                },
+                {
+                  "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                  "type": "any",
+                  "value": "{{canvas_host}}",
+                  "key": "canvas_host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "151df8c3-7621-4b90-94e0-b2a72f814978",
+              "name": "The course",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "courses",
+                    ":course_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include[]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include[]",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "course_id",
+                      "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                    },
+                    {
+                      "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                      "type": "any",
+                      "value": "{{canvas_host}}",
+                      "key": "canvas_host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 6632,\n  \"sis_course_id\": \"string\",\n  \"uuid\": \"string\",\n  \"integration_id\": \"string\",\n  \"sis_import_id\": 5947,\n  \"name\": \"string\",\n  \"course_code\": \"string\",\n  \"original_name\": \"string\",\n  \"workflow_state\": \"deleted\",\n  \"account_id\": 3857,\n  \"root_account_id\": 7145,\n  \"enrollment_term_id\": 8599,\n  \"grading_standard_id\": 1355,\n  \"grade_passback_setting\": \"string\",\n  \"created_at\": \"1950-07-01T04:41:16.849Z\",\n  \"start_at\": \"1991-10-15T23:55:20.417Z\",\n  \"end_at\": \"1950-07-27T11:33:04.646Z\",\n  \"locale\": \"string\",\n  \"enrollments\": [\n    {\n      \"id\": 933,\n      \"course_id\": 6867,\n      \"course_section_id\": 5893,\n      \"root_account_id\": 1163,\n      \"type\": \"TeacherEnrollment\",\n      \"user_id\": 6658,\n      \"associated_user_id\": 8836,\n      \"role\": \"string\",\n      \"role_id\": 979,\n      \"enrollment_state\": \"active\",\n      \"limit_privileges_to_course_section\": false,\n      \"sis_import_id\": 7994,\n      \"sis_account_id\": \"string\",\n      \"sis_course_id\": \"string\",\n      \"sis_section_id\": \"string\",\n      \"sis_user_id\": \"string\",\n      \"section_integration_id\": \"string\",\n      \"created_at\": \"2000-10-14T15:13:16.677Z\",\n      \"updated_at\": \"1999-01-23T09:17:45.206Z\",\n      \"start_at\": \"2009-11-28T05:46:44.591Z\",\n      \"end_at\": \"1999-12-31T02:58:43.067Z\",\n      \"last_activity_at\": \"1979-12-10T07:35:08.075Z\",\n      \"last_attended_at\": \"1965-08-03T17:46:55.922Z\",\n      \"total_activity_time\": 9940,\n      \"html_url\": \"string\",\n      \"grades\": {\n        \"html_url\": \"string\",\n        \"current_grade\": \"string\",\n        \"final_grade\": \"string\",\n        \"current_score\": 7525.83260608948,\n        \"final_score\": 2039.1967611987993,\n        \"unposted_current_grade\": \"string\",\n        \"unposted_final_grade\": \"string\",\n        \"unposted_current_score\": 6127.928634323845,\n        \"unposted_final_score\": 5199.450366061532\n      }\n    },\n    {\n      \"id\": 3563,\n      \"course_id\": 8868,\n      \"course_section_id\": 4062,\n      \"root_account_id\": 798,\n      \"type\": \"TeacherEnrollment\",\n      \"user_id\": 5373,\n      \"associated_user_id\": 6665,\n      \"role\": \"string\",\n      \"role_id\": 4738,\n      \"enrollment_state\": \"invited\",\n      \"limit_privileges_to_course_section\": true,\n      \"sis_import_id\": 2005,\n      \"sis_account_id\": \"string\",\n      \"sis_course_id\": \"string\",\n      \"sis_section_id\": \"string\",\n      \"sis_user_id\": \"string\",\n      \"section_integration_id\": \"string\",\n      \"created_at\": \"1986-02-28T18:13:56.203Z\",\n      \"updated_at\": \"1958-10-18T19:19:10.999Z\",\n      \"start_at\": \"1968-12-30T18:12:56.178Z\",\n      \"end_at\": \"1979-04-13T08:45:38.130Z\",\n      \"last_activity_at\": \"2021-02-06T23:44:11.305Z\",\n      \"last_attended_at\": \"1988-12-11T04:03:01.476Z\",\n      \"total_activity_time\": 8690,\n      \"html_url\": \"string\",\n      \"grades\": {\n        \"html_url\": \"string\",\n        \"current_grade\": \"string\",\n        \"final_grade\": \"string\",\n        \"current_score\": 1272.1005056154388,\n        \"final_score\": 1714.5108013039157,\n        \"unposted_current_grade\": \"string\",\n        \"unposted_final_grade\": \"string\",\n        \"unposted_current_score\": 2732.142543033208,\n        \"unposted_final_score\": 1.432580179768772\n      }\n    }\n  ],\n  \"total_students\": 479,\n  \"default_view\": \"assignments\",\n  \"syllabus_body\": \"string\",\n  \"needs_grading_count\": 500,\n  \"is_public\": true,\n  \"is_public_to_auth_users\": false,\n  \"public_syllabus\": false,\n  \"public_syllabus_to_auth\": false,\n  \"storage_quota_mb\": 3365,\n  \"storage_quota_used_mb\": 3301.913075284417,\n  \"hide_final_grades\": false,\n  \"license\": \"string\",\n  \"allow_student_assignment_edits\": true,\n  \"allow_wiki_comments\": false,\n  \"allow_student_forum_attachments\": true,\n  \"open_enrollment\": false,\n  \"self_enrollment\": true,\n  \"restrict_enrollments_to_course_dates\": false,\n  \"course_format\": \"string\",\n  \"time_zone\": \"string\",\n  \"blueprint\": false,\n  \"template\": true,\n  \"homeroom_course\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "50887fc6-6571-487f-b8e1-bc8713c4bedd",
+          "name": "Update a Course",
+          "request": {
+            "name": "Update a Course",
+            "description": {},
+            "url": {
+              "path": [
+                "courses",
+                ":course_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "course_id",
+                  "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                },
+                {
+                  "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                  "type": "any",
+                  "value": "{{canvas_host}}",
+                  "key": "canvas_host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"course\": {\n    \"id\": \"<long>\",\n    \"sis_course_id\": \"<string>\",\n    \"uuid\": \"<string>\",\n    \"integration_id\": \"<string>\",\n    \"sis_import_id\": \"<integer>\",\n    \"name\": \"<string>\",\n    \"course_code\": \"<string>\",\n    \"original_name\": \"<string>\",\n    \"workflow_state\": \"<string>\",\n    \"account_id\": \"<integer>\",\n    \"root_account_id\": \"<integer>\",\n    \"enrollment_term_id\": \"<integer>\",\n    \"grading_standard_id\": \"<integer>\",\n    \"grade_passback_setting\": \"<string>\",\n    \"created_at\": \"<dateTime>\",\n    \"start_at\": \"<dateTime>\",\n    \"end_at\": \"<dateTime>\",\n    \"locale\": \"<string>\",\n    \"enrollments\": [\n      {\n        \"id\": \"<long>\",\n        \"course_id\": \"<integer>\",\n        \"course_section_id\": \"<integer>\",\n        \"root_account_id\": \"<integer>\",\n        \"type\": \"<string>\",\n        \"user_id\": \"<integer>\",\n        \"associated_user_id\": \"<integer>\",\n        \"role\": \"<string>\",\n        \"role_id\": \"<integer>\",\n        \"enrollment_state\": \"<string>\",\n        \"limit_privileges_to_course_section\": \"<boolean>\",\n        \"sis_import_id\": \"<integer>\",\n        \"sis_account_id\": \"<string>\",\n        \"sis_course_id\": \"<string>\",\n        \"sis_section_id\": \"<string>\",\n        \"sis_user_id\": \"<string>\",\n        \"section_integration_id\": \"<string>\",\n        \"created_at\": \"<dateTime>\",\n        \"updated_at\": \"<dateTime>\",\n        \"start_at\": \"<dateTime>\",\n        \"end_at\": \"<dateTime>\",\n        \"last_activity_at\": \"<dateTime>\",\n        \"last_attended_at\": \"<dateTime>\",\n        \"total_activity_time\": \"<integer>\",\n        \"html_url\": \"<string>\",\n        \"grades\": {\n          \"html_url\": \"<string>\",\n          \"current_grade\": \"<string>\",\n          \"final_grade\": \"<string>\",\n          \"current_score\": \"<number>\",\n          \"final_score\": \"<number>\",\n          \"unposted_current_grade\": \"<string>\",\n          \"unposted_final_grade\": \"<string>\",\n          \"unposted_current_score\": \"<number>\",\n          \"unposted_final_score\": \"<number>\"\n        }\n      },\n      {\n        \"id\": \"<long>\",\n        \"course_id\": \"<integer>\",\n        \"course_section_id\": \"<integer>\",\n        \"root_account_id\": \"<integer>\",\n        \"type\": \"<string>\",\n        \"user_id\": \"<integer>\",\n        \"associated_user_id\": \"<integer>\",\n        \"role\": \"<string>\",\n        \"role_id\": \"<integer>\",\n        \"enrollment_state\": \"<string>\",\n        \"limit_privileges_to_course_section\": \"<boolean>\",\n        \"sis_import_id\": \"<integer>\",\n        \"sis_account_id\": \"<string>\",\n        \"sis_course_id\": \"<string>\",\n        \"sis_section_id\": \"<string>\",\n        \"sis_user_id\": \"<string>\",\n        \"section_integration_id\": \"<string>\",\n        \"created_at\": \"<dateTime>\",\n        \"updated_at\": \"<dateTime>\",\n        \"start_at\": \"<dateTime>\",\n        \"end_at\": \"<dateTime>\",\n        \"last_activity_at\": \"<dateTime>\",\n        \"last_attended_at\": \"<dateTime>\",\n        \"total_activity_time\": \"<integer>\",\n        \"html_url\": \"<string>\",\n        \"grades\": {\n          \"html_url\": \"<string>\",\n          \"current_grade\": \"<string>\",\n          \"final_grade\": \"<string>\",\n          \"current_score\": \"<number>\",\n          \"final_score\": \"<number>\",\n          \"unposted_current_grade\": \"<string>\",\n          \"unposted_final_grade\": \"<string>\",\n          \"unposted_current_score\": \"<number>\",\n          \"unposted_final_score\": \"<number>\"\n        }\n      }\n    ],\n    \"total_students\": \"<integer>\",\n    \"default_view\": \"<string>\",\n    \"syllabus_body\": \"<string>\",\n    \"needs_grading_count\": \"<integer>\",\n    \"is_public\": \"<boolean>\",\n    \"is_public_to_auth_users\": \"<boolean>\",\n    \"public_syllabus\": \"<boolean>\",\n    \"public_syllabus_to_auth\": \"<boolean>\",\n    \"storage_quota_mb\": \"<integer>\",\n    \"storage_quota_used_mb\": \"<number>\",\n    \"hide_final_grades\": \"<boolean>\",\n    \"license\": \"<string>\",\n    \"allow_student_assignment_edits\": \"<boolean>\",\n    \"allow_wiki_comments\": \"<boolean>\",\n    \"allow_student_forum_attachments\": \"<boolean>\",\n    \"open_enrollment\": \"<boolean>\",\n    \"self_enrollment\": \"<boolean>\",\n    \"restrict_enrollments_to_course_dates\": \"<boolean>\",\n    \"course_format\": \"<string>\",\n    \"time_zone\": \"<string>\",\n    \"blueprint\": \"<boolean>\",\n    \"template\": \"<boolean>\",\n    \"homeroom_course\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fe5b3376-ed82-4bbb-9ffd-05c3296d8340",
+              "name": "The updated course",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "courses",
+                    ":course_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "course_id",
+                      "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                    },
+                    {
+                      "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                      "type": "any",
+                      "value": "{{canvas_host}}",
+                      "key": "canvas_host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"course\": {\n    \"id\": 8041,\n    \"sis_course_id\": \"string\",\n    \"uuid\": \"string\",\n    \"integration_id\": \"string\",\n    \"sis_import_id\": 2117,\n    \"name\": \"string\",\n    \"course_code\": \"string\",\n    \"original_name\": \"string\",\n    \"workflow_state\": \"unpublished\",\n    \"account_id\": 1727,\n    \"root_account_id\": 1756,\n    \"enrollment_term_id\": 5918,\n    \"grading_standard_id\": 9484,\n    \"grade_passback_setting\": \"string\",\n    \"created_at\": \"1967-06-08T03:40:07.497Z\",\n    \"start_at\": \"1959-03-24T13:09:55.006Z\",\n    \"end_at\": \"2022-07-30T18:15:09.532Z\",\n    \"locale\": \"string\",\n    \"enrollments\": [\n      {\n        \"id\": 889,\n        \"course_id\": 912,\n        \"course_section_id\": 5032,\n        \"root_account_id\": 9944,\n        \"type\": \"ObserverEnrollment\",\n        \"user_id\": 3623,\n        \"associated_user_id\": 3312,\n        \"role\": \"string\",\n        \"role_id\": 649,\n        \"enrollment_state\": \"active\",\n        \"limit_privileges_to_course_section\": false,\n        \"sis_import_id\": 1321,\n        \"sis_account_id\": \"string\",\n        \"sis_course_id\": \"string\",\n        \"sis_section_id\": \"string\",\n        \"sis_user_id\": \"string\",\n        \"section_integration_id\": \"string\",\n        \"created_at\": \"2013-12-03T05:33:45.158Z\",\n        \"updated_at\": \"1955-08-26T13:17:28.016Z\",\n        \"start_at\": \"1977-07-24T05:35:21.423Z\",\n        \"end_at\": \"2018-09-03T02:13:39.140Z\",\n        \"last_activity_at\": \"1958-12-06T01:18:52.211Z\",\n        \"last_attended_at\": \"1956-07-05T06:43:18.801Z\",\n        \"total_activity_time\": 4041,\n        \"html_url\": \"string\",\n        \"grades\": {\n          \"html_url\": \"string\",\n          \"current_grade\": \"string\",\n          \"final_grade\": \"string\",\n          \"current_score\": 4532.264351974979,\n          \"final_score\": 4182.651644717549,\n          \"unposted_current_grade\": \"string\",\n          \"unposted_final_grade\": \"string\",\n          \"unposted_current_score\": 191.50176270442577,\n          \"unposted_final_score\": 9284.878587222829\n        }\n      },\n      {\n        \"id\": 104,\n        \"course_id\": 1826,\n        \"course_section_id\": 5402,\n        \"root_account_id\": 1475,\n        \"type\": \"StudentEnrollment\",\n        \"user_id\": 4040,\n        \"associated_user_id\": 9865,\n        \"role\": \"string\",\n        \"role_id\": 4977,\n        \"enrollment_state\": \"rejected\",\n        \"limit_privileges_to_course_section\": true,\n        \"sis_import_id\": 596,\n        \"sis_account_id\": \"string\",\n        \"sis_course_id\": \"string\",\n        \"sis_section_id\": \"string\",\n        \"sis_user_id\": \"string\",\n        \"section_integration_id\": \"string\",\n        \"created_at\": \"1993-10-20T02:20:35.631Z\",\n        \"updated_at\": \"2017-02-27T15:42:57.997Z\",\n        \"start_at\": \"1984-05-08T10:26:06.744Z\",\n        \"end_at\": \"2021-08-01T01:04:09.098Z\",\n        \"last_activity_at\": \"1956-12-04T23:36:16.753Z\",\n        \"last_attended_at\": \"2005-05-25T17:12:38.085Z\",\n        \"total_activity_time\": 899,\n        \"html_url\": \"string\",\n        \"grades\": {\n          \"html_url\": \"string\",\n          \"current_grade\": \"string\",\n          \"final_grade\": \"string\",\n          \"current_score\": 9931.402496937922,\n          \"final_score\": 6100.847547024973,\n          \"unposted_current_grade\": \"string\",\n          \"unposted_final_grade\": \"string\",\n          \"unposted_current_score\": 871.5656547654771,\n          \"unposted_final_score\": 3862.7279876199673\n        }\n      }\n    ],\n    \"total_students\": 1113,\n    \"default_view\": \"feed\",\n    \"syllabus_body\": \"string\",\n    \"needs_grading_count\": 3093,\n    \"is_public\": false,\n    \"is_public_to_auth_users\": false,\n    \"public_syllabus\": false,\n    \"public_syllabus_to_auth\": true,\n    \"storage_quota_mb\": 8547,\n    \"storage_quota_used_mb\": 3213.896635898693,\n    \"hide_final_grades\": false,\n    \"license\": \"string\",\n    \"allow_student_assignment_edits\": false,\n    \"allow_wiki_comments\": false,\n    \"allow_student_forum_attachments\": false,\n    \"open_enrollment\": false,\n    \"self_enrollment\": true,\n    \"restrict_enrollments_to_course_dates\": true,\n    \"course_format\": \"string\",\n    \"time_zone\": \"string\",\n    \"blueprint\": false,\n    \"template\": true,\n    \"homeroom_course\": false\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 6632,\n  \"sis_course_id\": \"string\",\n  \"uuid\": \"string\",\n  \"integration_id\": \"string\",\n  \"sis_import_id\": 5947,\n  \"name\": \"string\",\n  \"course_code\": \"string\",\n  \"original_name\": \"string\",\n  \"workflow_state\": \"deleted\",\n  \"account_id\": 3857,\n  \"root_account_id\": 7145,\n  \"enrollment_term_id\": 8599,\n  \"grading_standard_id\": 1355,\n  \"grade_passback_setting\": \"string\",\n  \"created_at\": \"1950-07-01T04:41:16.849Z\",\n  \"start_at\": \"1991-10-15T23:55:20.417Z\",\n  \"end_at\": \"1950-07-27T11:33:04.646Z\",\n  \"locale\": \"string\",\n  \"enrollments\": [\n    {\n      \"id\": 933,\n      \"course_id\": 6867,\n      \"course_section_id\": 5893,\n      \"root_account_id\": 1163,\n      \"type\": \"TeacherEnrollment\",\n      \"user_id\": 6658,\n      \"associated_user_id\": 8836,\n      \"role\": \"string\",\n      \"role_id\": 979,\n      \"enrollment_state\": \"active\",\n      \"limit_privileges_to_course_section\": false,\n      \"sis_import_id\": 7994,\n      \"sis_account_id\": \"string\",\n      \"sis_course_id\": \"string\",\n      \"sis_section_id\": \"string\",\n      \"sis_user_id\": \"string\",\n      \"section_integration_id\": \"string\",\n      \"created_at\": \"2000-10-14T15:13:16.677Z\",\n      \"updated_at\": \"1999-01-23T09:17:45.206Z\",\n      \"start_at\": \"2009-11-28T05:46:44.591Z\",\n      \"end_at\": \"1999-12-31T02:58:43.067Z\",\n      \"last_activity_at\": \"1979-12-10T07:35:08.075Z\",\n      \"last_attended_at\": \"1965-08-03T17:46:55.922Z\",\n      \"total_activity_time\": 9940,\n      \"html_url\": \"string\",\n      \"grades\": {\n        \"html_url\": \"string\",\n        \"current_grade\": \"string\",\n        \"final_grade\": \"string\",\n        \"current_score\": 7525.83260608948,\n        \"final_score\": 2039.1967611987993,\n        \"unposted_current_grade\": \"string\",\n        \"unposted_final_grade\": \"string\",\n        \"unposted_current_score\": 6127.928634323845,\n        \"unposted_final_score\": 5199.450366061532\n      }\n    },\n    {\n      \"id\": 3563,\n      \"course_id\": 8868,\n      \"course_section_id\": 4062,\n      \"root_account_id\": 798,\n      \"type\": \"TeacherEnrollment\",\n      \"user_id\": 5373,\n      \"associated_user_id\": 6665,\n      \"role\": \"string\",\n      \"role_id\": 4738,\n      \"enrollment_state\": \"invited\",\n      \"limit_privileges_to_course_section\": true,\n      \"sis_import_id\": 2005,\n      \"sis_account_id\": \"string\",\n      \"sis_course_id\": \"string\",\n      \"sis_section_id\": \"string\",\n      \"sis_user_id\": \"string\",\n      \"section_integration_id\": \"string\",\n      \"created_at\": \"1986-02-28T18:13:56.203Z\",\n      \"updated_at\": \"1958-10-18T19:19:10.999Z\",\n      \"start_at\": \"1968-12-30T18:12:56.178Z\",\n      \"end_at\": \"1979-04-13T08:45:38.130Z\",\n      \"last_activity_at\": \"2021-02-06T23:44:11.305Z\",\n      \"last_attended_at\": \"1988-12-11T04:03:01.476Z\",\n      \"total_activity_time\": 8690,\n      \"html_url\": \"string\",\n      \"grades\": {\n        \"html_url\": \"string\",\n        \"current_grade\": \"string\",\n        \"final_grade\": \"string\",\n        \"current_score\": 1272.1005056154388,\n        \"final_score\": 1714.5108013039157,\n        \"unposted_current_grade\": \"string\",\n        \"unposted_final_grade\": \"string\",\n        \"unposted_current_score\": 2732.142543033208,\n        \"unposted_final_score\": 1.432580179768772\n      }\n    }\n  ],\n  \"total_students\": 479,\n  \"default_view\": \"assignments\",\n  \"syllabus_body\": \"string\",\n  \"needs_grading_count\": 500,\n  \"is_public\": true,\n  \"is_public_to_auth_users\": false,\n  \"public_syllabus\": false,\n  \"public_syllabus_to_auth\": false,\n  \"storage_quota_mb\": 3365,\n  \"storage_quota_used_mb\": 3301.913075284417,\n  \"hide_final_grades\": false,\n  \"license\": \"string\",\n  \"allow_student_assignment_edits\": true,\n  \"allow_wiki_comments\": false,\n  \"allow_student_forum_attachments\": true,\n  \"open_enrollment\": false,\n  \"self_enrollment\": true,\n  \"restrict_enrollments_to_course_dates\": false,\n  \"course_format\": \"string\",\n  \"time_zone\": \"string\",\n  \"blueprint\": false,\n  \"template\": true,\n  \"homeroom_course\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "55c8409b-1c55-4f01-8c6e-80772588a040",
+          "name": "Conclude or Delete a Course",
+          "request": {
+            "name": "Conclude or Delete a Course",
+            "description": {},
+            "url": {
+              "path": [
+                "courses",
+                ":course_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "event",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "course_id",
+                  "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                },
+                {
+                  "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                  "type": "any",
+                  "value": "{{canvas_host}}",
+                  "key": "canvas_host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1e743ba1-6517-4b72-a5b5-ceb2b0f5e317",
+              "name": "Success acknowledgement",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "courses",
+                    ":course_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "event",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "course_id",
+                      "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                    },
+                    {
+                      "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                      "type": "any",
+                      "value": "{{canvas_host}}",
+                      "key": "canvas_host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"delete\": false,\n  \"conclude\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "74935461-e265-4bd1-aa51-c023828e61d7",
+          "name": "List Users in a Course",
+          "request": {
+            "name": "List Users in a Course",
+            "description": {},
+            "url": {
+              "path": [
+                "courses",
+                ":course_id",
+                "users"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "enrollment_type[]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "enrollment_type[]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "enrollment_role",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "include[]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "include[]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "search_term",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "<integer>",
+                  "description": "Items per page (default 10, max varies by endpoint and install)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "course_id",
+                  "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                },
+                {
+                  "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                  "type": "any",
+                  "value": "{{canvas_host}}",
+                  "key": "canvas_host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5cde1cb0-d626-42b9-8295-5ae8eedc03e7",
+              "name": "A paginated list of users in the course",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "courses",
+                    ":course_id",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "enrollment_type[]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "enrollment_type[]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "enrollment_role",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include[]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include[]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_term",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "course_id",
+                      "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                    },
+                    {
+                      "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                      "type": "any",
+                      "value": "{{canvas_host}}",
+                      "key": "canvas_host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 4142,\n    \"name\": \"string\",\n    \"sortable_name\": \"string\",\n    \"short_name\": \"string\",\n    \"sis_user_id\": \"string\",\n    \"sis_import_id\": 7370,\n    \"integration_id\": \"string\",\n    \"login_id\": \"string\",\n    \"avatar_url\": \"string\",\n    \"avatar_state\": \"string\",\n    \"enrollments\": [\n      {\n        \"id\": 1392,\n        \"course_id\": 1413,\n        \"course_section_id\": 5834,\n        \"root_account_id\": 1954,\n        \"type\": \"ObserverEnrollment\",\n        \"user_id\": 360,\n        \"associated_user_id\": 4118,\n        \"role\": \"string\",\n        \"role_id\": 9024,\n        \"enrollment_state\": \"invited\",\n        \"limit_privileges_to_course_section\": false,\n        \"sis_import_id\": 2928,\n        \"sis_account_id\": \"string\",\n        \"sis_course_id\": \"string\",\n        \"sis_section_id\": \"string\",\n        \"sis_user_id\": \"string\",\n        \"section_integration_id\": \"string\",\n        \"created_at\": \"2021-07-24T21:33:26.097Z\",\n        \"updated_at\": \"2007-11-22T20:12:00.484Z\",\n        \"start_at\": \"1961-05-22T03:35:08.259Z\",\n        \"end_at\": \"2019-05-14T07:18:11.710Z\",\n        \"last_activity_at\": \"1968-09-06T15:16:27.172Z\",\n        \"last_attended_at\": \"2025-03-11T11:43:41.335Z\",\n        \"total_activity_time\": 8346,\n        \"html_url\": \"string\",\n        \"grades\": {\n          \"html_url\": \"string\",\n          \"current_grade\": \"string\",\n          \"final_grade\": \"string\",\n          \"current_score\": 9509.68869637246,\n          \"final_score\": 4294.65849186538,\n          \"unposted_current_grade\": \"string\",\n          \"unposted_final_grade\": \"string\",\n          \"unposted_current_score\": 3839.3903516550677,\n          \"unposted_final_score\": 5923.048036186207\n        }\n      },\n      {\n        \"id\": 84,\n        \"course_id\": 9991,\n        \"course_section_id\": 3446,\n        \"root_account_id\": 6663,\n        \"type\": \"TaEnrollment\",\n        \"user_id\": 9885,\n        \"associated_user_id\": 2297,\n        \"role\": \"string\",\n        \"role_id\": 5413,\n        \"enrollment_state\": \"inactive\",\n        \"limit_privileges_to_course_section\": false,\n        \"sis_import_id\": 375,\n        \"sis_account_id\": \"string\",\n        \"sis_course_id\": \"string\",\n        \"sis_section_id\": \"string\",\n        \"sis_user_id\": \"string\",\n        \"section_integration_id\": \"string\",\n        \"created_at\": \"2008-07-18T15:22:55.817Z\",\n        \"updated_at\": \"1956-08-08T20:00:54.966Z\",\n        \"start_at\": \"2011-09-06T10:43:38.718Z\",\n        \"end_at\": \"1959-02-25T22:49:56.292Z\",\n        \"last_activity_at\": \"1997-09-29T22:43:18.455Z\",\n        \"last_attended_at\": \"1998-02-23T14:06:24.327Z\",\n        \"total_activity_time\": 6401,\n        \"html_url\": \"string\",\n        \"grades\": {\n          \"html_url\": \"string\",\n          \"current_grade\": \"string\",\n          \"final_grade\": \"string\",\n          \"current_score\": 8097.7245815525675,\n          \"final_score\": 9777.258608461292,\n          \"unposted_current_grade\": \"string\",\n          \"unposted_final_grade\": \"string\",\n          \"unposted_current_score\": 9462.831235651613,\n          \"unposted_final_score\": 5453.801543206385\n        }\n      }\n    ],\n    \"email\": \"string\",\n    \"locale\": \"string\",\n    \"last_login\": \"2020-01-23T03:47:02.842Z\",\n    \"time_zone\": \"string\",\n    \"bio\": \"string\",\n    \"pronouns\": \"string\"\n  },\n  {\n    \"id\": 5686,\n    \"name\": \"string\",\n    \"sortable_name\": \"string\",\n    \"short_name\": \"string\",\n    \"sis_user_id\": \"string\",\n    \"sis_import_id\": 3096,\n    \"integration_id\": \"string\",\n    \"login_id\": \"string\",\n    \"avatar_url\": \"string\",\n    \"avatar_state\": \"string\",\n    \"enrollments\": [\n      {\n        \"id\": 8015,\n        \"course_id\": 6551,\n        \"course_section_id\": 1439,\n        \"root_account_id\": 4232,\n        \"type\": \"ObserverEnrollment\",\n        \"user_id\": 1963,\n        \"associated_user_id\": 3380,\n        \"role\": \"string\",\n        \"role_id\": 7353,\n        \"enrollment_state\": \"rejected\",\n        \"limit_privileges_to_course_section\": false,\n        \"sis_import_id\": 6067,\n        \"sis_account_id\": \"string\",\n        \"sis_course_id\": \"string\",\n        \"sis_section_id\": \"string\",\n        \"sis_user_id\": \"string\",\n        \"section_integration_id\": \"string\",\n        \"created_at\": \"2013-07-30T23:32:19.712Z\",\n        \"updated_at\": \"2002-08-30T17:02:31.989Z\",\n        \"start_at\": \"2002-10-31T00:38:42.871Z\",\n        \"end_at\": \"2017-06-01T05:09:42.032Z\",\n        \"last_activity_at\": \"2001-07-23T17:45:55.581Z\",\n        \"last_attended_at\": \"1984-08-17T19:56:56.860Z\",\n        \"total_activity_time\": 6595,\n        \"html_url\": \"string\",\n        \"grades\": {\n          \"html_url\": \"string\",\n          \"current_grade\": \"string\",\n          \"final_grade\": \"string\",\n          \"current_score\": 9695.865274091107,\n          \"final_score\": 6581.0588373658275,\n          \"unposted_current_grade\": \"string\",\n          \"unposted_final_grade\": \"string\",\n          \"unposted_current_score\": 7097.868744840237,\n          \"unposted_final_score\": 1876.5278111589923\n        }\n      },\n      {\n        \"id\": 3483,\n        \"course_id\": 4739,\n        \"course_section_id\": 1815,\n        \"root_account_id\": 9097,\n        \"type\": \"ObserverEnrollment\",\n        \"user_id\": 5247,\n        \"associated_user_id\": 5939,\n        \"role\": \"string\",\n        \"role_id\": 5739,\n        \"enrollment_state\": \"rejected\",\n        \"limit_privileges_to_course_section\": false,\n        \"sis_import_id\": 8505,\n        \"sis_account_id\": \"string\",\n        \"sis_course_id\": \"string\",\n        \"sis_section_id\": \"string\",\n        \"sis_user_id\": \"string\",\n        \"section_integration_id\": \"string\",\n        \"created_at\": \"1954-10-21T00:05:13.453Z\",\n        \"updated_at\": \"2017-12-06T18:16:33.855Z\",\n        \"start_at\": \"1955-10-31T22:06:12.592Z\",\n        \"end_at\": \"1975-11-07T08:45:49.038Z\",\n        \"last_activity_at\": \"2009-09-01T10:39:28.746Z\",\n        \"last_attended_at\": \"1961-11-08T06:37:04.958Z\",\n        \"total_activity_time\": 6722,\n        \"html_url\": \"string\",\n        \"grades\": {\n          \"html_url\": \"string\",\n          \"current_grade\": \"string\",\n          \"final_grade\": \"string\",\n          \"current_score\": 7273.256241067927,\n          \"final_score\": 6221.438468869739,\n          \"unposted_current_grade\": \"string\",\n          \"unposted_final_grade\": \"string\",\n          \"unposted_current_score\": 8378.974713566542,\n          \"unposted_final_score\": 8314.185599601013\n        }\n      }\n    ],\n    \"email\": \"string\",\n    \"locale\": \"string\",\n    \"last_login\": \"2006-10-14T01:50:29.210Z\",\n    \"time_zone\": \"string\",\n    \"bio\": \"string\",\n    \"pronouns\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "canvas.instructure.com",
+      "key": "canvas_host"
+    },
+    {
+      "type": "string",
+      "value": "https://{{canvas_host}}/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "url:GET|/api/v1/accounts url:GET|/api/v1/courses url:GET|/api/v1/users/{user_id}"
+      },
+      {
+        "key": "redirect_uri",
+        "value": "https://canvas.instructure.com/login/oauth2/token"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://canvas.instructure.com/login/oauth2/token"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://canvas.instructure.com/login/oauth2/auth"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "e1344c9d-45cc-4cb7-87d4-76ab7b97d235",
+    "name": "Canvas LMS REST Accounts Courses API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Canvas LMS REST API exposes the full learning-management surface — accounts, courses,\nenrollments, users, assignments, submissions, grades, outcomes, quizzes, modules, pages,\ndiscussions, files, conversations, calendar events, planner, and more — via\n`/api/v1` on any Canvas install (Free for Teacher at canvas.instructure.com,\nCanvas Cloud, or self-hosted).\n\nAuthentication uses OAuth2 (RFC 6749). Tokens are issued via the\n`/login/oauth2/auth` and `/login/oauth2/token` endpoints; clients must be\nregistered as a Developer Key in the target Canvas account. Manual personal\naccess tokens may be created from a user's profile for testing only.\n\nPagination follows RFC 5988 with `Link` response headers (`rel=\"next\"`,\n`\"prev\"`, `\"first\"`, `\"last\"`). Includes can be requested via the\n`include[]` query parameter on most resources. Admin users may impersonate\nother users by appending `as_user_id={id}` (Masquerading).\n\nThis OpenAPI document covers the most-used endpoints across Accounts,\nCourses, Enrollments, Users, Assignments, Submissions, Modules, Discussions,\nFiles, and Outcomes. The full surface (190+ resource groups) is documented\nat https://canvas.instructure.com/doc/api/all_resources.html and generated\nin the canvas-lms repo via `rake doc:openapi`.\n\n\nContact Support:\n Name: Canvas Developer Community",
+      "type": "text/plain"
+    }
+  }
+}

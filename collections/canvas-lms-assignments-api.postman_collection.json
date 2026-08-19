@@ -1,0 +1,748 @@
+{
+  "item": [
+    {
+      "id": "d8787c62-a8c1-401d-b143-84b10a48a85e",
+      "name": "Assignments",
+      "description": {
+        "content": "Assignments, due dates, submission types, and grading",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "49281089-23c2-48c6-ae6a-43233f698a63",
+          "name": "List Assignments in a Course",
+          "request": {
+            "name": "List Assignments in a Course",
+            "description": {},
+            "url": {
+              "path": [
+                "courses",
+                ":course_id",
+                "assignments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include[]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "include[]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "search_term",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "order_by",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "bucket",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "<integer>",
+                  "description": "Items per page (default 10, max varies by endpoint and install)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "course_id",
+                  "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                },
+                {
+                  "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                  "type": "any",
+                  "value": "{{canvas_host}}",
+                  "key": "canvas_host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "40c5371e-e427-4732-99c3-8f91fcb69cd6",
+              "name": "A paginated list of assignments",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "courses",
+                    ":course_id",
+                    "assignments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include[]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include[]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search_term",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "bucket",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "course_id",
+                      "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                    },
+                    {
+                      "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                      "type": "any",
+                      "value": "{{canvas_host}}",
+                      "key": "canvas_host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 67,\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"created_at\": \"1966-08-17T02:33:32.028Z\",\n    \"updated_at\": \"2023-09-01T05:31:27.683Z\",\n    \"due_at\": \"1954-11-24T07:40:56.425Z\",\n    \"lock_at\": \"1962-12-02T04:22:16.107Z\",\n    \"unlock_at\": \"1950-08-09T20:15:07.241Z\",\n    \"course_id\": 7380,\n    \"html_url\": \"string\",\n    \"submissions_download_url\": \"string\",\n    \"assignment_group_id\": 8580,\n    \"due_date_required\": true,\n    \"allowed_extensions\": [\n      \"string\",\n      \"string\"\n    ],\n    \"max_name_length\": 2271,\n    \"turnitin_enabled\": true,\n    \"vericite_enabled\": true,\n    \"peer_reviews\": true,\n    \"automatic_peer_reviews\": true,\n    \"peer_review_count\": 2642,\n    \"group_category_id\": 5892,\n    \"needs_grading_count\": 6080,\n    \"position\": 4369,\n    \"post_to_sis\": true,\n    \"integration_id\": \"string\",\n    \"integration_data\": {\n      \"key_0\": true,\n      \"key_1\": 6260.680357431009\n    },\n    \"points_possible\": 6777.562151216701,\n    \"submission_types\": [\n      \"none\",\n      \"external_tool\"\n    ],\n    \"has_submitted_submissions\": false,\n    \"grading_type\": \"letter_grade\",\n    \"grading_standard_id\": 3658,\n    \"published\": false,\n    \"unpublishable\": true,\n    \"only_visible_to_overrides\": false,\n    \"locked_for_user\": true,\n    \"muted\": true,\n    \"omit_from_final_grade\": false,\n    \"hide_in_gradebook\": false,\n    \"moderated_grading\": false,\n    \"grader_count\": 5896,\n    \"final_grader_id\": 7850,\n    \"grader_comments_visible_to_graders\": false,\n    \"graders_anonymous_to_graders\": false,\n    \"grader_names_visible_to_final_grader\": false,\n    \"anonymous_grading\": true,\n    \"allowed_attempts\": 1827,\n    \"post_manually\": false,\n    \"external_tool_tag_attributes\": {\n      \"key_0\": 4592\n    }\n  },\n  {\n    \"id\": 8273,\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"created_at\": \"1957-12-23T12:30:29.692Z\",\n    \"updated_at\": \"1972-09-03T14:49:52.409Z\",\n    \"due_at\": \"1962-07-04T12:19:48.003Z\",\n    \"lock_at\": \"2010-02-26T11:15:36.226Z\",\n    \"unlock_at\": \"1969-07-20T15:17:51.170Z\",\n    \"course_id\": 5540,\n    \"html_url\": \"string\",\n    \"submissions_download_url\": \"string\",\n    \"assignment_group_id\": 9345,\n    \"due_date_required\": false,\n    \"allowed_extensions\": [\n      \"string\",\n      \"string\"\n    ],\n    \"max_name_length\": 2031,\n    \"turnitin_enabled\": false,\n    \"vericite_enabled\": true,\n    \"peer_reviews\": true,\n    \"automatic_peer_reviews\": true,\n    \"peer_review_count\": 937,\n    \"group_category_id\": 8625,\n    \"needs_grading_count\": 5099,\n    \"position\": 2610,\n    \"post_to_sis\": true,\n    \"integration_id\": \"string\",\n    \"integration_data\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\",\n      \"key_2\": 2506,\n      \"key_3\": true\n    },\n    \"points_possible\": 9022.895455261963,\n    \"submission_types\": [\n      \"online_text_entry\",\n      \"discussion_topic\"\n    ],\n    \"has_submitted_submissions\": false,\n    \"grading_type\": \"points\",\n    \"grading_standard_id\": 7320,\n    \"published\": false,\n    \"unpublishable\": true,\n    \"only_visible_to_overrides\": true,\n    \"locked_for_user\": false,\n    \"muted\": true,\n    \"omit_from_final_grade\": true,\n    \"hide_in_gradebook\": false,\n    \"moderated_grading\": true,\n    \"grader_count\": 3859,\n    \"final_grader_id\": 3304,\n    \"grader_comments_visible_to_graders\": false,\n    \"graders_anonymous_to_graders\": false,\n    \"grader_names_visible_to_final_grader\": true,\n    \"anonymous_grading\": true,\n    \"allowed_attempts\": 6760,\n    \"post_manually\": false,\n    \"external_tool_tag_attributes\": {\n      \"key_0\": 4238,\n      \"key_1\": 2341.7317167076126\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "67330f27-2c15-4629-9c39-3048016eacbb",
+          "name": "Create an Assignment",
+          "request": {
+            "name": "Create an Assignment",
+            "description": {},
+            "url": {
+              "path": [
+                "courses",
+                ":course_id",
+                "assignments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "course_id",
+                  "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                },
+                {
+                  "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                  "type": "any",
+                  "value": "{{canvas_host}}",
+                  "key": "canvas_host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assignment\": {\n    \"id\": \"<long>\",\n    \"name\": \"<string>\",\n    \"description\": \"<string>\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"due_at\": \"<dateTime>\",\n    \"lock_at\": \"<dateTime>\",\n    \"unlock_at\": \"<dateTime>\",\n    \"course_id\": \"<integer>\",\n    \"html_url\": \"<string>\",\n    \"submissions_download_url\": \"<string>\",\n    \"assignment_group_id\": \"<integer>\",\n    \"due_date_required\": \"<boolean>\",\n    \"allowed_extensions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"max_name_length\": \"<integer>\",\n    \"turnitin_enabled\": \"<boolean>\",\n    \"vericite_enabled\": \"<boolean>\",\n    \"peer_reviews\": \"<boolean>\",\n    \"automatic_peer_reviews\": \"<boolean>\",\n    \"peer_review_count\": \"<integer>\",\n    \"group_category_id\": \"<integer>\",\n    \"needs_grading_count\": \"<integer>\",\n    \"position\": \"<integer>\",\n    \"post_to_sis\": \"<boolean>\",\n    \"integration_id\": \"<string>\",\n    \"integration_data\": {\n      \"key_0\": \"string\"\n    },\n    \"points_possible\": \"<number>\",\n    \"submission_types\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"has_submitted_submissions\": \"<boolean>\",\n    \"grading_type\": \"<string>\",\n    \"grading_standard_id\": \"<integer>\",\n    \"published\": \"<boolean>\",\n    \"unpublishable\": \"<boolean>\",\n    \"only_visible_to_overrides\": \"<boolean>\",\n    \"locked_for_user\": \"<boolean>\",\n    \"muted\": \"<boolean>\",\n    \"omit_from_final_grade\": \"<boolean>\",\n    \"hide_in_gradebook\": \"<boolean>\",\n    \"moderated_grading\": \"<boolean>\",\n    \"grader_count\": \"<integer>\",\n    \"final_grader_id\": \"<integer>\",\n    \"grader_comments_visible_to_graders\": \"<boolean>\",\n    \"graders_anonymous_to_graders\": \"<boolean>\",\n    \"grader_names_visible_to_final_grader\": \"<boolean>\",\n    \"anonymous_grading\": \"<boolean>\",\n    \"allowed_attempts\": \"<integer>\",\n    \"post_manually\": \"<boolean>\",\n    \"external_tool_tag_attributes\": {\n      \"key_0\": 13.191310687630242\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "883e9271-f10d-4eac-84ef-b0774b838d4b",
+              "name": "The created assignment",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "courses",
+                    ":course_id",
+                    "assignments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "course_id",
+                      "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                    },
+                    {
+                      "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                      "type": "any",
+                      "value": "{{canvas_host}}",
+                      "key": "canvas_host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"assignment\": {\n    \"id\": 4759,\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"created_at\": \"2018-07-19T03:48:59.078Z\",\n    \"updated_at\": \"2002-08-28T11:31:41.788Z\",\n    \"due_at\": \"2004-02-09T05:07:59.647Z\",\n    \"lock_at\": \"1958-05-10T17:42:26.294Z\",\n    \"unlock_at\": \"1955-02-28T05:12:11.880Z\",\n    \"course_id\": 5334,\n    \"html_url\": \"string\",\n    \"submissions_download_url\": \"string\",\n    \"assignment_group_id\": 9171,\n    \"due_date_required\": false,\n    \"allowed_extensions\": [\n      \"string\",\n      \"string\"\n    ],\n    \"max_name_length\": 7472,\n    \"turnitin_enabled\": false,\n    \"vericite_enabled\": false,\n    \"peer_reviews\": false,\n    \"automatic_peer_reviews\": false,\n    \"peer_review_count\": 1063,\n    \"group_category_id\": 7982,\n    \"needs_grading_count\": 848,\n    \"position\": 3894,\n    \"post_to_sis\": false,\n    \"integration_id\": \"string\",\n    \"integration_data\": {\n      \"key_0\": \"string\",\n      \"key_1\": false\n    },\n    \"points_possible\": 9690.806530692013,\n    \"submission_types\": [\n      \"online_text_entry\",\n      \"online_text_entry\"\n    ],\n    \"has_submitted_submissions\": true,\n    \"grading_type\": \"letter_grade\",\n    \"grading_standard_id\": 1564,\n    \"published\": true,\n    \"unpublishable\": false,\n    \"only_visible_to_overrides\": false,\n    \"locked_for_user\": false,\n    \"muted\": false,\n    \"omit_from_final_grade\": true,\n    \"hide_in_gradebook\": false,\n    \"moderated_grading\": false,\n    \"grader_count\": 9071,\n    \"final_grader_id\": 6381,\n    \"grader_comments_visible_to_graders\": true,\n    \"graders_anonymous_to_graders\": false,\n    \"grader_names_visible_to_final_grader\": false,\n    \"anonymous_grading\": true,\n    \"allowed_attempts\": 3276,\n    \"post_manually\": false,\n    \"external_tool_tag_attributes\": {\n      \"key_0\": 7107,\n      \"key_1\": \"string\",\n      \"key_2\": false\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 7448,\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"created_at\": \"1956-06-19T05:45:22.964Z\",\n  \"updated_at\": \"2018-09-18T01:54:32.387Z\",\n  \"due_at\": \"2006-12-27T04:17:01.080Z\",\n  \"lock_at\": \"1950-03-17T19:36:50.711Z\",\n  \"unlock_at\": \"2003-08-19T07:31:05.741Z\",\n  \"course_id\": 7548,\n  \"html_url\": \"string\",\n  \"submissions_download_url\": \"string\",\n  \"assignment_group_id\": 715,\n  \"due_date_required\": true,\n  \"allowed_extensions\": [\n    \"string\",\n    \"string\"\n  ],\n  \"max_name_length\": 4224,\n  \"turnitin_enabled\": false,\n  \"vericite_enabled\": false,\n  \"peer_reviews\": false,\n  \"automatic_peer_reviews\": true,\n  \"peer_review_count\": 8026,\n  \"group_category_id\": 1957,\n  \"needs_grading_count\": 2070,\n  \"position\": 6493,\n  \"post_to_sis\": true,\n  \"integration_id\": \"string\",\n  \"integration_data\": {\n    \"key_0\": 3128\n  },\n  \"points_possible\": 3599.6251430714656,\n  \"submission_types\": [\n    \"on_paper\",\n    \"media_recording\"\n  ],\n  \"has_submitted_submissions\": true,\n  \"grading_type\": \"gpa_scale\",\n  \"grading_standard_id\": 7833,\n  \"published\": true,\n  \"unpublishable\": true,\n  \"only_visible_to_overrides\": true,\n  \"locked_for_user\": false,\n  \"muted\": false,\n  \"omit_from_final_grade\": false,\n  \"hide_in_gradebook\": false,\n  \"moderated_grading\": false,\n  \"grader_count\": 398,\n  \"final_grader_id\": 3593,\n  \"grader_comments_visible_to_graders\": true,\n  \"graders_anonymous_to_graders\": false,\n  \"grader_names_visible_to_final_grader\": true,\n  \"anonymous_grading\": false,\n  \"allowed_attempts\": 4846,\n  \"post_manually\": true,\n  \"external_tool_tag_attributes\": {\n    \"key_0\": 9931.539634656561,\n    \"key_1\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ff96142e-cd99-4348-957e-65f703adb5c9",
+          "name": "Get a Single Assignment",
+          "request": {
+            "name": "Get a Single Assignment",
+            "description": {},
+            "url": {
+              "path": [
+                "courses",
+                ":course_id",
+                "assignments",
+                ":assignment_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "course_id",
+                  "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assignment_id",
+                  "description": "(Required) The Canvas assignment ID."
+                },
+                {
+                  "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                  "type": "any",
+                  "value": "{{canvas_host}}",
+                  "key": "canvas_host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ff3a54b4-7fc6-4c19-812e-0418429ccded",
+              "name": "The assignment",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "courses",
+                    ":course_id",
+                    "assignments",
+                    ":assignment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "course_id",
+                      "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assignment_id",
+                      "description": "(Required) The Canvas assignment ID."
+                    },
+                    {
+                      "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                      "type": "any",
+                      "value": "{{canvas_host}}",
+                      "key": "canvas_host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 7448,\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"created_at\": \"1956-06-19T05:45:22.964Z\",\n  \"updated_at\": \"2018-09-18T01:54:32.387Z\",\n  \"due_at\": \"2006-12-27T04:17:01.080Z\",\n  \"lock_at\": \"1950-03-17T19:36:50.711Z\",\n  \"unlock_at\": \"2003-08-19T07:31:05.741Z\",\n  \"course_id\": 7548,\n  \"html_url\": \"string\",\n  \"submissions_download_url\": \"string\",\n  \"assignment_group_id\": 715,\n  \"due_date_required\": true,\n  \"allowed_extensions\": [\n    \"string\",\n    \"string\"\n  ],\n  \"max_name_length\": 4224,\n  \"turnitin_enabled\": false,\n  \"vericite_enabled\": false,\n  \"peer_reviews\": false,\n  \"automatic_peer_reviews\": true,\n  \"peer_review_count\": 8026,\n  \"group_category_id\": 1957,\n  \"needs_grading_count\": 2070,\n  \"position\": 6493,\n  \"post_to_sis\": true,\n  \"integration_id\": \"string\",\n  \"integration_data\": {\n    \"key_0\": 3128\n  },\n  \"points_possible\": 3599.6251430714656,\n  \"submission_types\": [\n    \"on_paper\",\n    \"media_recording\"\n  ],\n  \"has_submitted_submissions\": true,\n  \"grading_type\": \"gpa_scale\",\n  \"grading_standard_id\": 7833,\n  \"published\": true,\n  \"unpublishable\": true,\n  \"only_visible_to_overrides\": true,\n  \"locked_for_user\": false,\n  \"muted\": false,\n  \"omit_from_final_grade\": false,\n  \"hide_in_gradebook\": false,\n  \"moderated_grading\": false,\n  \"grader_count\": 398,\n  \"final_grader_id\": 3593,\n  \"grader_comments_visible_to_graders\": true,\n  \"graders_anonymous_to_graders\": false,\n  \"grader_names_visible_to_final_grader\": true,\n  \"anonymous_grading\": false,\n  \"allowed_attempts\": 4846,\n  \"post_manually\": true,\n  \"external_tool_tag_attributes\": {\n    \"key_0\": 9931.539634656561,\n    \"key_1\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b402832d-11c5-4da0-8cfd-24901beff0c8",
+          "name": "Edit an Assignment",
+          "request": {
+            "name": "Edit an Assignment",
+            "description": {},
+            "url": {
+              "path": [
+                "courses",
+                ":course_id",
+                "assignments",
+                ":assignment_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "course_id",
+                  "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assignment_id",
+                  "description": "(Required) The Canvas assignment ID."
+                },
+                {
+                  "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                  "type": "any",
+                  "value": "{{canvas_host}}",
+                  "key": "canvas_host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assignment\": {\n    \"id\": \"<long>\",\n    \"name\": \"<string>\",\n    \"description\": \"<string>\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"due_at\": \"<dateTime>\",\n    \"lock_at\": \"<dateTime>\",\n    \"unlock_at\": \"<dateTime>\",\n    \"course_id\": \"<integer>\",\n    \"html_url\": \"<string>\",\n    \"submissions_download_url\": \"<string>\",\n    \"assignment_group_id\": \"<integer>\",\n    \"due_date_required\": \"<boolean>\",\n    \"allowed_extensions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"max_name_length\": \"<integer>\",\n    \"turnitin_enabled\": \"<boolean>\",\n    \"vericite_enabled\": \"<boolean>\",\n    \"peer_reviews\": \"<boolean>\",\n    \"automatic_peer_reviews\": \"<boolean>\",\n    \"peer_review_count\": \"<integer>\",\n    \"group_category_id\": \"<integer>\",\n    \"needs_grading_count\": \"<integer>\",\n    \"position\": \"<integer>\",\n    \"post_to_sis\": \"<boolean>\",\n    \"integration_id\": \"<string>\",\n    \"integration_data\": {\n      \"key_0\": \"string\"\n    },\n    \"points_possible\": \"<number>\",\n    \"submission_types\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"has_submitted_submissions\": \"<boolean>\",\n    \"grading_type\": \"<string>\",\n    \"grading_standard_id\": \"<integer>\",\n    \"published\": \"<boolean>\",\n    \"unpublishable\": \"<boolean>\",\n    \"only_visible_to_overrides\": \"<boolean>\",\n    \"locked_for_user\": \"<boolean>\",\n    \"muted\": \"<boolean>\",\n    \"omit_from_final_grade\": \"<boolean>\",\n    \"hide_in_gradebook\": \"<boolean>\",\n    \"moderated_grading\": \"<boolean>\",\n    \"grader_count\": \"<integer>\",\n    \"final_grader_id\": \"<integer>\",\n    \"grader_comments_visible_to_graders\": \"<boolean>\",\n    \"graders_anonymous_to_graders\": \"<boolean>\",\n    \"grader_names_visible_to_final_grader\": \"<boolean>\",\n    \"anonymous_grading\": \"<boolean>\",\n    \"allowed_attempts\": \"<integer>\",\n    \"post_manually\": \"<boolean>\",\n    \"external_tool_tag_attributes\": {\n      \"key_0\": 13.191310687630242\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "bd0f6064-d9ef-466b-9634-99edf6c8f01a",
+              "name": "The updated assignment",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "courses",
+                    ":course_id",
+                    "assignments",
+                    ":assignment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "course_id",
+                      "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assignment_id",
+                      "description": "(Required) The Canvas assignment ID."
+                    },
+                    {
+                      "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                      "type": "any",
+                      "value": "{{canvas_host}}",
+                      "key": "canvas_host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"assignment\": {\n    \"id\": 4759,\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"created_at\": \"2018-07-19T03:48:59.078Z\",\n    \"updated_at\": \"2002-08-28T11:31:41.788Z\",\n    \"due_at\": \"2004-02-09T05:07:59.647Z\",\n    \"lock_at\": \"1958-05-10T17:42:26.294Z\",\n    \"unlock_at\": \"1955-02-28T05:12:11.880Z\",\n    \"course_id\": 5334,\n    \"html_url\": \"string\",\n    \"submissions_download_url\": \"string\",\n    \"assignment_group_id\": 9171,\n    \"due_date_required\": false,\n    \"allowed_extensions\": [\n      \"string\",\n      \"string\"\n    ],\n    \"max_name_length\": 7472,\n    \"turnitin_enabled\": false,\n    \"vericite_enabled\": false,\n    \"peer_reviews\": false,\n    \"automatic_peer_reviews\": false,\n    \"peer_review_count\": 1063,\n    \"group_category_id\": 7982,\n    \"needs_grading_count\": 848,\n    \"position\": 3894,\n    \"post_to_sis\": false,\n    \"integration_id\": \"string\",\n    \"integration_data\": {\n      \"key_0\": \"string\",\n      \"key_1\": false\n    },\n    \"points_possible\": 9690.806530692013,\n    \"submission_types\": [\n      \"online_text_entry\",\n      \"online_text_entry\"\n    ],\n    \"has_submitted_submissions\": true,\n    \"grading_type\": \"letter_grade\",\n    \"grading_standard_id\": 1564,\n    \"published\": true,\n    \"unpublishable\": false,\n    \"only_visible_to_overrides\": false,\n    \"locked_for_user\": false,\n    \"muted\": false,\n    \"omit_from_final_grade\": true,\n    \"hide_in_gradebook\": false,\n    \"moderated_grading\": false,\n    \"grader_count\": 9071,\n    \"final_grader_id\": 6381,\n    \"grader_comments_visible_to_graders\": true,\n    \"graders_anonymous_to_graders\": false,\n    \"grader_names_visible_to_final_grader\": false,\n    \"anonymous_grading\": true,\n    \"allowed_attempts\": 3276,\n    \"post_manually\": false,\n    \"external_tool_tag_attributes\": {\n      \"key_0\": 7107,\n      \"key_1\": \"string\",\n      \"key_2\": false\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 7448,\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"created_at\": \"1956-06-19T05:45:22.964Z\",\n  \"updated_at\": \"2018-09-18T01:54:32.387Z\",\n  \"due_at\": \"2006-12-27T04:17:01.080Z\",\n  \"lock_at\": \"1950-03-17T19:36:50.711Z\",\n  \"unlock_at\": \"2003-08-19T07:31:05.741Z\",\n  \"course_id\": 7548,\n  \"html_url\": \"string\",\n  \"submissions_download_url\": \"string\",\n  \"assignment_group_id\": 715,\n  \"due_date_required\": true,\n  \"allowed_extensions\": [\n    \"string\",\n    \"string\"\n  ],\n  \"max_name_length\": 4224,\n  \"turnitin_enabled\": false,\n  \"vericite_enabled\": false,\n  \"peer_reviews\": false,\n  \"automatic_peer_reviews\": true,\n  \"peer_review_count\": 8026,\n  \"group_category_id\": 1957,\n  \"needs_grading_count\": 2070,\n  \"position\": 6493,\n  \"post_to_sis\": true,\n  \"integration_id\": \"string\",\n  \"integration_data\": {\n    \"key_0\": 3128\n  },\n  \"points_possible\": 3599.6251430714656,\n  \"submission_types\": [\n    \"on_paper\",\n    \"media_recording\"\n  ],\n  \"has_submitted_submissions\": true,\n  \"grading_type\": \"gpa_scale\",\n  \"grading_standard_id\": 7833,\n  \"published\": true,\n  \"unpublishable\": true,\n  \"only_visible_to_overrides\": true,\n  \"locked_for_user\": false,\n  \"muted\": false,\n  \"omit_from_final_grade\": false,\n  \"hide_in_gradebook\": false,\n  \"moderated_grading\": false,\n  \"grader_count\": 398,\n  \"final_grader_id\": 3593,\n  \"grader_comments_visible_to_graders\": true,\n  \"graders_anonymous_to_graders\": false,\n  \"grader_names_visible_to_final_grader\": true,\n  \"anonymous_grading\": false,\n  \"allowed_attempts\": 4846,\n  \"post_manually\": true,\n  \"external_tool_tag_attributes\": {\n    \"key_0\": 9931.539634656561,\n    \"key_1\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9df737eb-2d3e-451c-81ec-90687e41365a",
+          "name": "Delete an Assignment",
+          "request": {
+            "name": "Delete an Assignment",
+            "description": {},
+            "url": {
+              "path": [
+                "courses",
+                ":course_id",
+                "assignments",
+                ":assignment_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "course_id",
+                  "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "assignment_id",
+                  "description": "(Required) The Canvas assignment ID."
+                },
+                {
+                  "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                  "type": "any",
+                  "value": "{{canvas_host}}",
+                  "key": "canvas_host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f7c9ce89-f8de-486c-af7e-624955e528e4",
+              "name": "The deleted assignment",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "courses",
+                    ":course_id",
+                    "assignments",
+                    ":assignment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "course_id",
+                      "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "assignment_id",
+                      "description": "(Required) The Canvas assignment ID."
+                    },
+                    {
+                      "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                      "type": "any",
+                      "value": "{{canvas_host}}",
+                      "key": "canvas_host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 7448,\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"created_at\": \"1956-06-19T05:45:22.964Z\",\n  \"updated_at\": \"2018-09-18T01:54:32.387Z\",\n  \"due_at\": \"2006-12-27T04:17:01.080Z\",\n  \"lock_at\": \"1950-03-17T19:36:50.711Z\",\n  \"unlock_at\": \"2003-08-19T07:31:05.741Z\",\n  \"course_id\": 7548,\n  \"html_url\": \"string\",\n  \"submissions_download_url\": \"string\",\n  \"assignment_group_id\": 715,\n  \"due_date_required\": true,\n  \"allowed_extensions\": [\n    \"string\",\n    \"string\"\n  ],\n  \"max_name_length\": 4224,\n  \"turnitin_enabled\": false,\n  \"vericite_enabled\": false,\n  \"peer_reviews\": false,\n  \"automatic_peer_reviews\": true,\n  \"peer_review_count\": 8026,\n  \"group_category_id\": 1957,\n  \"needs_grading_count\": 2070,\n  \"position\": 6493,\n  \"post_to_sis\": true,\n  \"integration_id\": \"string\",\n  \"integration_data\": {\n    \"key_0\": 3128\n  },\n  \"points_possible\": 3599.6251430714656,\n  \"submission_types\": [\n    \"on_paper\",\n    \"media_recording\"\n  ],\n  \"has_submitted_submissions\": true,\n  \"grading_type\": \"gpa_scale\",\n  \"grading_standard_id\": 7833,\n  \"published\": true,\n  \"unpublishable\": true,\n  \"only_visible_to_overrides\": true,\n  \"locked_for_user\": false,\n  \"muted\": false,\n  \"omit_from_final_grade\": false,\n  \"hide_in_gradebook\": false,\n  \"moderated_grading\": false,\n  \"grader_count\": 398,\n  \"final_grader_id\": 3593,\n  \"grader_comments_visible_to_graders\": true,\n  \"graders_anonymous_to_graders\": false,\n  \"grader_names_visible_to_final_grader\": true,\n  \"anonymous_grading\": false,\n  \"allowed_attempts\": 4846,\n  \"post_manually\": true,\n  \"external_tool_tag_attributes\": {\n    \"key_0\": 9931.539634656561,\n    \"key_1\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "canvas.instructure.com",
+      "key": "canvas_host"
+    },
+    {
+      "type": "string",
+      "value": "https://{{canvas_host}}/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "url:GET|/api/v1/accounts url:GET|/api/v1/courses url:GET|/api/v1/users/{user_id}"
+      },
+      {
+        "key": "redirect_uri",
+        "value": "https://canvas.instructure.com/login/oauth2/token"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://canvas.instructure.com/login/oauth2/token"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://canvas.instructure.com/login/oauth2/auth"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "2101bcfa-9105-4c5b-b276-9e98ad5005b8",
+    "name": "Canvas LMS REST Accounts Assignments API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Canvas LMS REST API exposes the full learning-management surface — accounts, courses,\nenrollments, users, assignments, submissions, grades, outcomes, quizzes, modules, pages,\ndiscussions, files, conversations, calendar events, planner, and more — via\n`/api/v1` on any Canvas install (Free for Teacher at canvas.instructure.com,\nCanvas Cloud, or self-hosted).\n\nAuthentication uses OAuth2 (RFC 6749). Tokens are issued via the\n`/login/oauth2/auth` and `/login/oauth2/token` endpoints; clients must be\nregistered as a Developer Key in the target Canvas account. Manual personal\naccess tokens may be created from a user's profile for testing only.\n\nPagination follows RFC 5988 with `Link` response headers (`rel=\"next\"`,\n`\"prev\"`, `\"first\"`, `\"last\"`). Includes can be requested via the\n`include[]` query parameter on most resources. Admin users may impersonate\nother users by appending `as_user_id={id}` (Masquerading).\n\nThis OpenAPI document covers the most-used endpoints across Accounts,\nCourses, Enrollments, Users, Assignments, Submissions, Modules, Discussions,\nFiles, and Outcomes. The full surface (190+ resource groups) is documented\nat https://canvas.instructure.com/doc/api/all_resources.html and generated\nin the canvas-lms repo via `rake doc:openapi`.\n\n\nContact Support:\n Name: Canvas Developer Community",
+      "type": "text/plain"
+    }
+  }
+}

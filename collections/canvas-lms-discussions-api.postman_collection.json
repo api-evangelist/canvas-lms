@@ -1,0 +1,202 @@
+{
+  "item": [
+    {
+      "id": "bf3920da-9947-4ed3-a4b3-160700efbbd7",
+      "name": "Discussions",
+      "description": {
+        "content": "Discussion topics and entries",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "91e29be7-4da4-4dd9-8fa4-b2413f88e699",
+          "name": "List Discussion Topics in a Course",
+          "request": {
+            "name": "List Discussion Topics in a Course",
+            "description": {},
+            "url": {
+              "path": [
+                "courses",
+                ":course_id",
+                "discussion_topics"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include[]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "include[]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "order_by",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "course_id",
+                  "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                },
+                {
+                  "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                  "type": "any",
+                  "value": "{{canvas_host}}",
+                  "key": "canvas_host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8588f83a-c458-4881-a6b2-d67d67639f15",
+              "name": "A paginated list of discussion topics",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "courses",
+                    ":course_id",
+                    "discussion_topics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include[]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include[]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "order_by",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "course_id",
+                      "description": "(Required) The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+                    },
+                    {
+                      "description": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+                      "type": "any",
+                      "value": "{{canvas_host}}",
+                      "key": "canvas_host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 1984,\n    \"title\": \"string\",\n    \"message\": \"string\",\n    \"html_url\": \"string\",\n    \"posted_at\": \"1950-02-16T17:46:04.751Z\",\n    \"last_reply_at\": \"2001-12-20T00:15:46.059Z\",\n    \"require_initial_post\": false,\n    \"user_can_see_posts\": false,\n    \"discussion_subentry_count\": 3832,\n    \"read_state\": \"unread\",\n    \"unread_count\": 1505,\n    \"subscribed\": true,\n    \"assignment_id\": 2082,\n    \"delayed_post_at\": \"1981-09-06T02:02:04.226Z\",\n    \"published\": true,\n    \"lock_at\": \"1985-08-07T08:48:47.024Z\",\n    \"locked\": false,\n    \"pinned\": false,\n    \"locked_for_user\": true,\n    \"discussion_type\": \"side_comment\",\n    \"position\": 9050,\n    \"allow_rating\": true,\n    \"only_graders_can_rate\": false,\n    \"sort_by_rating\": false,\n    \"is_announcement\": true\n  },\n  {\n    \"id\": 6179,\n    \"title\": \"string\",\n    \"message\": \"string\",\n    \"html_url\": \"string\",\n    \"posted_at\": \"1992-04-22T14:58:18.094Z\",\n    \"last_reply_at\": \"2009-07-02T11:52:31.172Z\",\n    \"require_initial_post\": true,\n    \"user_can_see_posts\": true,\n    \"discussion_subentry_count\": 3602,\n    \"read_state\": \"read\",\n    \"unread_count\": 7959,\n    \"subscribed\": false,\n    \"assignment_id\": 2125,\n    \"delayed_post_at\": \"1957-02-03T00:01:42.944Z\",\n    \"published\": true,\n    \"lock_at\": \"1964-04-20T03:12:14.124Z\",\n    \"locked\": true,\n    \"pinned\": false,\n    \"locked_for_user\": false,\n    \"discussion_type\": \"threaded\",\n    \"position\": 4628,\n    \"allow_rating\": true,\n    \"only_graders_can_rate\": true,\n    \"sort_by_rating\": true,\n    \"is_announcement\": false\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "The Canvas host (canvas.instructure.com for Free for Teacher, your-school.instructure.com for Canvas Cloud, or your self-hosted Canvas)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "canvas.instructure.com",
+      "key": "canvas_host"
+    },
+    {
+      "type": "string",
+      "value": "https://{{canvas_host}}/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "url:GET|/api/v1/accounts url:GET|/api/v1/courses url:GET|/api/v1/users/{user_id}"
+      },
+      {
+        "key": "redirect_uri",
+        "value": "https://canvas.instructure.com/login/oauth2/token"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://canvas.instructure.com/login/oauth2/token"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://canvas.instructure.com/login/oauth2/auth"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "60d40d60-8d1a-459a-bc83-241237de8757",
+    "name": "Canvas LMS REST Accounts Discussions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Canvas LMS REST API exposes the full learning-management surface — accounts, courses,\nenrollments, users, assignments, submissions, grades, outcomes, quizzes, modules, pages,\ndiscussions, files, conversations, calendar events, planner, and more — via\n`/api/v1` on any Canvas install (Free for Teacher at canvas.instructure.com,\nCanvas Cloud, or self-hosted).\n\nAuthentication uses OAuth2 (RFC 6749). Tokens are issued via the\n`/login/oauth2/auth` and `/login/oauth2/token` endpoints; clients must be\nregistered as a Developer Key in the target Canvas account. Manual personal\naccess tokens may be created from a user's profile for testing only.\n\nPagination follows RFC 5988 with `Link` response headers (`rel=\"next\"`,\n`\"prev\"`, `\"first\"`, `\"last\"`). Includes can be requested via the\n`include[]` query parameter on most resources. Admin users may impersonate\nother users by appending `as_user_id={id}` (Masquerading).\n\nThis OpenAPI document covers the most-used endpoints across Accounts,\nCourses, Enrollments, Users, Assignments, Submissions, Modules, Discussions,\nFiles, and Outcomes. The full surface (190+ resource groups) is documented\nat https://canvas.instructure.com/doc/api/all_resources.html and generated\nin the canvas-lms repo via `rake doc:openapi`.\n\n\nContact Support:\n Name: Canvas Developer Community",
+      "type": "text/plain"
+    }
+  }
+}

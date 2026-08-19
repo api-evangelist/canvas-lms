@@ -1,0 +1,64 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Canvas LMS REST Accounts Files API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://canvas.instructure.com/login/oauth2/auth",
+      "accessTokenUrl": "https://canvas.instructure.com/login/oauth2/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Files",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Files in a Course",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{canvas_host}/api/v1/courses/:course_id/files",
+            "params": [
+              {
+                "name": "course_id",
+                "value": "",
+                "type": "path",
+                "description": "The Canvas course ID or an SIS course ID prefixed `sis_course_id:`."
+              },
+              {
+                "name": "content_types[]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search_term",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "include[]",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Files in a Course"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
