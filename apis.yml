@@ -9,6 +9,17 @@ tags:
 - LTI
 - Higher Education
 - K-12
+- Open-Source
+- AGPL
+- Canvas
+tags_raw:
+- Learning Management
+- Education
+- EdTech
+- LMS
+- LTI
+- Higher Education
+- K-12
 - Open Source
 - AGPL
 - Canvas
@@ -115,6 +126,12 @@ apis:
 - aid: canvas-lms:canvas-platform-notification-service
   name: Canvas Platform Notification Service
   tags:
+  - Webhook
+  - Notification
+  - Event
+  - LTI
+  - Server-to-Server
+  tags_raw:
   - Webhooks
   - Notifications
   - Events
@@ -139,6 +156,17 @@ apis:
 - aid: canvas-lms:canvas-live-events
   name: Canvas Live Events
   tags:
+  - Live Events
+  - Webhook
+  - Event
+  - Streaming
+  - AsyncAPI
+  - SQS
+  - HTTPS
+  - JWT
+  - Caliper
+  - Analytics
+  tags_raw:
   - Live Events
   - Webhooks
   - Events
@@ -200,6 +228,13 @@ apis:
   - Data Warehouse
   - Analytics
   - Snapshots
+  - Event
+  tags_raw:
+  - Canvas Data
+  - DAP
+  - Data Warehouse
+  - Analytics
+  - Snapshots
   - Events
   humanURL: https://data-access-platform-api.s3.amazonaws.com/index.html
   baseURL: https://api-gateway.instructure.com/dap
@@ -256,6 +291,8 @@ apis:
   humanURL: https://canvas.instructure.com/doc/api/
   baseURL: https://<canvas-install-url>/api/v1
   tags:
+  - Account
+  tags_raw:
   - Accounts
   properties:
   - type: OpenAPI
@@ -436,6 +473,8 @@ apis:
   humanURL: https://canvas.instructure.com/doc/api/
   baseURL: https://<canvas-install-url>/api/v1
   tags:
+  - File
+  tags_raw:
   - Files
   properties:
   - type: OpenAPI
@@ -580,6 +619,8 @@ apis:
   humanURL: https://canvas.instructure.com/doc/api/
   baseURL: https://<canvas-install-url>/api/v1
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
