@@ -11,8 +11,14 @@ info:
     OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: canvasApi
-  url: ../openapi/canvas-lms-rest-api-openapi.yml
+- name: assignmentsApi
+  url: ../openapi/canvas-lms-assignments-api-openapi.yml
+  type: openapi
+- name: coursesApi
+  url: ../openapi/canvas-lms-courses-api-openapi.yml
+  type: openapi
+- name: usersApi
+  url: ../openapi/canvas-lms-users-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: self-courses-and-create-assignment

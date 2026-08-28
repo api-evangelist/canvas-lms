@@ -10,8 +10,11 @@ info:
     can be read and executed without opening the underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: canvasApi
-  url: ../openapi/canvas-lms-rest-api-openapi.yml
+- name: coursesApi
+  url: ../openapi/canvas-lms-courses-api-openapi.yml
+  type: openapi
+- name: enrollmentsApi
+  url: ../openapi/canvas-lms-enrollments-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: enroll-user-and-confirm

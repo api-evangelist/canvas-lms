@@ -11,8 +11,11 @@ info:
     underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: canvasApi
-  url: ../openapi/canvas-lms-rest-api-openapi.yml
+- name: accountsApi
+  url: ../openapi/canvas-lms-accounts-api-openapi.yml
+  type: openapi
+- name: coursesApi
+  url: ../openapi/canvas-lms-courses-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: account-course-audit-and-conclude

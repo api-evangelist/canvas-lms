@@ -12,8 +12,11 @@ info:
     be read and executed without opening the underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: canvasApi
-  url: ../openapi/canvas-lms-rest-api-openapi.yml
+- name: discussionsApi
+  url: ../openapi/canvas-lms-discussions-api-openapi.yml
+  type: openapi
+- name: submissionsApi
+  url: ../openapi/canvas-lms-submissions-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: grade-discussion-submission
