@@ -1,0 +1,34 @@
+slug: canvas-lms
+provider: Canvas LMS
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Education
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: Enrollments
+  spec_file: canvas-lms-enrollments-api-openapi.yml
+  capability_id: BC-4720.10
+  capability_id_l1: BC-4720
+  capability_name: Enrolment & Registration
+  confidence: 0.85
+  evidence: POST /courses/{course_id}/enrollments — 'Enroll a User in a Course'; schema 'Enrollment'
+  reason: Operations directly create and list student enrolments in courses, which is exactly course registration/enrolment
+    administration of the active student lifecycle.
+- tag: Submissions
+  spec_file: canvas-lms-submissions-api-openapi.yml
+  capability_id: BC-4740.30
+  capability_id_l1: BC-4740
+  capability_name: Marking & Grading Operations
+  confidence: 0.85
+  evidence: PUT /courses/{course_id}/assignments/{assignment_id}/submissions/{user_id} — 'Grade or Comment
+    on a Submission'; schemas Submission, SubmissionComment
+  reason: Operations retrieve student work submitted against an assignment and record grades and marker
+    comments — this is marking and grading operations within assessment management.
