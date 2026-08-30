@@ -143,7 +143,7 @@ apis:
   - Notification
   - Event
   - LTI
-  - Server-to-Server
+  - Server to Server
   tags_raw:
   - Webhooks
   - Notifications
