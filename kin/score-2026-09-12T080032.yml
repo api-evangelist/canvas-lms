@@ -1,38 +1,49 @@
-# Kin Score artifact — canvas-lms — 2026-08-07T135032
+# Kin Score artifact — canvas-lms — 2026-09-12T080032
 # The API Evangelist rating (https://github.com/api-evangelist/kin-score). Generated; do not edit.
 ---
 kin_score:
   slug: canvas-lms
-  schema_version: 0.9.1
-  scored_at: '2026-08-07'
-  run_ts: 2026-08-07T135032
+  schema_version: 0.21.0
+  scored_at: '2026-09-12'
+  run_ts: 2026-09-12T080032
   composite: 71.7
   band: exemplar
   facets:
-    discoverability: 77.8
-    contract_quality: 77.2
-    governance: 69.8
+    discoverability: 51.9
+    contract_quality: 67.0
+    contract_governance: 14.4
     operational_transparency: 68.4
-    developer_ergonomics: 76.1
-    commercial_clarity: 60.5
+    developer_ergonomics: 82.1
+    access_clarity: 73.7
   agent_readiness:
-    score: 50.2
+    score: 33.3
     band: agent-ready
     dimensions:
       spec_presence: true
       agentic_access: derived
-      mcp_server: derived
-      auth_clarity: true
+      reversibility_documented: false
+      mcp_server: false
+      auth_clarity: negotiable
       idempotency: false
       error_semantics: documented
       openapi_examples: documented
       rate_limit_signal: documented
       event_surface_described: true
       agent_skills: false
-      well_known_catalog: true
-      consent_identity: true
+      well_known_catalog: false
+      consent_identity: false
       agent_card: false
       dry_run_mode: false
+      delegated_identity: documented
+      protected_resource_metadata: false
+      dynamic_client_registration: false
+      agentic_commerce: false
+  regulatory:
+    applies: true
+    regime: Education & Research
+    regime_id: education
+    score: 85.2
+    matched_via: tags
   provenance:
     mcp: derived
     agentic_access: derived

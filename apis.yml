@@ -665,6 +665,8 @@ apis:
   - type: ChangeLog
     url: https://canvas.instructure.com/doc/api/file.changelog.html
 common:
+- type: Website
+  url: https://www.instructure.com/
 - type: CapabilityMap
   url: capabilities/canvas-lms-capability-edges.yml
   name: Canvas LMS Business Capability Map
