@@ -175,7 +175,7 @@ apis:
   - Streaming
   - AsyncAPI
   - SQS
-  - HTTPS
+  - HTTP
   - JWT
   - Caliper
   - Analytics
@@ -450,6 +450,8 @@ apis:
   humanURL: https://canvas.instructure.com/doc/api/
   baseURL: https://<canvas-install-url>/api/v1
   tags:
+  - Enrollment
+  tags_raw:
   - Enrollments
   properties:
   - type: OpenAPI
