@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Canvas LMS REST Accounts Courses API
+  title: Canvas LMS REST Courses API
   description: 'The Canvas LMS REST API exposes the full learning-management surface — accounts, courses,
 
     enrollments, users, assignments, submissions, grades, outcomes, quizzes, modules, pages,
@@ -9,38 +9,7 @@ info:
 
     `/api/v1` on any Canvas install (Free for Teacher at canvas.instructure.com,
 
-    Canvas Cloud, or self-hosted).
-
-
-    Authentication uses OAuth2 (RFC 6749). Tokens are issued via the
-
-    `/login/oauth2/auth` and `/login/oauth2/token` endpoints; clients must be
-
-    registered as a Developer Key in the target Canvas account. Manual personal
-
-    access tokens may be created from a user''s profile for testing only.
-
-
-    Pagination follows RFC 5988 with `Link` response headers (`rel="next"`,
-
-    `"prev"`, `"first"`, `"last"`). Includes can be requested via the
-
-    `include[]` query parameter on most resources. Admin users may impersonate
-
-    other users by appending `as_user_id={id}` (Masquerading).
-
-
-    This OpenAPI document covers the most-used endpoints across Accounts,
-
-    Courses, Enrollments, Users, Assignments, Submissions, Modules, Discussions,
-
-    Files, and Outcomes. The full surface (190+ resource groups) is documented
-
-    at https://canvas.instructure.com/doc/api/all_resources.html and generated
-
-    in the canvas-lms repo via `rake doc:openapi`.
-
-    '
+    Canvas Cloud, or self-hosted).'
   version: '1.0'
   contact:
     name: Canvas Developer Community
@@ -294,57 +263,121 @@ paths:
                   $ref: '#/components/schemas/User'
 components:
   schemas:
-    User:
+    Enrollment:
       type: object
       properties:
         id:
           type: integer
           format: int64
-        name:
-          type: string
-        sortable_name:
-          type: string
-        short_name:
-          type: string
-        sis_user_id:
-          type: string
+        course_id:
+          type: integer
+        course_section_id:
+          type: integer
           nullable: true
+        root_account_id:
+          type: integer
+        type:
+          type: string
+          enum:
+          - StudentEnrollment
+          - TeacherEnrollment
+          - TaEnrollment
+          - DesignerEnrollment
+          - ObserverEnrollment
+        user_id:
+          type: integer
+        associated_user_id:
+          type: integer
+          nullable: true
+        role:
+          type: string
+        role_id:
+          type: integer
+        enrollment_state:
+          type: string
+          enum:
+          - active
+          - invited
+          - creation_pending
+          - deleted
+          - rejected
+          - completed
+          - inactive
+        limit_privileges_to_course_section:
+          type: boolean
         sis_import_id:
           type: integer
           nullable: true
-        integration_id:
+        sis_account_id:
           type: string
           nullable: true
-        login_id:
-          type: string
-        avatar_url:
+        sis_course_id:
           type: string
           nullable: true
-        avatar_state:
+        sis_section_id:
           type: string
           nullable: true
-        enrollments:
-          type: array
-          items:
-            $ref: '#/components/schemas/Enrollment'
-        email:
+        sis_user_id:
           type: string
           nullable: true
-        locale:
+        section_integration_id:
           type: string
           nullable: true
-        last_login:
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        start_at:
           type: string
           format: date-time
           nullable: true
-        time_zone:
+        end_at:
           type: string
-        bio:
-          type: string
+          format: date-time
           nullable: true
-        pronouns:
+        last_activity_at:
           type: string
+          format: date-time
           nullable: true
+        last_attended_at:
+          type: string
+          format: date-time
+          nullable: true
+        total_activity_time:
+          type: integer
+        html_url:
+          type: string
+        grades:
+          type: object
+          properties:
+            html_url:
+              type: string
+            current_grade:
+              type: string
+              nullable: true
+            final_grade:
+              type: string
+              nullable: true
+            current_score:
+              type: number
+              nullable: true
+            final_score:
+              type: number
+              nullable: true
+            unposted_current_grade:
+              type: string
+              nullable: true
+            unposted_final_grade:
+              type: string
+              nullable: true
+            unposted_current_score:
+              type: number
+              nullable: true
+            unposted_final_score:
+              type: number
+              nullable: true
     Course:
       type: object
       properties:
@@ -461,137 +494,58 @@ components:
           type: boolean
         homeroom_course:
           type: boolean
-    Enrollment:
+    User:
       type: object
       properties:
         id:
           type: integer
           format: int64
-        course_id:
-          type: integer
-        course_section_id:
-          type: integer
-          nullable: true
-        root_account_id:
-          type: integer
-        type:
+        name:
           type: string
-          enum:
-          - StudentEnrollment
-          - TeacherEnrollment
-          - TaEnrollment
-          - DesignerEnrollment
-          - ObserverEnrollment
-        user_id:
-          type: integer
-        associated_user_id:
-          type: integer
-          nullable: true
-        role:
+        sortable_name:
           type: string
-        role_id:
-          type: integer
-        enrollment_state:
+        short_name:
           type: string
-          enum:
-          - active
-          - invited
-          - creation_pending
-          - deleted
-          - rejected
-          - completed
-          - inactive
-        limit_privileges_to_course_section:
-          type: boolean
-        sis_import_id:
-          type: integer
-          nullable: true
-        sis_account_id:
-          type: string
-          nullable: true
-        sis_course_id:
-          type: string
-          nullable: true
-        sis_section_id:
-          type: string
-          nullable: true
         sis_user_id:
           type: string
           nullable: true
-        section_integration_id:
-          type: string
-          nullable: true
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        start_at:
-          type: string
-          format: date-time
-          nullable: true
-        end_at:
-          type: string
-          format: date-time
-          nullable: true
-        last_activity_at:
-          type: string
-          format: date-time
-          nullable: true
-        last_attended_at:
-          type: string
-          format: date-time
-          nullable: true
-        total_activity_time:
+        sis_import_id:
           type: integer
-        html_url:
+          nullable: true
+        integration_id:
           type: string
-        grades:
-          type: object
-          properties:
-            html_url:
-              type: string
-            current_grade:
-              type: string
-              nullable: true
-            final_grade:
-              type: string
-              nullable: true
-            current_score:
-              type: number
-              nullable: true
-            final_score:
-              type: number
-              nullable: true
-            unposted_current_grade:
-              type: string
-              nullable: true
-            unposted_final_grade:
-              type: string
-              nullable: true
-            unposted_current_score:
-              type: number
-              nullable: true
-            unposted_final_score:
-              type: number
-              nullable: true
+          nullable: true
+        login_id:
+          type: string
+        avatar_url:
+          type: string
+          nullable: true
+        avatar_state:
+          type: string
+          nullable: true
+        enrollments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Enrollment'
+        email:
+          type: string
+          nullable: true
+        locale:
+          type: string
+          nullable: true
+        last_login:
+          type: string
+          format: date-time
+          nullable: true
+        time_zone:
+          type: string
+        bio:
+          type: string
+          nullable: true
+        pronouns:
+          type: string
+          nullable: true
   parameters:
-    AccountId:
-      name: account_id
-      in: path
-      required: true
-      description: The Canvas account ID, an SIS account ID prefixed `sis_account_id:`, or `self`.
-      schema:
-        type: string
-    PerPage:
-      name: per_page
-      in: query
-      description: Items per page (default 10, max varies by endpoint and install).
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
     CourseId:
       name: course_id
       in: path
@@ -606,6 +560,21 @@ components:
       schema:
         type: integer
         minimum: 1
+    PerPage:
+      name: per_page
+      in: query
+      description: Items per page (default 10, max varies by endpoint and install).
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+    AccountId:
+      name: account_id
+      in: path
+      required: true
+      description: The Canvas account ID, an SIS account ID prefixed `sis_account_id:`, or `self`.
+      schema:
+        type: string
   securitySchemes:
     OAuth2:
       type: oauth2

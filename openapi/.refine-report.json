@@ -1,16 +1,7 @@
 {
   "provider": "canvas-lms",
   "sources": [
-    "canvas-lms-accounts-api-openapi.yml",
-    "canvas-lms-assignments-api-openapi.yml",
-    "canvas-lms-courses-api-openapi.yml",
-    "canvas-lms-discussions-api-openapi.yml",
-    "canvas-lms-enrollments-api-openapi.yml",
-    "canvas-lms-files-api-openapi.yml",
-    "canvas-lms-modules-api-openapi.yml",
-    "canvas-lms-outcomes-api-openapi.yml",
-    "canvas-lms-submissions-api-openapi.yml",
-    "canvas-lms-users-api-openapi.yml"
+    "_original/canvas-lms-rest-api-openapi.yml"
   ],
   "outputs": [
     "canvas-lms-accounts-api-openapi.yml",
@@ -27,6 +18,21 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "canvas-lms-rest-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "canvas-lms-accounts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canvas-lms-assignments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canvas-lms-courses-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canvas-lms-discussions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canvas-lms-enrollments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canvas-lms-files-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canvas-lms-modules-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canvas-lms-outcomes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canvas-lms-submissions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "canvas-lms-users-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

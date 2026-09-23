@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Canvas LMS REST Accounts Assignments API
+  title: Canvas LMS REST Assignments API
   description: 'The Canvas LMS REST API exposes the full learning-management surface — accounts, courses,
 
     enrollments, users, assignments, submissions, grades, outcomes, quizzes, modules, pages,
@@ -9,38 +9,7 @@ info:
 
     `/api/v1` on any Canvas install (Free for Teacher at canvas.instructure.com,
 
-    Canvas Cloud, or self-hosted).
-
-
-    Authentication uses OAuth2 (RFC 6749). Tokens are issued via the
-
-    `/login/oauth2/auth` and `/login/oauth2/token` endpoints; clients must be
-
-    registered as a Developer Key in the target Canvas account. Manual personal
-
-    access tokens may be created from a user''s profile for testing only.
-
-
-    Pagination follows RFC 5988 with `Link` response headers (`rel="next"`,
-
-    `"prev"`, `"first"`, `"last"`). Includes can be requested via the
-
-    `include[]` query parameter on most resources. Admin users may impersonate
-
-    other users by appending `as_user_id={id}` (Masquerading).
-
-
-    This OpenAPI document covers the most-used endpoints across Accounts,
-
-    Courses, Enrollments, Users, Assignments, Submissions, Modules, Discussions,
-
-    Files, and Outcomes. The full surface (190+ resource groups) is documented
-
-    at https://canvas.instructure.com/doc/api/all_resources.html and generated
-
-    in the canvas-lms repo via `rake doc:openapi`.
-
-    '
+    Canvas Cloud, or self-hosted).'
   version: '1.0'
   contact:
     name: Canvas Developer Community
@@ -201,6 +170,13 @@ paths:
                 $ref: '#/components/schemas/Assignment'
 components:
   parameters:
+    AssignmentId:
+      name: assignment_id
+      in: path
+      required: true
+      description: The Canvas assignment ID.
+      schema:
+        type: string
     CourseId:
       name: course_id
       in: path
@@ -216,13 +192,6 @@ components:
         type: integer
         minimum: 1
         maximum: 100
-    AssignmentId:
-      name: assignment_id
-      in: path
-      required: true
-      description: The Canvas assignment ID.
-      schema:
-        type: string
   schemas:
     Assignment:
       type: object
