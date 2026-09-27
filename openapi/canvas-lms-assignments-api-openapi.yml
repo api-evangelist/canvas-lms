@@ -169,29 +169,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Assignment'
 components:
-  parameters:
-    AssignmentId:
-      name: assignment_id
-      in: path
-      required: true
-      description: The Canvas assignment ID.
-      schema:
-        type: string
-    CourseId:
-      name: course_id
-      in: path
-      required: true
-      description: The Canvas course ID or an SIS course ID prefixed `sis_course_id:`.
-      schema:
-        type: string
-    PerPage:
-      name: per_page
-      in: query
-      description: Items per page (default 10, max varies by endpoint and install).
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
   schemas:
     Assignment:
       type: object
@@ -331,6 +308,29 @@ components:
         external_tool_tag_attributes:
           type: object
           additionalProperties: true
+  parameters:
+    PerPage:
+      name: per_page
+      in: query
+      description: Items per page (default 10, max varies by endpoint and install).
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+    CourseId:
+      name: course_id
+      in: path
+      required: true
+      description: The Canvas course ID or an SIS course ID prefixed `sis_course_id:`.
+      schema:
+        type: string
+    AssignmentId:
+      name: assignment_id
+      in: path
+      required: true
+      description: The Canvas assignment ID.
+      schema:
+        type: string
   securitySchemes:
     OAuth2:
       type: oauth2

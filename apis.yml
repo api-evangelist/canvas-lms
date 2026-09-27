@@ -9,7 +9,7 @@ tags:
 - LTI
 - Higher Education
 - K-12
-- Open-Source
+- Open Source
 - AGPL
 - Canvas
 tags_raw:
@@ -23,19 +23,25 @@ tags_raw:
 - Open Source
 - AGPL
 - Canvas
+- Open-Source
 kind: contract
 deliveryModel:
-  model: unknown
-  open_source: unknown
+  model: open-core
+  license: AGPL-3.0
+  license_evidence:
+    repo: instructure/canvas-lms
+    spdx: AGPL-3.0
+    stars: 6842
+  open_source: true
   commercial: true
   callable_host: false
-  label: Delivery model not determined — needs a product licence on record
-  confidence: low
+  label: Open core · an OSS project plus a commercial hosted product
+  confidence: medium
   source:
   - openapi
   - pricing
-  - repository-unlicensed
-  generated: '2026-08-28'
+  - repository-license
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: free

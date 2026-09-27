@@ -143,6 +143,98 @@ paths:
                 $ref: '#/components/schemas/Profile'
 components:
   schemas:
+    Profile:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        short_name:
+          type: string
+        sortable_name:
+          type: string
+        title:
+          type: string
+          nullable: true
+        bio:
+          type: string
+          nullable: true
+        primary_email:
+          type: string
+          nullable: true
+        login_id:
+          type: string
+        sis_user_id:
+          type: string
+          nullable: true
+        lti_user_id:
+          type: string
+          nullable: true
+        avatar_url:
+          type: string
+          nullable: true
+        calendar:
+          type: object
+          properties:
+            ics:
+              type: string
+        time_zone:
+          type: string
+        locale:
+          type: string
+          nullable: true
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        sortable_name:
+          type: string
+        short_name:
+          type: string
+        sis_user_id:
+          type: string
+          nullable: true
+        sis_import_id:
+          type: integer
+          nullable: true
+        integration_id:
+          type: string
+          nullable: true
+        login_id:
+          type: string
+        avatar_url:
+          type: string
+          nullable: true
+        avatar_state:
+          type: string
+          nullable: true
+        enrollments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Enrollment'
+        email:
+          type: string
+          nullable: true
+        locale:
+          type: string
+          nullable: true
+        last_login:
+          type: string
+          format: date-time
+          nullable: true
+        time_zone:
+          type: string
+        bio:
+          type: string
+          nullable: true
+        pronouns:
+          type: string
+          nullable: true
     Enrollment:
       type: object
       properties:
@@ -258,106 +350,7 @@ components:
             unposted_final_score:
               type: number
               nullable: true
-    User:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-        sortable_name:
-          type: string
-        short_name:
-          type: string
-        sis_user_id:
-          type: string
-          nullable: true
-        sis_import_id:
-          type: integer
-          nullable: true
-        integration_id:
-          type: string
-          nullable: true
-        login_id:
-          type: string
-        avatar_url:
-          type: string
-          nullable: true
-        avatar_state:
-          type: string
-          nullable: true
-        enrollments:
-          type: array
-          items:
-            $ref: '#/components/schemas/Enrollment'
-        email:
-          type: string
-          nullable: true
-        locale:
-          type: string
-          nullable: true
-        last_login:
-          type: string
-          format: date-time
-          nullable: true
-        time_zone:
-          type: string
-        bio:
-          type: string
-          nullable: true
-        pronouns:
-          type: string
-          nullable: true
-    Profile:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        short_name:
-          type: string
-        sortable_name:
-          type: string
-        title:
-          type: string
-          nullable: true
-        bio:
-          type: string
-          nullable: true
-        primary_email:
-          type: string
-          nullable: true
-        login_id:
-          type: string
-        sis_user_id:
-          type: string
-          nullable: true
-        lti_user_id:
-          type: string
-          nullable: true
-        avatar_url:
-          type: string
-          nullable: true
-        calendar:
-          type: object
-          properties:
-            ics:
-              type: string
-        time_zone:
-          type: string
-        locale:
-          type: string
-          nullable: true
   parameters:
-    CourseId:
-      name: course_id
-      in: path
-      required: true
-      description: The Canvas course ID or an SIS course ID prefixed `sis_course_id:`.
-      schema:
-        type: string
     PerPage:
       name: per_page
       in: query
@@ -366,6 +359,13 @@ components:
         type: integer
         minimum: 1
         maximum: 100
+    CourseId:
+      name: course_id
+      in: path
+      required: true
+      description: The Canvas course ID or an SIS course ID prefixed `sis_course_id:`.
+      schema:
+        type: string
   securitySchemes:
     OAuth2:
       type: oauth2
