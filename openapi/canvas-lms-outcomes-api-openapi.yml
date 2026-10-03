@@ -51,6 +51,14 @@ paths:
                 items:
                   $ref: '#/components/schemas/OutcomeGroup'
 components:
+  parameters:
+    AccountId:
+      name: account_id
+      in: path
+      required: true
+      description: The Canvas account ID, an SIS account ID prefixed `sis_account_id:`, or `self`.
+      schema:
+        type: string
   schemas:
     OutcomeGroup:
       type: object
@@ -84,14 +92,6 @@ components:
           type: string
         can_edit:
           type: boolean
-  parameters:
-    AccountId:
-      name: account_id
-      in: path
-      required: true
-      description: The Canvas account ID, an SIS account ID prefixed `sis_account_id:`, or `self`.
-      schema:
-        type: string
   securitySchemes:
     OAuth2:
       type: oauth2

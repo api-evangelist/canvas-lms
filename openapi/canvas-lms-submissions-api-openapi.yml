@@ -148,90 +148,6 @@ paths:
                 $ref: '#/components/schemas/Submission'
 components:
   schemas:
-    SubmissionComment:
-      type: object
-      properties:
-        id:
-          type: integer
-        author_id:
-          type: integer
-        author_name:
-          type: string
-        comment:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-        edited_at:
-          type: string
-          format: date-time
-          nullable: true
-        media_comment:
-          type: object
-          additionalProperties: true
-        attachments:
-          type: array
-          items:
-            $ref: '#/components/schemas/File'
-    File:
-      type: object
-      properties:
-        id:
-          type: integer
-        uuid:
-          type: string
-        folder_id:
-          type: integer
-          nullable: true
-        display_name:
-          type: string
-        filename:
-          type: string
-        content-type:
-          type: string
-        url:
-          type: string
-        size:
-          type: integer
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        unlock_at:
-          type: string
-          format: date-time
-          nullable: true
-        locked:
-          type: boolean
-        hidden:
-          type: boolean
-        lock_at:
-          type: string
-          format: date-time
-          nullable: true
-        hidden_for_user:
-          type: boolean
-        thumbnail_url:
-          type: string
-          nullable: true
-        modified_at:
-          type: string
-          format: date-time
-        mime_class:
-          type: string
-        media_entry_id:
-          type: string
-          nullable: true
-        locked_for_user:
-          type: boolean
-        upload_status:
-          type: string
-          enum:
-          - pending
-          - errored
-          - success
     Submission:
       type: object
       properties:
@@ -323,19 +239,103 @@ components:
           - unread
         redo_request:
           type: boolean
+    SubmissionComment:
+      type: object
+      properties:
+        id:
+          type: integer
+        author_id:
+          type: integer
+        author_name:
+          type: string
+        comment:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        edited_at:
+          type: string
+          format: date-time
+          nullable: true
+        media_comment:
+          type: object
+          additionalProperties: true
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/File'
+    File:
+      type: object
+      properties:
+        id:
+          type: integer
+        uuid:
+          type: string
+        folder_id:
+          type: integer
+          nullable: true
+        display_name:
+          type: string
+        filename:
+          type: string
+        content-type:
+          type: string
+        url:
+          type: string
+        size:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        unlock_at:
+          type: string
+          format: date-time
+          nullable: true
+        locked:
+          type: boolean
+        hidden:
+          type: boolean
+        lock_at:
+          type: string
+          format: date-time
+          nullable: true
+        hidden_for_user:
+          type: boolean
+        thumbnail_url:
+          type: string
+          nullable: true
+        modified_at:
+          type: string
+          format: date-time
+        mime_class:
+          type: string
+        media_entry_id:
+          type: string
+          nullable: true
+        locked_for_user:
+          type: boolean
+        upload_status:
+          type: string
+          enum:
+          - pending
+          - errored
+          - success
   parameters:
-    AssignmentId:
-      name: assignment_id
-      in: path
-      required: true
-      description: The Canvas assignment ID.
-      schema:
-        type: string
     CourseId:
       name: course_id
       in: path
       required: true
       description: The Canvas course ID or an SIS course ID prefixed `sis_course_id:`.
+      schema:
+        type: string
+    AssignmentId:
+      name: assignment_id
+      in: path
+      required: true
+      description: The Canvas assignment ID.
       schema:
         type: string
   securitySchemes:

@@ -293,6 +293,121 @@ components:
         type: integer
         minimum: 1
   schemas:
+    Enrollment:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        course_id:
+          type: integer
+        course_section_id:
+          type: integer
+          nullable: true
+        root_account_id:
+          type: integer
+        type:
+          type: string
+          enum:
+          - StudentEnrollment
+          - TeacherEnrollment
+          - TaEnrollment
+          - DesignerEnrollment
+          - ObserverEnrollment
+        user_id:
+          type: integer
+        associated_user_id:
+          type: integer
+          nullable: true
+        role:
+          type: string
+        role_id:
+          type: integer
+        enrollment_state:
+          type: string
+          enum:
+          - active
+          - invited
+          - creation_pending
+          - deleted
+          - rejected
+          - completed
+          - inactive
+        limit_privileges_to_course_section:
+          type: boolean
+        sis_import_id:
+          type: integer
+          nullable: true
+        sis_account_id:
+          type: string
+          nullable: true
+        sis_course_id:
+          type: string
+          nullable: true
+        sis_section_id:
+          type: string
+          nullable: true
+        sis_user_id:
+          type: string
+          nullable: true
+        section_integration_id:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        start_at:
+          type: string
+          format: date-time
+          nullable: true
+        end_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_activity_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_attended_at:
+          type: string
+          format: date-time
+          nullable: true
+        total_activity_time:
+          type: integer
+        html_url:
+          type: string
+        grades:
+          type: object
+          properties:
+            html_url:
+              type: string
+            current_grade:
+              type: string
+              nullable: true
+            final_grade:
+              type: string
+              nullable: true
+            current_score:
+              type: number
+              nullable: true
+            final_score:
+              type: number
+              nullable: true
+            unposted_current_grade:
+              type: string
+              nullable: true
+            unposted_final_grade:
+              type: string
+              nullable: true
+            unposted_current_score:
+              type: number
+              nullable: true
+            unposted_final_score:
+              type: number
+              nullable: true
     User:
       type: object
       properties:
@@ -460,121 +575,6 @@ components:
           type: boolean
         homeroom_course:
           type: boolean
-    Enrollment:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        course_id:
-          type: integer
-        course_section_id:
-          type: integer
-          nullable: true
-        root_account_id:
-          type: integer
-        type:
-          type: string
-          enum:
-          - StudentEnrollment
-          - TeacherEnrollment
-          - TaEnrollment
-          - DesignerEnrollment
-          - ObserverEnrollment
-        user_id:
-          type: integer
-        associated_user_id:
-          type: integer
-          nullable: true
-        role:
-          type: string
-        role_id:
-          type: integer
-        enrollment_state:
-          type: string
-          enum:
-          - active
-          - invited
-          - creation_pending
-          - deleted
-          - rejected
-          - completed
-          - inactive
-        limit_privileges_to_course_section:
-          type: boolean
-        sis_import_id:
-          type: integer
-          nullable: true
-        sis_account_id:
-          type: string
-          nullable: true
-        sis_course_id:
-          type: string
-          nullable: true
-        sis_section_id:
-          type: string
-          nullable: true
-        sis_user_id:
-          type: string
-          nullable: true
-        section_integration_id:
-          type: string
-          nullable: true
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        start_at:
-          type: string
-          format: date-time
-          nullable: true
-        end_at:
-          type: string
-          format: date-time
-          nullable: true
-        last_activity_at:
-          type: string
-          format: date-time
-          nullable: true
-        last_attended_at:
-          type: string
-          format: date-time
-          nullable: true
-        total_activity_time:
-          type: integer
-        html_url:
-          type: string
-        grades:
-          type: object
-          properties:
-            html_url:
-              type: string
-            current_grade:
-              type: string
-              nullable: true
-            final_grade:
-              type: string
-              nullable: true
-            current_score:
-              type: number
-              nullable: true
-            final_score:
-              type: number
-              nullable: true
-            unposted_current_grade:
-              type: string
-              nullable: true
-            unposted_final_grade:
-              type: string
-              nullable: true
-            unposted_current_score:
-              type: number
-              nullable: true
-            unposted_final_score:
-              type: number
-              nullable: true
   securitySchemes:
     OAuth2:
       type: oauth2

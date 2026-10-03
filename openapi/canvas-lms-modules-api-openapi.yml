@@ -60,14 +60,6 @@ paths:
                 items:
                   $ref: '#/components/schemas/Module'
 components:
-  parameters:
-    CourseId:
-      name: course_id
-      in: path
-      required: true
-      description: The Canvas course ID or an SIS course ID prefixed `sis_course_id:`.
-      schema:
-        type: string
   schemas:
     Module:
       type: object
@@ -112,6 +104,14 @@ components:
           type: boolean
         published:
           type: boolean
+  parameters:
+    CourseId:
+      name: course_id
+      in: path
+      required: true
+      description: The Canvas course ID or an SIS course ID prefixed `sis_course_id:`.
+      schema:
+        type: string
   securitySchemes:
     OAuth2:
       type: oauth2
