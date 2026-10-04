@@ -177,13 +177,6 @@ components:
       description: The Canvas assignment ID.
       schema:
         type: string
-    CourseId:
-      name: course_id
-      in: path
-      required: true
-      description: The Canvas course ID or an SIS course ID prefixed `sis_course_id:`.
-      schema:
-        type: string
     PerPage:
       name: per_page
       in: query
@@ -192,6 +185,13 @@ components:
         type: integer
         minimum: 1
         maximum: 100
+    CourseId:
+      name: course_id
+      in: path
+      required: true
+      description: The Canvas course ID or an SIS course ID prefixed `sis_course_id:`.
+      schema:
+        type: string
   schemas:
     Assignment:
       type: object

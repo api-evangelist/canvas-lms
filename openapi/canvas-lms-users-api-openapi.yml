@@ -142,22 +142,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Profile'
 components:
-  parameters:
-    PerPage:
-      name: per_page
-      in: query
-      description: Items per page (default 10, max varies by endpoint and install).
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-    CourseId:
-      name: course_id
-      in: path
-      required: true
-      description: The Canvas course ID or an SIS course ID prefixed `sis_course_id:`.
-      schema:
-        type: string
   schemas:
     Enrollment:
       type: object
@@ -274,6 +258,47 @@ components:
             unposted_final_score:
               type: number
               nullable: true
+    Profile:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        short_name:
+          type: string
+        sortable_name:
+          type: string
+        title:
+          type: string
+          nullable: true
+        bio:
+          type: string
+          nullable: true
+        primary_email:
+          type: string
+          nullable: true
+        login_id:
+          type: string
+        sis_user_id:
+          type: string
+          nullable: true
+        lti_user_id:
+          type: string
+          nullable: true
+        avatar_url:
+          type: string
+          nullable: true
+        calendar:
+          type: object
+          properties:
+            ics:
+              type: string
+        time_zone:
+          type: string
+        locale:
+          type: string
+          nullable: true
     User:
       type: object
       properties:
@@ -325,47 +350,22 @@ components:
         pronouns:
           type: string
           nullable: true
-    Profile:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        short_name:
-          type: string
-        sortable_name:
-          type: string
-        title:
-          type: string
-          nullable: true
-        bio:
-          type: string
-          nullable: true
-        primary_email:
-          type: string
-          nullable: true
-        login_id:
-          type: string
-        sis_user_id:
-          type: string
-          nullable: true
-        lti_user_id:
-          type: string
-          nullable: true
-        avatar_url:
-          type: string
-          nullable: true
-        calendar:
-          type: object
-          properties:
-            ics:
-              type: string
-        time_zone:
-          type: string
-        locale:
-          type: string
-          nullable: true
+  parameters:
+    CourseId:
+      name: course_id
+      in: path
+      required: true
+      description: The Canvas course ID or an SIS course ID prefixed `sis_course_id:`.
+      schema:
+        type: string
+    PerPage:
+      name: per_page
+      in: query
+      description: Items per page (default 10, max varies by endpoint and install).
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
   securitySchemes:
     OAuth2:
       type: oauth2

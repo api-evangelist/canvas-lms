@@ -100,14 +100,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Enrollment'
 components:
-  parameters:
-    CourseId:
-      name: course_id
-      in: path
-      required: true
-      description: The Canvas course ID or an SIS course ID prefixed `sis_course_id:`.
-      schema:
-        type: string
   schemas:
     Enrollment:
       type: object
@@ -224,6 +216,14 @@ components:
             unposted_final_score:
               type: number
               nullable: true
+  parameters:
+    CourseId:
+      name: course_id
+      in: path
+      required: true
+      description: The Canvas course ID or an SIS course ID prefixed `sis_course_id:`.
+      schema:
+        type: string
   securitySchemes:
     OAuth2:
       type: oauth2
